@@ -20948,85 +20948,116 @@ body.dark-mode .request-note-af {
   }
 }
 
-    /* =========================================================
-   AF LANGUAGE CHANGE SYSTEM - CSS
-   Paste at the END of your CSS
+  /* =========================================================
+   AF MULTI-LANGUAGE SYSTEM - PREMIUM UI + TEXT GUARDRAILS
+   Paste at the END of your existing <style> tag
 ========================================================= */
 
 /* -----------------------------
-   1) Hide Google Translate UI
+   1) Language Row / Dropdown UI
 ----------------------------- */
 
-.af-google-translate-hidden {
-  position: fixed !important;
-  left: -99999px !important;
-  top: -99999px !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+.af-lang-shell {
+  width: 100%;
+  margin-top: 10px;
 }
 
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-.goog-tooltip,
-.goog-tooltip:hover,
-.goog-text-highlight {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
+.af-lang-trigger-row {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f172a;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
 }
 
-body {
-  top: 0 !important;
+.af-lang-trigger-row:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.34);
+  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.12);
 }
 
-body > .skiptranslate {
-  display: none !important;
+.af-lang-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
 }
 
-html.translated-ltr body,
-html.translated-rtl body {
-  top: 0 !important;
+.af-lang-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.1));
+  color: #2563eb;
+  font-size: 19px;
 }
 
-/* -----------------------------
-   2) Settings Language Row
------------------------------ */
-
-.af-language-row {
-  position: relative;
+.af-lang-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
 }
 
-.af-language-current {
-  min-width: 72px;
-  padding: 5px 10px;
+.af-lang-title {
+  font-size: clamp(13px, 2.6vw, 15px);
+  font-weight: 900;
+  line-height: 1.15;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.af-lang-subtitle {
+  margin-top: 3px;
+  font-size: clamp(11px, 2.4vw, 12px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.af-lang-current-pill {
+  flex: 0 0 auto;
+  max-width: 128px;
+  padding: 7px 11px;
   border-radius: 999px;
   background: rgba(37, 99, 235, 0.1);
   color: #2563eb;
-  font-size: 12px;
-  font-weight: 800;
-  text-align: center;
   border: 1px solid rgba(37, 99, 235, 0.18);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.1;
   white-space: nowrap;
-}
-
-body.dark .af-language-current,
-.dark-mode .af-language-current,
-[data-theme="dark"] .af-language-current {
-  background: rgba(96, 165, 250, 0.14);
-  color: #93c5fd;
-  border-color: rgba(147, 197, 253, 0.22);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* -----------------------------
-   3) Popup Overlay
+   2) Language Modal
 ----------------------------- */
 
-.af-language-overlay {
+.af-lang-overlay {
   position: fixed;
   inset: 0;
   z-index: 999999;
@@ -21034,50 +21065,31 @@ body.dark .af-language-current,
   align-items: flex-end;
   justify-content: center;
   padding: 16px;
-  background: rgba(15, 23, 42, 0.54);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(15, 23, 42, 0.56);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
-.af-language-overlay.active {
+.af-lang-overlay.active {
   display: flex;
-  animation: afLangFadeIn 0.22s ease both;
+  animation: afLangOverlayIn 0.22s ease both;
 }
 
-/* -----------------------------
-   4) Popup Modal
------------------------------ */
-
-.af-language-modal {
-  width: min(520px, 100%);
-  max-height: min(82vh, 720px);
+.af-lang-modal {
+  width: min(540px, 100%);
+  max-height: min(82vh, 740px);
   overflow: auto;
   border-radius: 28px;
   padding: 18px;
   background:
-    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34%),
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 36%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.32);
-  transform-origin: bottom center;
-  animation: afLangSlideUp 0.28s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  border: 1px solid rgba(226, 232, 240, 0.96);
+  box-shadow: 0 32px 96px rgba(15, 23, 42, 0.34);
+  animation: afLangModalIn 0.28s cubic-bezier(0.2, 0.9, 0.2, 1) both;
 }
 
-body.dark .af-language-modal,
-.dark-mode .af-language-modal,
-[data-theme="dark"] .af-language-modal {
-  background:
-    radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 34%),
-    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.96));
-  border-color: rgba(51, 65, 85, 0.95);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.48);
-}
-
-/* -----------------------------
-   5) Popup Header
------------------------------ */
-
-.af-language-head {
+.af-lang-modal-head {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -21085,30 +21097,25 @@ body.dark .af-language-modal,
   margin-bottom: 16px;
 }
 
-.af-language-head p {
+.af-lang-kicker {
   margin: 0 0 4px;
   color: #2563eb;
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 950;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.af-language-head h3 {
+.af-lang-heading {
   margin: 0;
   color: #0f172a;
-  font-size: 24px;
+  font-size: clamp(21px, 5vw, 26px);
   font-weight: 950;
   letter-spacing: -0.04em;
+  line-height: 1.05;
 }
 
-body.dark .af-language-head h3,
-.dark-mode .af-language-head h3,
-[data-theme="dark"] .af-language-head h3 {
-  color: #f8fafc;
-}
-
-.af-language-close {
+.af-lang-close {
   width: 42px;
   height: 42px;
   border: 0;
@@ -21124,45 +21131,35 @@ body.dark .af-language-head h3,
     color 0.18s ease;
 }
 
-.af-language-close:hover {
+.af-lang-close:hover {
   transform: rotate(90deg) scale(1.04);
   background: rgba(239, 68, 68, 0.12);
   color: #dc2626;
 }
 
-body.dark .af-language-close,
-.dark-mode .af-language-close,
-[data-theme="dark"] .af-language-close {
-  background: rgba(255, 255, 255, 0.08);
-  color: #f8fafc;
-}
-
-/* -----------------------------
-   6) Language Grid
------------------------------ */
-
-.af-language-grid {
+.af-lang-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
-.af-language-option {
+.af-lang-option {
+  min-width: 0;
+  min-height: 76px;
+  border: 1px solid rgba(226, 232, 240, 0.94);
+  border-radius: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #0f172a;
+  cursor: pointer;
   display: grid;
   grid-template-columns: 42px 1fr;
   grid-template-areas:
-    "icon title"
-    "icon sub";
+    "icon name"
+    "icon meta";
   align-items: center;
   gap: 2px 10px;
-  min-height: 74px;
-  padding: 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(226, 232, 240, 0.92);
-  background: rgba(255, 255, 255, 0.82);
-  color: #0f172a;
   text-align: left;
-  cursor: pointer;
   box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
   transition:
     transform 0.18s ease,
@@ -21171,7 +21168,19 @@ body.dark .af-language-close,
     background 0.18s ease;
 }
 
-.af-language-option span {
+.af-lang-option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.46);
+  box-shadow: 0 18px 42px rgba(37, 99, 235, 0.14);
+}
+
+.af-lang-option.active {
+  border-color: rgba(37, 99, 235, 0.76);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.1));
+  box-shadow: 0 18px 44px rgba(37, 99, 235, 0.18);
+}
+
+.af-lang-option-icon {
   grid-area: icon;
   width: 42px;
   height: 42px;
@@ -21182,83 +21191,187 @@ body.dark .af-language-close,
   font-size: 20px;
 }
 
-.af-language-option strong {
-  grid-area: title;
+.af-lang-option-name {
+  grid-area: name;
+  min-width: 0;
   font-size: 15px;
   font-weight: 950;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.af-language-option small {
-  grid-area: sub;
+.af-lang-option-meta {
+  grid-area: meta;
+  min-width: 0;
   color: #64748b;
   font-size: 12px;
   font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.af-language-option:hover {
-  transform: translateY(-2px);
-  border-color: rgba(37, 99, 235, 0.48);
-  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.14);
+.af-lang-status {
+  margin: 14px 2px 0;
+  min-height: 18px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.5;
 }
 
-.af-language-option.active {
-  border-color: rgba(37, 99, 235, 0.75);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.1));
-  box-shadow: 0 18px 44px rgba(37, 99, 235, 0.18);
+.af-lang-status.loading {
+  color: #2563eb;
 }
 
-body.dark .af-language-option,
-.dark-mode .af-language-option,
-[data-theme="dark"] .af-language-option {
+.af-lang-status.error {
+  color: #dc2626;
+}
+
+/* -----------------------------
+   3) Translation Text Guardrails
+----------------------------- */
+
+[data-i18n],
+[data-i18n-placeholder],
+[data-i18n-title],
+[data-i18n-aria-label],
+.af-i18n-text {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.af-i18n-applied {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  line-height: 1.22;
+}
+
+.af-i18n-compact {
+  letter-spacing: -0.01em;
+}
+
+.af-i18n-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.af-i18n-wrap {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.af-i18n-flex-safe {
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Non-English language mode */
+html.af-lang-regional body {
+  text-rendering: optimizeLegibility;
+}
+
+html.af-lang-regional [data-i18n],
+html.af-lang-regional .af-i18n-text {
+  font-size: var(--af-i18n-font-size, inherit);
+}
+
+/* Urdu RTL mode */
+html[dir="rtl"] body {
+  direction: rtl;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  direction: rtl;
+}
+
+/* -----------------------------
+   4) Dark Mode Compatibility
+----------------------------- */
+
+body.dark .af-lang-trigger-row,
+.dark-mode .af-lang-trigger-row,
+[data-theme="dark"] .af-lang-trigger-row {
+  background: rgba(15, 23, 42, 0.84);
+  color: #f8fafc;
+  border-color: rgba(51, 65, 85, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+}
+
+body.dark .af-lang-subtitle,
+.dark-mode .af-lang-subtitle,
+[data-theme="dark"] .af-lang-subtitle {
+  color: #94a3b8;
+}
+
+body.dark .af-lang-current-pill,
+.dark-mode .af-lang-current-pill,
+[data-theme="dark"] .af-lang-current-pill {
+  background: rgba(96, 165, 250, 0.14);
+  color: #93c5fd;
+  border-color: rgba(147, 197, 253, 0.22);
+}
+
+body.dark .af-lang-modal,
+.dark-mode .af-lang-modal,
+[data-theme="dark"] .af-lang-modal {
+  background:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 36%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.96));
+  border-color: rgba(51, 65, 85, 0.96);
+  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.5);
+}
+
+body.dark .af-lang-heading,
+.dark-mode .af-lang-heading,
+[data-theme="dark"] .af-lang-heading {
+  color: #f8fafc;
+}
+
+body.dark .af-lang-close,
+.dark-mode .af-lang-close,
+[data-theme="dark"] .af-lang-close {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+body.dark .af-lang-option,
+.dark-mode .af-lang-option,
+[data-theme="dark"] .af-lang-option {
   background: rgba(15, 23, 42, 0.84);
   border-color: rgba(51, 65, 85, 0.95);
   color: #f8fafc;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
 }
 
-body.dark .af-language-option small,
-.dark-mode .af-language-option small,
-[data-theme="dark"] .af-language-option small {
+body.dark .af-lang-option-meta,
+.dark-mode .af-lang-option-meta,
+[data-theme="dark"] .af-lang-option-meta,
+body.dark .af-lang-status,
+.dark-mode .af-lang-status,
+[data-theme="dark"] .af-lang-status {
   color: #94a3b8;
 }
 
-body.dark .af-language-option span,
-.dark-mode .af-language-option span,
-[data-theme="dark"] .af-language-option span {
+body.dark .af-lang-option-icon,
+.dark-mode .af-lang-option-icon,
+[data-theme="dark"] .af-lang-option-icon {
   background: rgba(96, 165, 250, 0.14);
 }
 
-body.dark .af-language-option.active,
-.dark-mode .af-language-option.active,
-[data-theme="dark"] .af-language-option.active {
-  border-color: rgba(147, 197, 253, 0.7);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(14, 165, 233, 0.12));
-}
-
 /* -----------------------------
-   7) Popup Note
+   5) Animations + Mobile
 ----------------------------- */
 
-.af-language-note {
-  margin: 14px 2px 0;
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-body.dark .af-language-note,
-.dark-mode .af-language-note,
-[data-theme="dark"] .af-language-note {
-  color: #94a3b8;
-}
-
-/* -----------------------------
-   8) Animations
------------------------------ */
-
-@keyframes afLangFadeIn {
+@keyframes afLangOverlayIn {
   from {
     opacity: 0;
   }
@@ -21267,7 +21380,7 @@ body.dark .af-language-note,
   }
 }
 
-@keyframes afLangSlideUp {
+@keyframes afLangModalIn {
   from {
     opacity: 0;
     transform: translateY(28px) scale(0.98);
@@ -21278,32 +21391,29 @@ body.dark .af-language-note,
   }
 }
 
-/* -----------------------------
-   9) Mobile Responsive
------------------------------ */
-
-@media (max-width: 420px) {
-  .af-language-overlay {
+@media (max-width: 460px) {
+  .af-lang-overlay {
     padding: 10px;
   }
 
-  .af-language-modal {
+  .af-lang-modal {
     border-radius: 24px;
     padding: 14px;
   }
 
-  .af-language-grid {
+  .af-lang-grid {
     grid-template-columns: 1fr;
   }
 
-  .af-language-head h3 {
-    font-size: 21px;
+  .af-lang-current-pill {
+    max-width: 92px;
+    font-size: 11px;
+    padding: 6px 9px;
   }
 
-  .af-language-current {
-    min-width: 64px;
-    font-size: 11px;
-    padding: 4px 8px;
+  .af-lang-trigger-row {
+    padding: 13px 14px;
+    border-radius: 17px;
   }
 }
 </style>
@@ -22815,19 +22925,131 @@ body.dark .af-language-note,
         <span class="settings-arrow" aria-hidden="true">›</span>
       </button>
       
-<button
-  type="button"
-  class="settings-support-row af-language-row"
-  onclick="openAFLanguagePopup()"
-  aria-label="Change Language"
->
-  <div class="settings-support-left">
-    <span class="settings-support-icon" aria-hidden="true">🌐</span>
-    <span>Language</span>
-  </div>
+  <!-- =========================================================
+     AF LANGUAGE DROPDOWN UI
+     Paste after Contact Us button
+========================================================= -->
 
-  <span id="afSelectedLanguageLabel" class="af-language-current">English</span>
-</button>
+<div class="af-lang-shell">
+  <button
+    type="button"
+    class="settings-support-row af-lang-trigger-row"
+    onclick="openAFTranslationModal()"
+    aria-label="Change app language"
+  >
+    <div class="af-lang-left">
+      <span class="af-lang-icon" aria-hidden="true">🌐</span>
+
+      <span class="af-lang-copy">
+        <span class="af-lang-title" data-i18n="Language">Language</span>
+        <span class="af-lang-subtitle" data-i18n="Choose your preferred app language">
+          Choose your preferred app language
+        </span>
+      </span>
+    </div>
+
+    <span id="afCurrentLanguagePill" class="af-lang-current-pill">English</span>
+  </button>
+</div>
+
+<div
+  id="afTranslationOverlay"
+  class="af-lang-overlay"
+  aria-hidden="true"
+  onclick="closeAFTranslationModal()"
+>
+  <div
+    class="af-lang-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="afTranslationTitle"
+    onclick="event.stopPropagation()"
+  >
+    <div class="af-lang-modal-head">
+      <div>
+        <p class="af-lang-kicker">AcademeForge</p>
+        <h3 id="afTranslationTitle" class="af-lang-heading" data-i18n="Choose Language">
+          Choose Language
+        </h3>
+      </div>
+
+      <button
+        type="button"
+        class="af-lang-close"
+        onclick="closeAFTranslationModal()"
+        aria-label="Close language selector"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="af-lang-grid">
+      <button type="button" class="af-lang-option active" data-lang="en" onclick="setAFAppLanguage('en')">
+        <span class="af-lang-option-icon">🇬🇧</span>
+        <strong class="af-lang-option-name">English</strong>
+        <small class="af-lang-option-meta">Default</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="hi" onclick="setAFAppLanguage('hi')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">हिन्दी</strong>
+        <small class="af-lang-option-meta">Hindi</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="bho" onclick="setAFAppLanguage('bho')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">भोजपुरी</strong>
+        <small class="af-lang-option-meta">Bhojpuri</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="bn" onclick="setAFAppLanguage('bn')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">বাংলা</strong>
+        <small class="af-lang-option-meta">Bengali</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="mr" onclick="setAFAppLanguage('mr')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">मराठी</strong>
+        <small class="af-lang-option-meta">Marathi</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="te" onclick="setAFAppLanguage('te')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">తెలుగు</strong>
+        <small class="af-lang-option-meta">Telugu</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="ta" onclick="setAFAppLanguage('ta')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">தமிழ்</strong>
+        <small class="af-lang-option-meta">Tamil</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="gu" onclick="setAFAppLanguage('gu')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">ગુજરાતી</strong>
+        <small class="af-lang-option-meta">Gujarati</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="ur" onclick="setAFAppLanguage('ur')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">اردو</strong>
+        <small class="af-lang-option-meta">Urdu</small>
+      </button>
+
+      <button type="button" class="af-lang-option" data-lang="kn" onclick="setAFAppLanguage('kn')">
+        <span class="af-lang-option-icon">🇮🇳</span>
+        <strong class="af-lang-option-name">ಕನ್ನಡ</strong>
+        <small class="af-lang-option-meta">Kannada</small>
+      </button>
+    </div>
+
+    <p id="afTranslationStatus" class="af-lang-status">
+      Select a language to update the app instantly.
+    </p>
+  </div>
+</div>
       
       <button
         type="button"
@@ -22895,154 +23117,7 @@ body.dark .af-language-note,
     LANGUAGE AF 
 ================================ -->
 
-    <div id="google_translate_element" class="af-google-translate-hidden"></div>
-
-<div
-  id="afLanguageOverlay"
-  class="af-language-overlay"
-  aria-hidden="true"
-  onclick="closeAFLanguagePopup()"
->
-  <div
-    class="af-language-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="afLanguageTitle"
-    onclick="event.stopPropagation()"
-  >
-    <div class="af-language-head">
-      <div>
-        <p>AcademeForge</p>
-        <h3 id="afLanguageTitle">Choose Language</h3>
-      </div>
-
-      <button
-        type="button"
-        class="af-language-close"
-        onclick="closeAFLanguagePopup()"
-        aria-label="Close language popup"
-      >
-        ×
-      </button>
-    </div>
-
-    <div class="af-language-grid">
-      <button
-        type="button"
-        class="af-language-option active"
-        data-lang="en"
-        onclick="changeAFLanguage('en', 'English')"
-      >
-        <span>🇬🇧</span>
-        <strong>English</strong>
-        <small>Default</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="hi"
-        onclick="changeAFLanguage('hi', 'Hindi')"
-      >
-        <span>🇮🇳</span>
-        <strong>हिन्दी</strong>
-        <small>Hindi</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="bho"
-        onclick="changeAFLanguage('bho', 'Bhojpuri')"
-      >
-        <span>🇮🇳</span>
-        <strong>भोजपुरी</strong>
-        <small>Bhojpuri</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="bn"
-        onclick="changeAFLanguage('bn', 'Bengali')"
-      >
-        <span>🇮🇳</span>
-        <strong>বাংলা</strong>
-        <small>Bengali</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="mr"
-        onclick="changeAFLanguage('mr', 'Marathi')"
-      >
-        <span>🇮🇳</span>
-        <strong>मराठी</strong>
-        <small>Marathi</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="te"
-        onclick="changeAFLanguage('te', 'Telugu')"
-      >
-        <span>🇮🇳</span>
-        <strong>తెలుగు</strong>
-        <small>Telugu</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="ta"
-        onclick="changeAFLanguage('ta', 'Tamil')"
-      >
-        <span>🇮🇳</span>
-        <strong>தமிழ்</strong>
-        <small>Tamil</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="gu"
-        onclick="changeAFLanguage('gu', 'Gujarati')"
-      >
-        <span>🇮🇳</span>
-        <strong>ગુજરાતી</strong>
-        <small>Gujarati</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="ur"
-        onclick="changeAFLanguage('ur', 'Urdu')"
-      >
-        <span>🇮🇳</span>
-        <strong>اردو</strong>
-        <small>Urdu</small>
-      </button>
-
-      <button
-        type="button"
-        class="af-language-option"
-        data-lang="kn"
-        onclick="changeAFLanguage('kn', 'Kannada')"
-      >
-        <span>🇮🇳</span>
-        <strong>ಕನ್ನಡ</strong>
-        <small>Kannada</small>
-      </button>
-    </div>
-
-    <p class="af-language-note">
-      Translation is powered by Google Translate. Some words may vary slightly.
-    </p>
-  </div>
-</div>
+ 
 <!-- ==============================
      REQUEST STATUS PAGE - AF
 ================================ -->
@@ -36490,239 +36565,685 @@ async function loadRequestStatusAf(forceRefresh) {
 
 
 /* =========================================================
-   1) GOOGLE TRANSLATE INITIALIZER
-========================================================= */
-
-function googleTranslateElementInit() {
-  try {
-    if (!window.google || !google.translate || !google.translate.TranslateElement) {
-      console.warn("Google Translate API is not ready.");
-      return;
-    }
-
-    new google.translate.TranslateElement(
-      {
-        pageLanguage: "en",
-        includedLanguages: "en,hi,bho,bn,mr,te,ta,gu,ur,kn",
-        autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      },
-      "google_translate_element"
-    );
-  } catch (error) {
-    console.error("Google Translate init failed:", error);
-  }
-}
-
-/* =========================================================
-   2) LANGUAGE POPUP + TRANSLATION CONTROLLER
+   AF SUPABASE DYNAMIC TRANSLATION SYSTEM
+   Paste at the END of your main <script>, before 
 ========================================================= */
 
 (function () {
   "use strict";
 
-  const AF_LANG_STORAGE_KEY = "afSelectedGoogleLanguage";
-  const AF_LANG_LABEL_STORAGE_KEY = "afSelectedGoogleLanguageLabel";
+  /* -----------------------------
+     1) Config
+  ----------------------------- */
 
-  const AF_LANGUAGE_LABELS = {
-    en: "English",
-    hi: "Hindi",
-    bho: "Bhojpuri",
-    bn: "Bengali",
-    mr: "Marathi",
-    te: "Telugu",
-    ta: "Tamil",
-    gu: "Gujarati",
-    ur: "Urdu",
-    kn: "Kannada"
-  };
-
-  let afLanguageRetryTimer = null;
-
-  function setCookie(name, value, days) {
-    const maxAge = days * 24 * 60 * 60;
-    const encodedName = encodeURIComponent(name);
-    const encodedValue = encodeURIComponent(value);
-
-    document.cookie = `${encodedName}=${encodedValue}; path=/; max-age=${maxAge}; SameSite=Lax`;
-
-    if (location.hostname && location.hostname.includes(".")) {
-      document.cookie = `${encodedName}=${encodedValue}; path=/; max-age=${maxAge}; domain=.${location.hostname}; SameSite=Lax`;
+  const AF_TRANSLATION_CONFIG = Object.freeze({
+    storageKey: "af_app_language_v2",
+    cachePrefix: "af_i18n_cache_v2_",
+    edgeFunctionName: "get-translations",
+    defaultLang: "en",
+    minFontPx: 10,
+    shrinkStepPx: 1,
+    maxShrinkPasses: 18,
+    cacheTtlMs: 1000 * 60 * 60 * 24,
+    dynamicScanDelayMs: 80,
+    supportedLanguages: {
+      en: "English",
+      hi: "Hindi",
+      bho: "Bhojpuri",
+      bn: "Bengali",
+      mr: "Marathi",
+      te: "Telugu",
+      ta: "Tamil",
+      gu: "Gujarati",
+      ur: "Urdu",
+      kn: "Kannada"
     }
-  }
+  });
 
-  function deleteCookie(name) {
-    const encodedName = encodeURIComponent(name);
+  let afCurrentLanguage = localStorage.getItem(AF_TRANSLATION_CONFIG.storageKey) || AF_TRANSLATION_CONFIG.defaultLang;
+  let afLastTranslations = {};
+  let afMutationObserver = null;
+  let afScanTimer = null;
+  let afIsApplyingTranslations = false;
 
-    document.cookie = `${encodedName}=; path=/; max-age=0; SameSite=Lax`;
+  /* -----------------------------
+     2) Supabase Client Resolver
+  ----------------------------- */
 
-    if (location.hostname && location.hostname.includes(".")) {
-      document.cookie = `${encodedName}=; path=/; max-age=0; domain=.${location.hostname}; SameSite=Lax`;
-    }
-  }
-
-  function updateLanguageUI(lang, label) {
-    const finalLang = AF_LANGUAGE_LABELS[lang] ? lang : "en";
-    const finalLabel = label || AF_LANGUAGE_LABELS[finalLang] || "English";
-
-    const labelNode = document.getElementById("afSelectedLanguageLabel");
-
-    if (labelNode) {
-      labelNode.textContent = finalLabel;
+  function getAFSupabaseClient() {
+    if (window.studentDb && typeof window.studentDb.functions?.invoke === "function") {
+      return window.studentDb;
     }
 
-    document.querySelectorAll(".af-language-option").forEach(function (button) {
-      button.classList.toggle("active", button.dataset.lang === finalLang);
-    });
-
-    const html = document.documentElement;
-
-    if (finalLang === "ur") {
-      html.setAttribute("dir", "rtl");
-      html.setAttribute("lang", "ur");
-    } else {
-      html.setAttribute("dir", "ltr");
-      html.setAttribute("lang", finalLang);
-    }
-  }
-
-  function getGoogleCombo() {
-    return document.querySelector(".goog-te-combo");
-  }
-
-  function triggerGoogleTranslate(lang, attempt) {
-    const safeAttempt = Number.isFinite(attempt) ? attempt : 0;
-    const combo = getGoogleCombo();
-
-    if (!combo) {
-      if (safeAttempt >= 40) {
-        console.warn("Google Translate dropdown not ready.");
-        return;
-      }
-
-      clearTimeout(afLanguageRetryTimer);
-
-      afLanguageRetryTimer = setTimeout(function () {
-        triggerGoogleTranslate(lang, safeAttempt + 1);
-      }, 250);
-
-      return;
+    if (window.db && typeof window.db.functions?.invoke === "function") {
+      return window.db;
     }
 
-    combo.value = lang;
-    combo.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-
-  function resetGoogleTranslateToEnglish() {
-    deleteCookie("googtrans");
-    deleteCookie("googtransopt");
-
-    setCookie("googtrans", "/en/en", 1);
-
-    const combo = getGoogleCombo();
-
-    if (combo) {
-      combo.value = "";
-      combo.dispatchEvent(new Event("change", { bubbles: true }));
+    if (typeof studentDb !== "undefined" && studentDb && typeof studentDb.functions?.invoke === "function") {
+      return studentDb;
     }
 
-    setTimeout(function () {
-      window.location.reload();
-    }, 150);
+    if (typeof db !== "undefined" && db && typeof db.functions?.invoke === "function") {
+      return db;
+    }
+
+    if (
+      typeof supabase !== "undefined" &&
+      typeof STUDENT_SUPABASE_URL !== "undefined" &&
+      typeof STUDENT_SUPABASE_ANON_KEY !== "undefined"
+    ) {
+      return supabase.createClient(STUDENT_SUPABASE_URL, STUDENT_SUPABASE_ANON_KEY);
+    }
+
+    if (
+      typeof supabase !== "undefined" &&
+      typeof SUPABASE_URL !== "undefined" &&
+      typeof SUPABASE_ANON_KEY !== "undefined"
+    ) {
+      return supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    throw new Error("Supabase client not found. Ensure Supabase script and client constants exist before translation system.");
   }
 
-  window.openAFLanguagePopup = function openAFLanguagePopup() {
-    const overlay = document.getElementById("afLanguageOverlay");
+  /* -----------------------------
+     3) Modal Open / Close
+  ----------------------------- */
+
+  window.openAFTranslationModal = function openAFTranslationModal() {
+    const overlay = document.getElementById("afTranslationOverlay");
 
     if (!overlay) return;
 
-    const savedLang = localStorage.getItem(AF_LANG_STORAGE_KEY) || "en";
-    const savedLabel = localStorage.getItem(AF_LANG_LABEL_STORAGE_KEY) || AF_LANGUAGE_LABELS[savedLang] || "English";
-
-    updateLanguageUI(savedLang, savedLabel);
+    updateAFLanguageUI(afCurrentLanguage);
 
     overlay.classList.add("active");
     overlay.setAttribute("aria-hidden", "false");
-
     document.body.style.overflow = "hidden";
   };
 
-  window.closeAFLanguagePopup = function closeAFLanguagePopup() {
-    const overlay = document.getElementById("afLanguageOverlay");
+  window.closeAFTranslationModal = function closeAFTranslationModal() {
+    const overlay = document.getElementById("afTranslationOverlay");
 
     if (!overlay) return;
 
     overlay.classList.remove("active");
     overlay.setAttribute("aria-hidden", "true");
-
     document.body.style.overflow = "";
   };
 
-  window.changeAFLanguage = function changeAFLanguage(lang, label) {
-    if (!AF_LANGUAGE_LABELS[lang]) return;
+  /* -----------------------------
+     4) Public Language Setter
+  ----------------------------- */
 
-    const finalLabel = label || AF_LANGUAGE_LABELS[lang];
-
-    localStorage.setItem(AF_LANG_STORAGE_KEY, lang);
-    localStorage.setItem(AF_LANG_LABEL_STORAGE_KEY, finalLabel);
-
-    updateLanguageUI(lang, finalLabel);
-    window.closeAFLanguagePopup();
-
-    if (lang === "en") {
-      resetGoogleTranslateToEnglish();
+  window.setAFAppLanguage = async function setAFAppLanguage(lang) {
+    if (!AF_TRANSLATION_CONFIG.supportedLanguages[lang]) {
+      setAFStatus("Unsupported language selected.", "error");
       return;
     }
 
-    setCookie("googtrans", `/en/${lang}`, 365);
-    triggerGoogleTranslate(lang, 0);
+    try {
+      setAFStatus("Updating language...", "loading");
+
+      afCurrentLanguage = lang;
+      localStorage.setItem(AF_TRANSLATION_CONFIG.storageKey, lang);
+
+      updateAFLanguageUI(lang);
+      applyAFDocumentLanguageMode(lang);
+
+      if (lang === AF_TRANSLATION_CONFIG.defaultLang) {
+        restoreAFOriginalTexts();
+        closeAFTranslationModal();
+        setAFStatus("Language updated.", "");
+        return;
+      }
+
+      const translations = await fetchAFTranslations(lang);
+      afLastTranslations = translations;
+
+      applyAFTranslations(translations, lang);
+      closeAFTranslationModal();
+
+      setAFStatus("Language updated.", "");
+    } catch (error) {
+      console.error("Language update failed:", error);
+      setAFStatus("Could not update language. Please try again.", "error");
+    }
   };
+
+  /* -----------------------------
+     5) Supabase Edge Function Fetch
+  ----------------------------- */
+
+  async function fetchAFTranslations(lang) {
+    const cached = readAFTranslationCache(lang);
+
+    if (cached) {
+      return cached;
+    }
+
+    const client = getAFSupabaseClient();
+
+    const payload = {
+      lang: lang,
+      page: "student-app",
+      includeDynamic: true,
+      requestedAt: new Date().toISOString()
+    };
+
+    const response = await client.functions.invoke(AF_TRANSLATION_CONFIG.edgeFunctionName, {
+      body: payload
+    });
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    const data = response.data;
+
+    if (!data || typeof data !== "object") {
+      throw new Error("Invalid translation response from Edge Function.");
+    }
+
+    const translations = normalizeAFTranslationPayload(data);
+
+    writeAFTranslationCache(lang, translations);
+
+    return translations;
+  }
+
+  function normalizeAFTranslationPayload(data) {
+    if (data.translations && typeof data.translations === "object") {
+      return data.translations;
+    }
+
+    if (data.data && data.data.translations && typeof data.data.translations === "object") {
+      return data.data.translations;
+    }
+
+    return data;
+  }
+
+  /* -----------------------------
+     6) Cache
+  ----------------------------- */
+
+  function getAFCacheKey(lang) {
+    return AF_TRANSLATION_CONFIG.cachePrefix + lang;
+  }
+
+  function readAFTranslationCache(lang) {
+    try {
+      const raw = localStorage.getItem(getAFCacheKey(lang));
+
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+
+      if (!parsed || typeof parsed !== "object") return null;
+      if (!parsed.createdAt || !parsed.translations) return null;
+
+      const age = Date.now() - Number(parsed.createdAt);
+
+      if (!Number.isFinite(age) || age > AF_TRANSLATION_CONFIG.cacheTtlMs) {
+        localStorage.removeItem(getAFCacheKey(lang));
+        return null;
+      }
+
+      return parsed.translations;
+    } catch (error) {
+      console.warn("Translation cache read failed:", error);
+      return null;
+    }
+  }
+
+  function writeAFTranslationCache(lang, translations) {
+    try {
+      localStorage.setItem(
+        getAFCacheKey(lang),
+        JSON.stringify({
+          createdAt: Date.now(),
+          translations: translations
+        })
+      );
+    } catch (error) {
+      console.warn("Translation cache write failed:", error);
+    }
+  }
+
+  /* -----------------------------
+     7) DOM Translation System
+  ----------------------------- */
+
+  function applyAFTranslations(translations, lang) {
+    if (!translations || typeof translations !== "object") return;
+
+    afIsApplyingTranslations = true;
+
+    try {
+      ensureAFI18nKeys(document.body);
+
+      applyAFTextNodeTranslations(translations);
+      applyAFAttributeTranslations(translations);
+
+      requestAnimationFrame(function () {
+        applyAFFontGuardrails(lang);
+      });
+    } finally {
+      setTimeout(function () {
+        afIsApplyingTranslations = false;
+      }, 0);
+    }
+  }
+
+  function ensureAFI18nKeys(root) {
+    if (!root) return;
+
+    const walker = document.createTreeWalker(
+      root,
+      NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function (node) {
+          if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+
+          const parent = node.parentElement;
+
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (shouldSkipAFNode(parent)) return NodeFilter.FILTER_REJECT;
+
+          const text = normalizeAFText(node.nodeValue);
+
+          if (!text) return NodeFilter.FILTER_REJECT;
+
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      }
+    );
+
+    const textNodes = [];
+
+    while (walker.nextNode()) {
+      textNodes.push(walker.currentNode);
+    }
+
+    textNodes.forEach(function (node) {
+      const parent = node.parentElement;
+
+      if (!parent) return;
+
+      const original = normalizeAFText(node.nodeValue);
+
+      if (!original) return;
+
+      if (!parent.dataset.i18nOriginal) {
+        parent.dataset.i18nOriginal = original;
+      }
+
+      parent.classList.add("af-i18n-text");
+    });
+
+    const attrNodes = root.querySelectorAll("input, textarea, button, [title], [aria-label], [placeholder]");
+
+    attrNodes.forEach(function (el) {
+      if (shouldSkipAFNode(el)) return;
+
+      if (el.hasAttribute("placeholder") && !el.dataset.i18nPlaceholderOriginal) {
+        const value = normalizeAFText(el.getAttribute("placeholder"));
+        if (value) el.dataset.i18nPlaceholderOriginal = value;
+      }
+
+      if (el.hasAttribute("title") && !el.dataset.i18nTitleOriginal) {
+        const value = normalizeAFText(el.getAttribute("title"));
+        if (value) el.dataset.i18nTitleOriginal = value;
+      }
+
+      if (el.hasAttribute("aria-label") && !el.dataset.i18nAriaLabelOriginal) {
+        const value = normalizeAFText(el.getAttribute("aria-label"));
+        if (value) el.dataset.i18nAriaLabelOriginal = value;
+      }
+    });
+  }
+
+  function applyAFTextNodeTranslations(translations) {
+    const nodes = document.querySelectorAll("[data-i18n-original], [data-i18n]");
+
+    nodes.forEach(function (el) {
+      if (shouldSkipAFNode(el)) return;
+
+      const explicitKey = el.getAttribute("data-i18n");
+      const originalKey = el.dataset.i18nOriginal;
+      const key = explicitKey || originalKey;
+
+      if (!key) return;
+
+      const translated = resolveAFTranslation(translations, key);
+
+      if (!translated) return;
+
+      setAFElementText(el, translated);
+      el.classList.add("af-i18n-applied");
+    });
+  }
+
+  function applyAFAttributeTranslations(translations) {
+    const nodes = document.querySelectorAll("[data-i18n-placeholder-original], [data-i18n-title-original], [data-i18n-aria-label-original], [data-i18n-placeholder], [data-i18n-title], [data-i18n-aria-label]");
+
+    nodes.forEach(function (el) {
+      if (shouldSkipAFNode(el)) return;
+
+      const placeholderKey = el.getAttribute("data-i18n-placeholder") || el.dataset.i18nPlaceholderOriginal;
+      const titleKey = el.getAttribute("data-i18n-title") || el.dataset.i18nTitleOriginal;
+      const ariaKey = el.getAttribute("data-i18n-aria-label") || el.dataset.i18nAriaLabelOriginal;
+
+      if (placeholderKey) {
+        const translated = resolveAFTranslation(translations, placeholderKey);
+        if (translated) el.setAttribute("placeholder", translated);
+      }
+
+      if (titleKey) {
+        const translated = resolveAFTranslation(translations, titleKey);
+        if (translated) el.setAttribute("title", translated);
+      }
+
+      if (ariaKey) {
+        const translated = resolveAFTranslation(translations, ariaKey);
+        if (translated) el.setAttribute("aria-label", translated);
+      }
+    });
+  }
+
+  function setAFElementText(el, text) {
+    if (!el) return;
+
+    const hasOnlyText = Array.from(el.childNodes).every(function (node) {
+      return node.nodeType === Node.TEXT_NODE || (node.nodeType === Node.ELEMENT_NODE && node.tagName === "BR");
+    });
+
+    if (hasOnlyText) {
+      el.textContent = text;
+      return;
+    }
+
+    const textNode = Array.from(el.childNodes).find(function (node) {
+      return node.nodeType === Node.TEXT_NODE && normalizeAFText(node.nodeValue);
+    });
+
+    if (textNode) {
+      textNode.nodeValue = text;
+    }
+  }
+
+  function restoreAFOriginalTexts() {
+    afIsApplyingTranslations = true;
+
+    try {
+      document.querySelectorAll("[data-i18n-original]").forEach(function (el) {
+        if (shouldSkipAFNode(el)) return;
+        setAFElementText(el, el.dataset.i18nOriginal);
+        el.classList.remove("af-i18n-applied", "af-i18n-compact");
+        el.style.removeProperty("--af-i18n-font-size");
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder-original]").forEach(function (el) {
+        el.setAttribute("placeholder", el.dataset.i18nPlaceholderOriginal);
+      });
+
+      document.querySelectorAll("[data-i18n-title-original]").forEach(function (el) {
+        el.setAttribute("title", el.dataset.i18nTitleOriginal);
+      });
+
+      document.querySelectorAll("[data-i18n-aria-label-original]").forEach(function (el) {
+        el.setAttribute("aria-label", el.dataset.i18nAriaLabelOriginal);
+      });
+
+      applyAFDocumentLanguageMode(AF_TRANSLATION_CONFIG.defaultLang);
+      applyAFFontGuardrails(AF_TRANSLATION_CONFIG.defaultLang);
+    } finally {
+      setTimeout(function () {
+        afIsApplyingTranslations = false;
+      }, 0);
+    }
+  }
+
+  function resolveAFTranslation(translations, key) {
+    if (!key) return "";
+
+    if (Object.prototype.hasOwnProperty.call(translations, key)) {
+      return String(translations[key]);
+    }
+
+    const trimmedKey = normalizeAFText(key);
+
+    if (Object.prototype.hasOwnProperty.call(translations, trimmedKey)) {
+      return String(translations[trimmedKey]);
+    }
+
+    return "";
+  }
+
+  function normalizeAFText(value) {
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function shouldSkipAFNode(el) {
+    if (!el) return true;
+
+    const tag = el.tagName ? el.tagName.toLowerCase() : "";
+
+    if (
+      tag === "script" ||
+      tag === "style" ||
+      tag === "noscript" ||
+      tag === "code" ||
+      tag === "pre" ||
+      tag === "svg" ||
+      tag === "canvas" ||
+      tag === "iframe"
+    ) {
+      return true;
+    }
+
+    if (el.closest("[data-i18n-skip='true'], .af-no-translate, .notranslate")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /* -----------------------------
+     8) Font Shrinking Guardrails
+  ----------------------------- */
+
+  function applyAFFontGuardrails(lang) {
+    const isRegional = lang !== AF_TRANSLATION_CONFIG.defaultLang;
+
+    document.documentElement.classList.toggle("af-lang-regional", isRegional);
+
+    const nodes = document.querySelectorAll("[data-i18n-original], [data-i18n], .af-i18n-text");
+
+    nodes.forEach(function (el) {
+      if (shouldSkipAFNode(el)) return;
+
+      el.classList.add("af-i18n-flex-safe");
+
+      if (!isRegional) {
+        el.style.removeProperty("--af-i18n-font-size");
+        el.classList.remove("af-i18n-compact");
+        return;
+      }
+
+      shrinkAFTextToFit(el);
+    });
+  }
+
+  function shrinkAFTextToFit(el) {
+    if (!el || !el.isConnected) return;
+
+    const computed = window.getComputedStyle(el);
+    const currentFontSize = parseFloat(computed.fontSize);
+
+    if (!Number.isFinite(currentFontSize)) return;
+
+    const originalFontSize = Number(el.dataset.afOriginalFontSize || currentFontSize);
+
+    if (!el.dataset.afOriginalFontSize) {
+      el.dataset.afOriginalFontSize = String(originalFontSize);
+    }
+
+    let nextFontSize = originalFontSize;
+    let pass = 0;
+
+    el.style.setProperty("--af-i18n-font-size", `${nextFontSize}px`);
+
+    while (
+      pass < AF_TRANSLATION_CONFIG.maxShrinkPasses &&
+      nextFontSize > AF_TRANSLATION_CONFIG.minFontPx &&
+      isAFOverflowing(el)
+    ) {
+      nextFontSize -= AF_TRANSLATION_CONFIG.shrinkStepPx;
+      el.style.setProperty("--af-i18n-font-size", `${nextFontSize}px`);
+      el.classList.add("af-i18n-compact");
+      pass += 1;
+    }
+
+    if (isAFOverflowing(el)) {
+      el.classList.add("af-i18n-ellipsis");
+      el.setAttribute("title", normalizeAFText(el.textContent));
+    } else {
+      el.classList.remove("af-i18n-ellipsis");
+    }
+  }
+
+  function isAFOverflowing(el) {
+    if (!el) return false;
+
+    const horizontalOverflow = el.scrollWidth > el.clientWidth + 1;
+    const verticalOverflow = el.scrollHeight > el.clientHeight + 1;
+
+    return horizontalOverflow || verticalOverflow;
+  }
+
+  /* -----------------------------
+     9) UI State
+  ----------------------------- */
+
+  function updateAFLanguageUI(lang) {
+    const label = AF_TRANSLATION_CONFIG.supportedLanguages[lang] || "English";
+    const pill = document.getElementById("afCurrentLanguagePill");
+
+    if (pill) {
+      pill.textContent = label;
+    }
+
+    document.querySelectorAll(".af-lang-option").forEach(function (button) {
+      button.classList.toggle("active", button.dataset.lang === lang);
+    });
+  }
+
+  function applyAFDocumentLanguageMode(lang) {
+    document.documentElement.setAttribute("lang", lang);
+
+    if (lang === "ur") {
+      document.documentElement.setAttribute("dir", "rtl");
+    } else {
+      document.documentElement.setAttribute("dir", "ltr");
+    }
+
+    document.documentElement.classList.toggle("af-lang-regional", lang !== AF_TRANSLATION_CONFIG.defaultLang);
+  }
+
+  function setAFStatus(message, type) {
+    const status = document.getElementById("afTranslationStatus");
+
+    if (!status) return;
+
+    status.textContent = message || "";
+    status.classList.remove("loading", "error");
+
+    if (type) {
+      status.classList.add(type);
+    }
+  }
+
+  /* -----------------------------
+     10) Dynamic DOM Watcher
+  ----------------------------- */
+
+  function startAFDynamicTranslationWatcher() {
+    if (afMutationObserver) {
+      afMutationObserver.disconnect();
+    }
+
+    afMutationObserver = new MutationObserver(function () {
+      if (afIsApplyingTranslations) return;
+
+      clearTimeout(afScanTimer);
+
+      afScanTimer = setTimeout(function () {
+        ensureAFI18nKeys(document.body);
+
+        if (afCurrentLanguage !== AF_TRANSLATION_CONFIG.defaultLang && afLastTranslations) {
+          applyAFTranslations(afLastTranslations, afCurrentLanguage);
+        } else {
+          applyAFFontGuardrails(afCurrentLanguage);
+        }
+      }, AF_TRANSLATION_CONFIG.dynamicScanDelayMs);
+    });
+
+    afMutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+
+  /* -----------------------------
+     11) Init
+  ----------------------------- */
+
+  async function initAFTranslationSystem() {
+    try {
+      ensureAFI18nKeys(document.body);
+      updateAFLanguageUI(afCurrentLanguage);
+      applyAFDocumentLanguageMode(afCurrentLanguage);
+      startAFDynamicTranslationWatcher();
+
+      if (afCurrentLanguage !== AF_TRANSLATION_CONFIG.defaultLang) {
+        const translations = await fetchAFTranslations(afCurrentLanguage);
+        afLastTranslations = translations;
+        applyAFTranslations(translations, afCurrentLanguage);
+      } else {
+        applyAFFontGuardrails(afCurrentLanguage);
+      }
+    } catch (error) {
+      console.error("Translation system init failed:", error);
+      setAFStatus("Translation system could not start.", "error");
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initAFTranslationSystem, { once: true });
+  } else {
+    initAFTranslationSystem();
+  }
+
+  window.addEventListener("resize", function () {
+    clearTimeout(afScanTimer);
+
+    afScanTimer = setTimeout(function () {
+      applyAFFontGuardrails(afCurrentLanguage);
+    }, 120);
+  });
 
   window.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
-      window.closeAFLanguagePopup();
-    }
-  });
-
-  window.addEventListener("load", function () {
-    const savedLang = localStorage.getItem(AF_LANG_STORAGE_KEY) || "en";
-    const savedLabel = localStorage.getItem(AF_LANG_LABEL_STORAGE_KEY) || AF_LANGUAGE_LABELS[savedLang] || "English";
-
-    updateLanguageUI(savedLang, savedLabel);
-
-    if (savedLang !== "en") {
-      setCookie("googtrans", `/en/${savedLang}`, 365);
-
-      setTimeout(function () {
-        triggerGoogleTranslate(savedLang, 0);
-      }, 1200);
+      closeAFTranslationModal();
     }
   });
 })();
-
-/* =========================================================
-   3) GOOGLE TRANSLATE SCRIPT LOADER
-   This avoids manually adding another <script src="..."> outside.
-========================================================= */
-
-(function loadGoogleTranslateScriptAF() {
-  if (document.querySelector('script[data-af-google-translate="true"]')) {
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-  script.async = true;
-  script.defer = true;
-  script.setAttribute("data-af-google-translate", "true");
-
-  script.onerror = function () {
-    console.error("Failed to load Google Translate script.");
-  };
-
-  document.body.appendChild(script);
-})();
-
+        
 </script>
 </body>
 </html>
