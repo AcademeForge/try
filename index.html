@@ -21416,6 +21416,229 @@ body.dark .af-lang-option-icon,
     border-radius: 17px;
   }
 }
+
+    /* =========================================================
+   AF LANGUAGE ROW - SETTINGS UI MATCH FIX
+   Paste this at the VERY END of your CSS
+   This overrides previous language CSS row styling
+========================================================= */
+
+/* -----------------------------
+   1) Language row should behave exactly like settings row
+----------------------------- */
+
+.af-lang-shell {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.settings-support-row.af-lang-trigger-row,
+.af-lang-trigger-row {
+  width: 100%;
+  min-height: 54px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 20px 13px 6px;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  box-shadow: none;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.settings-support-row.af-lang-trigger-row:hover,
+.af-lang-trigger-row:hover {
+  transform: none;
+  background: rgba(148, 163, 184, 0.06);
+  box-shadow: none;
+  border-color: transparent;
+}
+
+/* -----------------------------
+   2) Left side layout
+----------------------------- */
+
+.af-lang-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1;
+}
+
+.af-lang-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(37, 99, 235, 0.14);
+  color: #38bdf8;
+  font-size: 15px;
+  box-shadow: none;
+}
+
+.af-lang-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+}
+
+.af-lang-title {
+  display: block;
+  max-width: 100%;
+  color: #f8fafc;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.af-lang-subtitle {
+  display: block;
+  max-width: 100%;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* -----------------------------
+   3) Current language pill
+----------------------------- */
+
+.af-lang-current-pill {
+  flex: 0 0 auto;
+  max-width: 92px;
+  min-width: 70px;
+  height: 30px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* -----------------------------
+   4) Light mode compatibility
+----------------------------- */
+
+body:not(.dark) .af-lang-title,
+body:not(.dark-mode) .af-lang-title {
+  color: #0f172a;
+}
+
+body:not(.dark) .af-lang-subtitle,
+body:not(.dark-mode) .af-lang-subtitle {
+  color: #64748b;
+}
+
+body:not(.dark) .af-lang-current-pill,
+body:not(.dark-mode) .af-lang-current-pill {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.18);
+}
+
+/* If your app uses html/body dark classes, these keep it locked */
+body.dark .af-lang-title,
+.dark-mode .af-lang-title,
+[data-theme="dark"] .af-lang-title {
+  color: #f8fafc;
+}
+
+body.dark .af-lang-subtitle,
+.dark-mode .af-lang-subtitle,
+[data-theme="dark"] .af-lang-subtitle {
+  color: #94a3b8;
+}
+
+body.dark .af-lang-current-pill,
+.dark-mode .af-lang-current-pill,
+[data-theme="dark"] .af-lang-current-pill {
+  background: rgba(59, 130, 246, 0.16);
+  color: #bfdbfe;
+  border-color: rgba(96, 165, 250, 0.28);
+}
+
+/* -----------------------------
+   5) Make language row align with existing icon/text rows
+----------------------------- */
+
+.settings-support-row.af-lang-trigger-row .af-lang-left {
+  margin-left: 0;
+}
+
+.settings-support-row.af-lang-trigger-row + .settings-support-divider {
+  margin-top: 0;
+}
+
+/* -----------------------------
+   6) Mobile tight layout
+----------------------------- */
+
+@media (max-width: 420px) {
+  .settings-support-row.af-lang-trigger-row,
+  .af-lang-trigger-row {
+    min-height: 54px;
+    padding: 12px 20px 12px 6px;
+    gap: 10px;
+  }
+
+  .af-lang-left {
+    gap: 12px;
+  }
+
+  .af-lang-icon {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    font-size: 14px;
+  }
+
+  .af-lang-title {
+    font-size: 14px;
+  }
+
+  .af-lang-subtitle {
+    font-size: 10.5px;
+  }
+
+  .af-lang-current-pill {
+    min-width: 64px;
+    max-width: 78px;
+    height: 28px;
+    padding: 0 8px;
+    font-size: 10.5px;
+  }
+}
 </style>
 </head>
 
@@ -22931,6 +23154,7 @@ body.dark .af-lang-option-icon,
 ========================================================= -->
 
 <div class="af-lang-shell">
+  <div class="af-lang-shell">
   <button
     type="button"
     class="settings-support-row af-lang-trigger-row"
@@ -22939,17 +23163,12 @@ body.dark .af-lang-option-icon,
   >
     <div class="af-lang-left">
       <span class="af-lang-icon" aria-hidden="true">🌐</span>
-
-      <span class="af-lang-copy">
-        <span class="af-lang-title" data-i18n="Language">Language</span>
-        <span class="af-lang-subtitle" data-i18n="Choose your preferred app language">
-          Choose your preferred app language
-        </span>
-      </span>
+      <span class="af-lang-title" data-i18n="Language">Language</span>
     </div>
 
     <span id="afCurrentLanguagePill" class="af-lang-current-pill">English</span>
   </button>
+</div>
 </div>
 
 <div
