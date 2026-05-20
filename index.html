@@ -15893,105 +15893,6 @@ body.dark-mode .notification-time-box:hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* =========================================================
-   AF SETTINGS PAGE - FINAL CLEAN FIX
-   Paste at VERY END of CSS
-   Does NOT redesign bottom nav. It only prevents old overrides.
-========================================================= */
-
-/* ---------- App shell safety ---------- */
-
-html,
-body {
-  overflow-x: hidden !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-}
-
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-#settings::-webkit-scrollbar,
-.settings-page::-webkit-scrollbar {
-  width: 0 !important;
-  height: 0 !important;
-  display: none !important;
-}
-
-/* Keep app inside mobile width */
-.app,
-.app-shell,
-#app,
-main.app {
-  width: 100% !important;
-  max-width: 430px !important;
-  margin: 0 auto !important;
-  overflow-x: hidden !important;
-  position: relative !important;
-  background: #f6f8fc !important;
-}
-
-/* Do NOT force old nav outside screen */
-.bottom-nav {
-  left: auto !important;
-  right: auto !important;
-  width: calc(100% - 12px) !important;
-  max-width: 418px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  transform: none !important;
-  z-index: 5000 !important;
-}
-
-/* ---------- Section visibility compatibility ---------- */
-
-#settings {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-#settings.active,
-#settings.active-section {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* ---------- Settings page layout ---------- */
-
-#settings.settings-section,
-#settings.section.settings-section,
-#settings.app-section.settings-section {
-  width: 100% !important;
-  max-width: 430px !important;
-  min-height: auto !important;
-  height: auto !important;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 42%, #ffffff 100%) !important;
-  color: #172033 !important;
-  overflow: visible !important;
-  position: relative !important;
-  box-sizing: border-box !important;
-}
-
-/* Main content starts close to header */
-#settings .settings-page {
-  width: 100% !important;
-  max-width: 430px !important;
-  min-height: 0 !important;
-  height: auto !important;
-  margin: 0 auto !important;
-  padding: 18px 20px 92px !important;
-  box-sizing: border-box !important;
-  background:
-    radial-gradient(circle at 16% 0%, rgba(95, 165, 255, 0.11), transparent 28%),
-    radial-gradient(circle at 92% 12%, rgba(145, 239, 196, 0.13), transparent 24%),
-    transparent !important;
-  overflow: visible !important;
-}
 
 /* ---------- Profile card ---------- */
 
@@ -21639,118 +21540,119 @@ body.dark .af-lang-current-pill,
     font-size: 10.5px;
   }
 }
-
-   /* =========================================================
-   ACADEMEFORGE SETTINGS + BOTTOM NAV FORCE OVERRIDE
-   Paste this at the VERY END of your CSS.
-   Fully mobile-style layout on mobile + laptop.
-   Uses !important to beat old conflicting CSS.
-========================================================= */
-
 /* =========================================================
-   0) GLOBAL SETTINGS PAGE TOKENS
+   ACADEMEFORGE SETTINGS PAGE + BOTTOM NAV - FRESH CSS
+   Delete old settings/nav CSS first.
+   Paste this at the END of your CSS.
 ========================================================= */
 
 :root {
-  --af-settings-max-width: 486px !important;
-  --af-settings-page-x: 16px !important;
-  --af-settings-page-top: 18px !important;
-  --af-settings-page-bottom: 112px !important;
+  --af-page-bg-light: #f3f4f6;
+  --af-page-bg-dark: #081120;
 
-  --af-bg-light: #f4f4f5 !important;
-  --af-card-light: #ffffff !important;
-  --af-card-soft-light: rgba(255, 255, 255, 0.92) !important;
-  --af-border-light: rgba(15, 23, 42, 0.08) !important;
-  --af-text-light: #050505 !important;
-  --af-muted-light: #6b7280 !important;
-  --af-icon-box-light: #fafafa !important;
+  --af-card-light: #ffffff;
+  --af-card-dark: #0b0b0c;
 
-  --af-bg-dark: #050505 !important;
-  --af-card-dark: #101010 !important;
-  --af-card-soft-dark: rgba(16, 16, 16, 0.96) !important;
-  --af-border-dark: rgba(255, 255, 255, 0.09) !important;
-  --af-text-dark: #ffffff !important;
-  --af-muted-dark: #9ca3af !important;
-  --af-icon-box-dark: #171717 !important;
+  --af-row-light: #ffffff;
+  --af-row-dark: #0b0b0c;
 
-  --af-row-height: 56px !important;
-  --af-row-radius: 14px !important;
-  --af-profile-radius: 0 0 26px 26px !important;
+  --af-border-light: rgba(15, 23, 42, 0.08);
+  --af-border-dark: rgba(255, 255, 255, 0.10);
 
-  --af-nav-height: 82px !important;
-  --af-nav-radius: 26px !important;
-  --af-nav-bottom: max(10px, env(safe-area-inset-bottom)) !important;
-  --af-nav-x: 10px !important;
+  --af-text-light: #0f172a;
+  --af-text-dark: #ffffff;
+
+  --af-muted-light: #6b7280;
+  --af-muted-dark: #a1a1aa;
+
+  --af-settings-width: 486px;
+  --af-settings-x: 16px;
+
+  --af-nav-height: 78px;
+  --af-nav-bottom: max(10px, env(safe-area-inset-bottom));
 }
 
 /* =========================================================
-   1) SETTINGS SECTION SHELL
+   SPLASH SCREEN NAV HIDE FIX
+   Add/remove .app-ready on body after splash ends.
 ========================================================= */
 
-html body #settings.settings-section,
-html body .settings-section {
+body:not(.app-ready) .bottom-nav {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(24px) !important;
+}
+
+/* If your splash uses common classes, nav stays hidden */
+body:has(#splashScreen:not(.hidden)) .bottom-nav,
+body:has(.splash-screen:not(.hidden)) .bottom-nav,
+body:has(#splash:not(.hidden)) .bottom-nav {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(24px) !important;
+}
+
+/* =========================================================
+   SETTINGS SECTION
+========================================================= */
+
+html body #settings.settings-section {
   width: 100% !important;
   min-height: 100dvh !important;
-  margin: 0 auto !important;
-  padding: 0 0 var(--af-settings-page-bottom) !important;
-  background: var(--af-bg-light) !important;
+  margin: 0 !important;
+  padding: 0 0 112px !important;
+  background: var(--af-page-bg-light) !important;
   color: var(--af-text-light) !important;
   overflow-x: hidden !important;
   box-sizing: border-box !important;
 }
 
 html body.dark #settings.settings-section,
-html body.dark .settings-section,
 html body.dark-mode #settings.settings-section,
-html body.dark-mode .settings-section,
-html .dark-mode #settings.settings-section,
-html .dark-mode .settings-section,
-html [data-theme="dark"] #settings.settings-section,
-html [data-theme="dark"] .settings-section {
-  background: var(--af-bg-dark) !important;
+html [data-theme="dark"] #settings.settings-section {
+  background: var(--af-page-bg-dark) !important;
   color: var(--af-text-dark) !important;
 }
 
-html body #settings .settings-page,
-html body .settings-page {
+html body #settings .settings-page {
   width: 100% !important;
-  max-width: var(--af-settings-max-width) !important;
+  max-width: var(--af-settings-width) !important;
+  min-height: 100dvh !important;
   margin: 0 auto !important;
-  padding: var(--af-settings-page-top) var(--af-settings-page-x) 0 !important;
+  padding: 18px var(--af-settings-x) 0 !important;
   box-sizing: border-box !important;
 }
 
 /* =========================================================
-   2) TOP PROFILE CARD - MATCH REFERENCE
+   PROFILE CARD
 ========================================================= */
 
-html body #settings .settings-profile-card,
-html body .settings-profile-card {
+html body #settings .settings-profile-card {
   width: 100% !important;
-  min-height: 78px !important;
+  min-height: 82px !important;
   margin: 0 0 10px !important;
   padding: 16px 18px !important;
-  border-radius: 22px !important;
-  border: 1px solid rgba(148, 163, 184, 0.20) !important;
+  border-radius: 0 0 24px 24px !important;
+  border: 1px solid rgba(148, 163, 184, 0.22) !important;
   background:
-    radial-gradient(circle at 8% 10%, rgba(134, 239, 172, 0.20), transparent 24%),
+    radial-gradient(circle at 8% 12%, rgba(134, 239, 172, 0.24), transparent 25%),
     linear-gradient(135deg, #111c32 0%, #0f172a 100%) !important;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18) !important;
   color: #ffffff !important;
-  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18) !important;
 
   display: flex !important;
   align-items: center !important;
   gap: 14px !important;
-  box-sizing: border-box !important;
   overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-html body #settings .settings-avatar,
-html body .settings-avatar {
+html body #settings .settings-avatar {
   width: 52px !important;
   height: 52px !important;
   min-width: 52px !important;
-  min-height: 52px !important;
   border-radius: 999px !important;
   display: grid !important;
   place-items: center !important;
@@ -21758,29 +21660,23 @@ html body .settings-avatar {
   color: #064e3b !important;
   font-size: 24px !important;
   line-height: 1 !important;
-  box-shadow: 0 12px 26px rgba(34, 197, 94, 0.28) !important;
-  overflow: hidden !important;
+  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.28) !important;
 }
 
-html body #settings .settings-profile-info,
-html body .settings-profile-info {
+html body #settings .settings-profile-info {
   min-width: 0 !important;
   flex: 1 1 auto !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
   gap: 4px !important;
 }
 
-html body #settings .settings-profile-info h2,
-html body .settings-profile-info h2,
 html body #settings #settingsStudentName {
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   color: #ffffff !important;
-  font-size: clamp(20px, 5.2vw, 24px) !important;
+  font-size: clamp(21px, 5.2vw, 25px) !important;
   font-weight: 950 !important;
   line-height: 1.05 !important;
   letter-spacing: -0.045em !important;
@@ -21789,8 +21685,8 @@ html body #settings #settingsStudentName {
   text-overflow: ellipsis !important;
 }
 
-html body #settings .settings-profile-link,
-html body .settings-profile-link {
+html body #settings .settings-profile-link {
+  width: fit-content !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
@@ -21799,993 +21695,87 @@ html body .settings-profile-link {
   color: rgba(226, 232, 240, 0.88) !important;
   font-size: 14px !important;
   font-weight: 850 !important;
-  line-height: 1.15 !important;
+  line-height: 1.1 !important;
   cursor: pointer !important;
-  text-align: left !important;
   box-shadow: none !important;
 }
 
 /* =========================================================
-   3) OFFICIAL WEBSITE CARD
+   OFFICIAL WEBSITE CARD
 ========================================================= */
 
-html body #settings .settings-beta-card,
-html body .settings-beta-card {
+html body #settings .settings-beta-card {
   width: 100% !important;
   min-height: 50px !important;
-  margin: 0 0 18px !important;
+  margin: 0 0 14px !important;
   padding: 0 16px !important;
-  border-radius: 13px !important;
-  border: 1px solid rgba(148, 163, 184, 0.28) !important;
-  background: rgba(15, 23, 42, 0.72) !important;
-  color: #ffffff !important;
-  text-decoration: none !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .settings-beta-card span:first-child,
-html body .settings-beta-card span:first-child {
-  min-width: 0 !important;
-  color: #ffffff !important;
-  font-size: 15px !important;
-  font-weight: 950 !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.015em !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body #settings .settings-beta-card .settings-arrow,
-html body .settings-beta-card .settings-arrow {
-  color: rgba(148, 163, 184, 0.72) !important;
-  font-size: 26px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-}
-
-html body:not(.dark):not(.dark-mode) #settings .settings-beta-card,
-html body:not(.dark):not(.dark-mode) .settings-beta-card {
-  background: #ffffff !important;
-  color: #111827 !important;
-  border-color: var(--af-border-light) !important;
-  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02) !important;
-}
-
-html body:not(.dark):not(.dark-mode) #settings .settings-beta-card span:first-child,
-html body:not(.dark):not(.dark-mode) .settings-beta-card span:first-child {
-  color: #111827 !important;
-}
-
-/* =========================================================
-   4) SETTINGS LISTS
-========================================================= */
-
-html body #settings .settings-list,
-html body #settings .settings-support-list,
-html body .settings-list,
-html body .settings-support-list {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 14px !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .settings-support-list,
-html body .settings-support-list {
-  margin-top: 14px !important;
-}
-
-/* =========================================================
-   5) SETTINGS ROWS - ALL BUTTONS SAME STYLE
-========================================================= */
-
-html body #settings .settings-row,
-html body #settings .settings-support-row,
-html body #settings .af-lang-trigger-row,
-html body .settings-row,
-html body .settings-support-row,
-html body .af-lang-trigger-row {
-  width: 100% !important;
-  min-height: var(--af-row-height) !important;
-  height: var(--af-row-height) !important;
-  margin: 0 !important;
-  padding: 0 14px !important;
-  border-radius: var(--af-row-radius) !important;
+  border-radius: 14px !important;
   border: 1px solid var(--af-border-light) !important;
   background: var(--af-card-light) !important;
   color: var(--af-text-light) !important;
+  text-decoration: none !important;
   box-shadow: none !important;
 
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   gap: 12px !important;
-
-  font-family: inherit !important;
-  text-align: left !important;
-  text-decoration: none !important;
-  cursor: pointer !important;
+  overflow: hidden !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
-
-  -webkit-tap-highlight-color: transparent !important;
-  touch-action: manipulation !important;
-
-  transition:
-    transform 160ms ease,
-    background 160ms ease,
-    border-color 160ms ease !important;
 }
 
-html body.dark #settings .settings-row,
-html body.dark #settings .settings-support-row,
-html body.dark #settings .af-lang-trigger-row,
-html body.dark .settings-row,
-html body.dark .settings-support-row,
-html body.dark .af-lang-trigger-row,
-html body.dark-mode #settings .settings-row,
-html body.dark-mode #settings .settings-support-row,
-html body.dark-mode #settings .af-lang-trigger-row,
-html body.dark-mode .settings-row,
-html body.dark-mode .settings-support-row,
-html body.dark-mode .af-lang-trigger-row,
-html .dark-mode #settings .settings-row,
-html .dark-mode #settings .settings-support-row,
-html .dark-mode #settings .af-lang-trigger-row,
-html .dark-mode .settings-row,
-html .dark-mode .settings-support-row,
-html .dark-mode .af-lang-trigger-row,
-html [data-theme="dark"] #settings .settings-row,
-html [data-theme="dark"] #settings .settings-support-row,
-html [data-theme="dark"] #settings .af-lang-trigger-row,
-html [data-theme="dark"] .settings-row,
-html [data-theme="dark"] .settings-support-row,
-html [data-theme="dark"] .af-lang-trigger-row {
-  background: var(--af-card-dark) !important;
-  color: var(--af-text-dark) !important;
-  border-color: var(--af-border-dark) !important;
+html body.dark #settings .settings-beta-card,
+html body.dark-mode #settings .settings-beta-card,
+html [data-theme="dark"] #settings .settings-beta-card {
+  background: rgba(15, 23, 42, 0.72) !important;
+  color: #ffffff !important;
+  border-color: rgba(148, 163, 184, 0.28) !important;
 }
 
-html body #settings .settings-row:active,
-html body #settings .settings-support-row:active,
-html body #settings .af-lang-trigger-row:active,
-html body .settings-row:active,
-html body .settings-support-row:active,
-html body .af-lang-trigger-row:active {
-  transform: scale(0.985) !important;
-}
-
-/* =========================================================
-   6) ROW LEFT + ICONS + TEXT
-========================================================= */
-
-html body #settings .settings-row-left,
-html body #settings .settings-support-left,
-html body #settings .af-lang-left,
-html body .settings-row-left,
-html body .settings-support-left,
-html body .af-lang-left {
+html body #settings .settings-beta-card span:first-child {
   min-width: 0 !important;
-  flex: 1 1 auto !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  overflow: hidden !important;
-}
-
-html body #settings .settings-row-icon,
-html body #settings .settings-support-icon,
-html body #settings .af-lang-icon,
-html body .settings-row-icon,
-html body .settings-support-icon,
-html body .af-lang-icon {
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px !important;
-  min-height: 38px !important;
-  max-width: 38px !important;
-  max-height: 38px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  border-radius: 10px !important;
-  border: 1px solid var(--af-border-light) !important;
-  background: var(--af-icon-box-light) !important;
-  color: var(--af-text-light) !important;
-
   font-size: 15px !important;
-  line-height: 1 !important;
-  font-style: normal !important;
-  box-shadow: none !important;
-  overflow: hidden !important;
-}
-
-html body.dark #settings .settings-row-icon,
-html body.dark #settings .settings-support-icon,
-html body.dark #settings .af-lang-icon,
-html body.dark .settings-row-icon,
-html body.dark .settings-support-icon,
-html body.dark .af-lang-icon,
-html body.dark-mode #settings .settings-row-icon,
-html body.dark-mode #settings .settings-support-icon,
-html body.dark-mode #settings .af-lang-icon,
-html body.dark-mode .settings-row-icon,
-html body.dark-mode .settings-support-icon,
-html body.dark-mode .af-lang-icon,
-html .dark-mode #settings .settings-row-icon,
-html .dark-mode #settings .settings-support-icon,
-html .dark-mode #settings .af-lang-icon,
-html .dark-mode .settings-row-icon,
-html .dark-mode .settings-support-icon,
-html .dark-mode .af-lang-icon,
-html [data-theme="dark"] #settings .settings-row-icon,
-html [data-theme="dark"] #settings .settings-support-icon,
-html [data-theme="dark"] #settings .af-lang-icon,
-html [data-theme="dark"] .settings-row-icon,
-html [data-theme="dark"] .settings-support-icon,
-html [data-theme="dark"] .af-lang-icon {
-  background: var(--af-icon-box-dark) !important;
-  color: var(--af-text-dark) !important;
-  border-color: var(--af-border-dark) !important;
-}
-
-html body #settings .settings-row-left > span:not(.settings-row-icon),
-html body #settings .settings-support-left > span:not(.settings-support-icon),
-html body #settings .af-lang-title,
-html body .settings-row-left > span:not(.settings-row-icon),
-html body .settings-support-left > span:not(.settings-support-icon),
-html body .af-lang-title {
-  min-width: 0 !important;
-  max-width: 100% !important;
-  color: inherit !important;
-  font-size: 14.5px !important;
-  font-weight: 650 !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.01em !important;
+  font-weight: 950 !important;
+  line-height: 1.1 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
-html body #settings .settings-arrow,
-html body .settings-arrow {
+html body #settings .settings-arrow {
   flex: 0 0 auto !important;
   color: currentColor !important;
-  opacity: 0.72 !important;
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  line-height: 1 !important;
-  margin-left: 8px !important;
-}
-
-/* =========================================================
-   7) BADGES
-========================================================= */
-
-html body #settings .settings-new-badge,
-html body .settings-new-badge,
-html body #settings .af-lang-current-pill,
-html body .af-lang-current-pill {
-  flex: 0 0 auto !important;
-  max-width: 86px !important;
-  min-width: 50px !important;
-  height: 28px !important;
-  padding: 0 10px !important;
-  border-radius: 9px !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  background: #fef3c7 !important;
-  color: #92400e !important;
-  border: 0 !important;
-
-  font-size: 12px !important;
-  font-weight: 850 !important;
-  line-height: 1 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body #settings .af-lang-current-pill,
-html body .af-lang-current-pill {
-  background: rgba(59, 130, 246, 0.12) !important;
-  color: #2563eb !important;
-  border: 1px solid rgba(59, 130, 246, 0.18) !important;
-}
-
-html body.dark #settings .af-lang-current-pill,
-html body.dark .af-lang-current-pill,
-html body.dark-mode #settings .af-lang-current-pill,
-html body.dark-mode .af-lang-current-pill,
-html .dark-mode #settings .af-lang-current-pill,
-html .dark-mode .af-lang-current-pill,
-html [data-theme="dark"] #settings .af-lang-current-pill,
-html [data-theme="dark"] .af-lang-current-pill {
-  background: rgba(59, 130, 246, 0.18) !important;
-  color: #bfdbfe !important;
-  border-color: rgba(96, 165, 250, 0.26) !important;
-}
-
-/* =========================================================
-   8) DARK MODE SWITCH
-========================================================= */
-
-html body #settings .settings-switch,
-html body .settings-switch {
-  position: relative !important;
-  width: 44px !important;
-  height: 28px !important;
-  min-width: 44px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  cursor: pointer !important;
-}
-
-html body #settings .settings-switch input,
-html body .settings-switch input {
-  position: absolute !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-  pointer-events: none !important;
-}
-
-html body #settings .settings-slider,
-html body .settings-slider {
-  position: absolute !important;
-  inset: 0 !important;
-  border-radius: 999px !important;
-  background: #f3f4f6 !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  transition: background 180ms ease, border-color 180ms ease !important;
-}
-
-html body #settings .settings-slider::before,
-html body .settings-slider::before {
-  content: "" !important;
-  position: absolute !important;
-  width: 20px !important;
-  height: 20px !important;
-  left: 4px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  border-radius: 999px !important;
-  background: #050505 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
-  transition: transform 180ms ease, background 180ms ease !important;
-}
-
-html body #settings .settings-switch input:checked + .settings-slider,
-html body .settings-switch input:checked + .settings-slider {
-  background: #27272a !important;
-  border-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-html body #settings .settings-switch input:checked + .settings-slider::before,
-html body .settings-switch input:checked + .settings-slider::before {
-  transform: translate(16px, -50%) !important;
-  background: #ffffff !important;
-}
-
-/* =========================================================
-   9) LANGUAGE ROW CLEANUP
-========================================================= */
-
-html body #settings .af-lang-shell,
-html body .af-lang-shell {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .af-lang-shell .af-lang-shell,
-html body .af-lang-shell .af-lang-shell {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-html body #settings .af-lang-trigger-row,
-html body .af-lang-trigger-row {
-  margin: 0 !important;
-}
-
-html body #settings .af-lang-copy,
-html body .af-lang-copy {
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-html body #settings .af-lang-subtitle,
-html body .af-lang-subtitle {
-  display: none !important;
-}
-
-/* =========================================================
-   10) SUPPORT DIVIDER + LOGOUT
-========================================================= */
-
-html body #settings .settings-support-divider,
-html body .settings-support-divider {
-  display: none !important;
-}
-
-html body #settings .settings-logout-row,
-html body .settings-logout-row {
-  color: #dc2626 !important;
-}
-
-html body.dark #settings .settings-logout-row,
-html body.dark .settings-logout-row,
-html body.dark-mode #settings .settings-logout-row,
-html body.dark-mode .settings-logout-row,
-html .dark-mode #settings .settings-logout-row,
-html .dark-mode .settings-logout-row,
-html [data-theme="dark"] #settings .settings-logout-row,
-html [data-theme="dark"] .settings-logout-row {
-  color: #fb7185 !important;
-}
-
-html body #settings .settings-logout-icon,
-html body .settings-logout-icon {
-  color: inherit !important;
-}
-
-/* =========================================================
-   11) APP VERSION
-========================================================= */
-
-html body #settings .settings-app-version-box,
-html body .settings-app-version-box {
-  width: 100% !important;
-  max-width: var(--af-settings-max-width) !important;
-  margin: 20px auto 0 !important;
-  padding: 0 16px !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  color: var(--af-muted-light) !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 3px !important;
-
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .settings-app-version-box strong,
-html body .settings-app-version-box strong {
-  color: inherit !important;
-  font-size: 12.5px !important;
-  font-weight: 850 !important;
-  line-height: 1.15 !important;
-}
-
-html body #settings .settings-app-version-box span,
-html body .settings-app-version-box span {
-  color: inherit !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 1.15 !important;
-}
-
-html body.dark #settings .settings-app-version-box,
-html body.dark .settings-app-version-box,
-html body.dark-mode #settings .settings-app-version-box,
-html body.dark-mode .settings-app-version-box,
-html .dark-mode #settings .settings-app-version-box,
-html .dark-mode .settings-app-version-box,
-html [data-theme="dark"] #settings .settings-app-version-box,
-html [data-theme="dark"] .settings-app-version-box {
-  color: #9ca3af !important;
-}
-
-/* =========================================================
-   12) LANGUAGE MODAL - MOBILE PREMIUM
-========================================================= */
-
-html body #afTranslationOverlay.af-lang-overlay,
-html body .af-lang-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 9999999 !important;
-  display: none !important;
-  align-items: flex-end !important;
-  justify-content: center !important;
-  padding: 14px !important;
-  background: rgba(0, 0, 0, 0.58) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  box-sizing: border-box !important;
-}
-
-html body #afTranslationOverlay.af-lang-overlay.active,
-html body .af-lang-overlay.active {
-  display: flex !important;
-}
-
-html body .af-lang-modal {
-  width: 100% !important;
-  max-width: var(--af-settings-max-width) !important;
-  max-height: 82dvh !important;
-  overflow: auto !important;
-  padding: 16px !important;
-  border-radius: 24px !important;
-  background: #ffffff !important;
-  color: #111827 !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28) !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark .af-lang-modal,
-html body.dark-mode .af-lang-modal,
-html .dark-mode .af-lang-modal,
-html [data-theme="dark"] .af-lang-modal {
-  background: #101010 !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-}
-
-html body .af-lang-modal-head {
-  display: flex !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-  gap: 14px !important;
-  margin-bottom: 14px !important;
-}
-
-html body .af-lang-kicker {
-  margin: 0 0 4px !important;
-  color: #2563eb !important;
-  font-size: 11px !important;
-  font-weight: 950 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-}
-
-html body .af-lang-heading {
-  margin: 0 !important;
-  color: inherit !important;
-  font-size: 22px !important;
-  font-weight: 950 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.04em !important;
-}
-
-html body .af-lang-close {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  border: 0 !important;
-  border-radius: 14px !important;
-  background: rgba(148, 163, 184, 0.14) !important;
-  color: inherit !important;
-  font-size: 26px !important;
-  line-height: 1 !important;
-  cursor: pointer !important;
-}
-
-html body .af-lang-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 10px !important;
-}
-
-html body .af-lang-option {
-  min-width: 0 !important;
-  min-height: 70px !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  border-radius: 16px !important;
-  padding: 10px !important;
-  background: #ffffff !important;
-  color: #111827 !important;
-  cursor: pointer !important;
-
-  display: grid !important;
-  grid-template-columns: 38px 1fr !important;
-  grid-template-areas:
-    "icon name"
-    "icon meta" !important;
-  align-items: center !important;
-  gap: 2px 9px !important;
-  text-align: left !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark .af-lang-option,
-html body.dark-mode .af-lang-option,
-html .dark-mode .af-lang-option,
-html [data-theme="dark"] .af-lang-option {
-  background: #171717 !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-}
-
-html body .af-lang-option.active {
-  border-color: rgba(37, 99, 235, 0.55) !important;
-  background: rgba(37, 99, 235, 0.10) !important;
-}
-
-html body .af-lang-option-icon {
-  grid-area: icon !important;
-  width: 38px !important;
-  height: 38px !important;
-  display: grid !important;
-  place-items: center !important;
-  border-radius: 13px !important;
-  background: rgba(59, 130, 246, 0.10) !important;
+  opacity: 0.82 !important;
   font-size: 18px !important;
-}
-
-html body .af-lang-option-name {
-  grid-area: name !important;
-  min-width: 0 !important;
-  font-size: 14px !important;
   font-weight: 900 !important;
-  line-height: 1.1 !important;
-  color: inherit !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body .af-lang-option-meta {
-  grid-area: meta !important;
-  min-width: 0 !important;
-  color: #6b7280 !important;
-  font-size: 11px !important;
-  font-weight: 750 !important;
-  line-height: 1.1 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body.dark .af-lang-option-meta,
-html body.dark-mode .af-lang-option-meta,
-html .dark-mode .af-lang-option-meta,
-html [data-theme="dark"] .af-lang-option-meta {
-  color: #9ca3af !important;
-}
-
-html body .af-lang-status {
-  margin: 12px 2px 0 !important;
-  min-height: 18px !important;
-  color: #6b7280 !important;
-  font-size: 12px !important;
-  font-weight: 650 !important;
-  line-height: 1.4 !important;
+  line-height: 1 !important;
 }
 
 /* =========================================================
-   13) BOTTOM NAV FORCE OVERRIDE - SAME MOBILE STYLE ON LAPTOP
+   SETTINGS LIST - NO DIVIDER, SAME ROWS
 ========================================================= */
 
-html body {
-  padding-bottom: calc(var(--af-nav-height) + var(--af-nav-bottom) + 18px) !important;
-}
-
-html body .bottom-nav.glass,
-html body .bottom-nav {
-  position: fixed !important;
-  left: var(--af-nav-x) !important;
-  right: var(--af-nav-x) !important;
-  bottom: var(--af-nav-bottom) !important;
-  top: auto !important;
-  z-index: 999999 !important;
-
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: var(--af-settings-max-width) !important;
-  height: var(--af-nav-height) !important;
-  min-height: var(--af-nav-height) !important;
-  max-height: var(--af-nav-height) !important;
-
-  margin: 0 auto !important;
-  padding: 8px !important;
-  border-radius: var(--af-nav-radius) !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  align-items: center !important;
-  justify-items: stretch !important;
-  gap: 0 !important;
-
-  background: rgba(255, 255, 255, 0.94) !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
-
-  backdrop-filter: blur(22px) saturate(165%) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(165%) !important;
-
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark .bottom-nav.glass,
-html body.dark .bottom-nav,
-html body.dark-mode .bottom-nav.glass,
-html body.dark-mode .bottom-nav,
-html .dark-mode .bottom-nav.glass,
-html .dark-mode .bottom-nav,
-html [data-theme="dark"] .bottom-nav.glass,
-html [data-theme="dark"] .bottom-nav {
-  background: rgba(10, 10, 12, 0.94) !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
-}
-
-html body .bottom-nav .nav-btn {
+html body #settings .settings-list {
   width: 100% !important;
-  height: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  max-height: none !important;
-
-  margin: 0 !important;
-  padding: 8px 2px !important;
-  border: 0 !important;
-  outline: 0 !important;
-  border-radius: 20px !important;
-  background: transparent !important;
-  box-shadow: none !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 7px !important;
-
-  color: rgba(15, 23, 42, 0.66) !important;
-  font-family: inherit !important;
-  font-size: 10.5px !important;
-  font-weight: 750 !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-
-  cursor: pointer !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-  -webkit-tap-highlight-color: transparent !important;
-  touch-action: manipulation !important;
-}
-
-html body.dark .bottom-nav .nav-btn,
-html body.dark-mode .bottom-nav .nav-btn,
-html .dark-mode .bottom-nav .nav-btn,
-html [data-theme="dark"] .bottom-nav .nav-btn {
-  color: rgba(255, 255, 255, 0.64) !important;
-}
-
-html body .bottom-nav .nav-btn.active {
-  background: rgba(255, 255, 255, 0.78) !important;
-  color: rgba(15, 23, 42, 0.94) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(15, 23, 42, 0.045),
-    0 10px 24px rgba(15, 23, 42, 0.06) !important;
-}
-
-html body.dark .bottom-nav .nav-btn.active,
-html body.dark-mode .bottom-nav .nav-btn.active,
-html .dark-mode .bottom-nav .nav-btn.active,
-html [data-theme="dark"] .bottom-nav .nav-btn.active {
-  background: rgba(255, 255, 255, 0.055) !important;
-  color: rgba(255, 255, 255, 0.96) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 12px 28px rgba(0, 0, 0, 0.24) !important;
-}
-
-html body .bottom-nav .nav-btn b,
-html body .bottom-nav .nav-btn .nav-icon-wrap {
-  width: 23px !important;
-  height: 23px !important;
-  min-width: 23px !important;
-  max-width: 23px !important;
-  min-height: 23px !important;
-  max-height: 23px !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  font-size: 14px !important;
-  line-height: 1 !important;
-  font-weight: 800 !important;
-  font-style: normal !important;
-
-  opacity: 0.84 !important;
-  filter: saturate(0.78) !important;
-}
-
-html body .bottom-nav .nav-btn.active b,
-html body .bottom-nav .nav-btn.active .nav-icon-wrap {
-  opacity: 1 !important;
-  filter: saturate(1) !important;
-  transform: translateY(-1px) scale(1.04) !important;
-}
-
-html body .bottom-nav .nav-btn span {
-  display: block !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: inherit !important;
-  font: inherit !important;
-  line-height: 1 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-/* =========================================================
-   14) RESPONSIVE LOCKS
-========================================================= */
-
-@media (max-width: 520px) {
-  :root {
-    --af-settings-page-x: 16px !important;
-    --af-nav-height: 80px !important;
-    --af-nav-radius: 24px !important;
-    --af-nav-x: 8px !important;
-  }
-
-  html body #settings .settings-page,
-  html body .settings-page {
-    max-width: none !important;
-  }
-
-  html body .bottom-nav.glass,
-  html body .bottom-nav {
-    max-width: none !important;
-    padding: 7px !important;
-  }
-}
-
-@media (max-width: 380px) {
-  :root {
-    --af-settings-page-x: 12px !important;
-    --af-row-height: 54px !important;
-    --af-nav-height: 76px !important;
-    --af-nav-x: 6px !important;
-  }
-
-  html body #settings .settings-row,
-  html body #settings .settings-support-row,
-  html body #settings .af-lang-trigger-row,
-  html body .settings-row,
-  html body .settings-support-row,
-  html body .af-lang-trigger-row {
-    padding-inline: 12px !important;
-  }
-
-  html body #settings .settings-row-icon,
-  html body #settings .settings-support-icon,
-  html body #settings .af-lang-icon,
-  html body .settings-row-icon,
-  html body .settings-support-icon,
-  html body .af-lang-icon {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    min-height: 36px !important;
-  }
-
-  html body #settings .settings-row-left > span:not(.settings-row-icon),
-  html body #settings .settings-support-left > span:not(.settings-support-icon),
-  html body #settings .af-lang-title,
-  html body .settings-row-left > span:not(.settings-row-icon),
-  html body .settings-support-left > span:not(.settings-support-icon),
-  html body .af-lang-title {
-    font-size: 14px !important;
-  }
-
-  html body .af-lang-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* =========================================================
-   15) BOX-SIZING HARD LOCK
-========================================================= */
-
-html body #settings *,
-html body #settings *::before,
-html body #settings *::after,
-html body .bottom-nav *,
-html body .bottom-nav *::before,
-html body .bottom-nav *::after {
-  box-sizing: border-box !important;
-}
-
-    /* =========================================================
-   SETTINGS ROW FINAL NORMALIZER
-   Fix: Language, Notifications, About Us, Contact Us, Logout
-   same style as other settings rows.
-   Paste at VERY END of CSS.
-========================================================= */
-
-/* Force both lists to behave identically */
-html body #settings .settings-list,
-html body #settings .settings-support-list,
-html body .settings-list,
-html body .settings-support-list {
-  width: 100% !important;
-  max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+
   display: flex !important;
   flex-direction: column !important;
   gap: 14px !important;
+
   overflow: visible !important;
   box-sizing: border-box !important;
 }
 
-/* Support list should continue after settings list with same spacing */
-html body #settings .settings-support-list,
-html body .settings-support-list {
-  margin-top: 14px !important;
-}
-
-/* Kill divider because rows are separate cards now */
-html body #settings .settings-support-divider,
-html body .settings-support-divider {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-
-/* Universal row/card design for EVERY settings item */
 html body #settings .settings-row,
 html body #settings .settings-row-btn,
 html body #settings .settings-row-static,
-html body #settings .settings-support-row,
-html body #settings .settings-logout-row,
 html body #settings .af-lang-trigger-row,
-html body .settings-row,
-html body .settings-row-btn,
-html body .settings-row-static,
-html body .settings-support-row,
-html body .settings-logout-row,
-html body .af-lang-trigger-row {
+html body #settings .settings-logout-row {
   width: 100% !important;
   max-width: 100% !important;
   min-width: 0 !important;
@@ -22797,88 +21787,50 @@ html body .af-lang-trigger-row {
   margin: 0 !important;
   padding: 0 14px !important;
 
+  border: 1px solid var(--af-border-light) !important;
   border-radius: 14px !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  background: #ffffff !important;
+  background: var(--af-row-light) !important;
+  color: var(--af-text-light) !important;
   box-shadow: none !important;
 
-  color: #050505 !important;
   font-family: inherit !important;
-  text-decoration: none !important;
   text-align: left !important;
+  text-decoration: none !important;
 
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   gap: 12px !important;
 
-  cursor: pointer !important;
   overflow: hidden !important;
+  cursor: pointer !important;
   box-sizing: border-box !important;
   -webkit-tap-highlight-color: transparent !important;
 }
 
-/* Dark mode universal row/card */
 html body.dark #settings .settings-row,
 html body.dark #settings .settings-row-btn,
 html body.dark #settings .settings-row-static,
-html body.dark #settings .settings-support-row,
-html body.dark #settings .settings-logout-row,
 html body.dark #settings .af-lang-trigger-row,
-html body.dark .settings-row,
-html body.dark .settings-row-btn,
-html body.dark .settings-row-static,
-html body.dark .settings-support-row,
-html body.dark .settings-logout-row,
-html body.dark .af-lang-trigger-row,
+html body.dark #settings .settings-logout-row,
 html body.dark-mode #settings .settings-row,
 html body.dark-mode #settings .settings-row-btn,
 html body.dark-mode #settings .settings-row-static,
-html body.dark-mode #settings .settings-support-row,
-html body.dark-mode #settings .settings-logout-row,
 html body.dark-mode #settings .af-lang-trigger-row,
-html body.dark-mode .settings-row,
-html body.dark-mode .settings-row-btn,
-html body.dark-mode .settings-row-static,
-html body.dark-mode .settings-support-row,
-html body.dark-mode .settings-logout-row,
-html body.dark-mode .af-lang-trigger-row,
-html .dark-mode #settings .settings-row,
-html .dark-mode #settings .settings-row-btn,
-html .dark-mode #settings .settings-row-static,
-html .dark-mode #settings .settings-support-row,
-html .dark-mode #settings .settings-logout-row,
-html .dark-mode #settings .af-lang-trigger-row,
-html .dark-mode .settings-row,
-html .dark-mode .settings-row-btn,
-html .dark-mode .settings-row-static,
-html .dark-mode .settings-support-row,
-html .dark-mode .settings-logout-row,
-html .dark-mode .af-lang-trigger-row,
+html body.dark-mode #settings .settings-logout-row,
 html [data-theme="dark"] #settings .settings-row,
 html [data-theme="dark"] #settings .settings-row-btn,
 html [data-theme="dark"] #settings .settings-row-static,
-html [data-theme="dark"] #settings .settings-support-row,
-html [data-theme="dark"] #settings .settings-logout-row,
 html [data-theme="dark"] #settings .af-lang-trigger-row,
-html [data-theme="dark"] .settings-row,
-html [data-theme="dark"] .settings-row-btn,
-html [data-theme="dark"] .settings-row-static,
-html [data-theme="dark"] .settings-support-row,
-html [data-theme="dark"] .settings-logout-row,
-html [data-theme="dark"] .af-lang-trigger-row {
-  background: #101010 !important;
-  border-color: rgba(255, 255, 255, 0.09) !important;
-  color: #ffffff !important;
+html [data-theme="dark"] #settings .settings-logout-row {
+  background: var(--af-row-dark) !important;
+  color: var(--af-text-dark) !important;
+  border-color: var(--af-border-dark) !important;
 }
 
-/* Universal left group */
+/* Row left */
 html body #settings .settings-row-left,
-html body #settings .settings-support-left,
-html body #settings .af-lang-left,
-html body .settings-row-left,
-html body .settings-support-left,
-html body .af-lang-left {
+html body #settings .af-lang-left {
   min-width: 0 !important;
   flex: 1 1 auto !important;
   height: 100% !important;
@@ -22892,13 +21844,9 @@ html body .af-lang-left {
   box-sizing: border-box !important;
 }
 
-/* Universal icons */
+/* Icons */
 html body #settings .settings-row-icon,
-html body #settings .settings-support-icon,
-html body #settings .af-lang-icon,
-html body .settings-row-icon,
-html body .settings-support-icon,
-html body .af-lang-icon {
+html body #settings .af-lang-icon {
   width: 38px !important;
   height: 38px !important;
   min-width: 38px !important;
@@ -22910,60 +21858,36 @@ html body .af-lang-icon {
   padding: 0 !important;
 
   border-radius: 10px !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border: 1px solid var(--af-border-light) !important;
   background: #fafafa !important;
-
   color: #111827 !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  line-height: 1 !important;
-  font-style: normal !important;
 
   display: grid !important;
   place-items: center !important;
 
-  box-shadow: none !important;
+  font-size: 15px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  font-style: normal !important;
+
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
-/* Dark universal icons */
 html body.dark #settings .settings-row-icon,
-html body.dark #settings .settings-support-icon,
 html body.dark #settings .af-lang-icon,
-html body.dark .settings-row-icon,
-html body.dark .settings-support-icon,
-html body.dark .af-lang-icon,
 html body.dark-mode #settings .settings-row-icon,
-html body.dark-mode #settings .settings-support-icon,
 html body.dark-mode #settings .af-lang-icon,
-html body.dark-mode .settings-row-icon,
-html body.dark-mode .settings-support-icon,
-html body.dark-mode .af-lang-icon,
-html .dark-mode #settings .settings-row-icon,
-html .dark-mode #settings .settings-support-icon,
-html .dark-mode #settings .af-lang-icon,
-html .dark-mode .settings-row-icon,
-html .dark-mode .settings-support-icon,
-html .dark-mode .af-lang-icon,
 html [data-theme="dark"] #settings .settings-row-icon,
-html [data-theme="dark"] #settings .settings-support-icon,
-html [data-theme="dark"] #settings .af-lang-icon,
-html [data-theme="dark"] .settings-row-icon,
-html [data-theme="dark"] .settings-support-icon,
-html [data-theme="dark"] .af-lang-icon {
+html [data-theme="dark"] #settings .af-lang-icon {
   background: #171717 !important;
-  border-color: rgba(255, 255, 255, 0.09) !important;
+  border-color: var(--af-border-dark) !important;
   color: #ffffff !important;
 }
 
-/* Universal row text */
+/* Row text */
 html body #settings .settings-row-left > span:not(.settings-row-icon),
-html body #settings .settings-support-left > span:not(.settings-support-icon),
-html body #settings .af-lang-title,
-html body .settings-row-left > span:not(.settings-row-icon),
-html body .settings-support-left > span:not(.settings-support-icon),
-html body .af-lang-title {
+html body #settings .af-lang-title {
   min-width: 0 !important;
   max-width: 100% !important;
 
@@ -22972,43 +21896,22 @@ html body .af-lang-title {
 
   color: inherit !important;
   font-size: 14.5px !important;
-  font-weight: 800 !important;
+  font-weight: 850 !important;
   line-height: 1.1 !important;
-  letter-spacing: -0.01em !important;
+  letter-spacing: -0.012em !important;
 
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
-/* Universal right arrow */
-html body #settings .settings-arrow,
-html body .settings-arrow {
-  flex: 0 0 auto !important;
-  width: auto !important;
-  min-width: 10px !important;
-
-  margin: 0 0 0 8px !important;
-  padding: 0 !important;
-
-  color: inherit !important;
-  opacity: 0.85 !important;
-  font-size: 18px !important;
-  font-weight: 800 !important;
-  line-height: 1 !important;
-  text-align: center !important;
-}
-
-/* Universal badges: Track / New / English */
+/* Badges */
 html body #settings .settings-new-badge,
-html body #settings .af-lang-current-pill,
-html body .settings-new-badge,
-html body .af-lang-current-pill {
+html body #settings .af-lang-current-pill {
   flex: 0 0 auto !important;
 
-  width: auto !important;
   min-width: 48px !important;
-  max-width: 86px !important;
+  max-width: 88px !important;
   height: 28px !important;
 
   margin: 0 !important;
@@ -23018,7 +21921,6 @@ html body .af-lang-current-pill {
   border: 0 !important;
   background: #fef3c7 !important;
   color: #92400e !important;
-  box-shadow: none !important;
 
   display: inline-flex !important;
   align-items: center !important;
@@ -23027,7 +21929,6 @@ html body .af-lang-current-pill {
   font-size: 12px !important;
   font-weight: 900 !important;
   line-height: 1 !important;
-  letter-spacing: 0 !important;
 
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -23035,113 +21936,304 @@ html body .af-lang-current-pill {
   box-sizing: border-box !important;
 }
 
-/* Language pill blue */
-html body #settings .af-lang-current-pill,
-html body .af-lang-current-pill {
+html body #settings .af-lang-current-pill {
   background: rgba(37, 99, 235, 0.12) !important;
   color: #2563eb !important;
   border: 1px solid rgba(37, 99, 235, 0.18) !important;
 }
 
-/* Dark badges */
 html body.dark #settings .settings-new-badge,
-html body.dark #settings .af-lang-current-pill,
-html body.dark .settings-new-badge,
-html body.dark .af-lang-current-pill,
 html body.dark-mode #settings .settings-new-badge,
-html body.dark-mode #settings .af-lang-current-pill,
-html body.dark-mode .settings-new-badge,
-html body.dark-mode .af-lang-current-pill,
-html .dark-mode #settings .settings-new-badge,
-html .dark-mode #settings .af-lang-current-pill,
-html .dark-mode .settings-new-badge,
-html .dark-mode .af-lang-current-pill,
-html [data-theme="dark"] #settings .settings-new-badge,
-html [data-theme="dark"] #settings .af-lang-current-pill,
-html [data-theme="dark"] .settings-new-badge,
-html [data-theme="dark"] .af-lang-current-pill {
+html [data-theme="dark"] #settings .settings-new-badge {
   background: rgba(251, 191, 36, 0.14) !important;
   color: #fde68a !important;
-  border-color: rgba(251, 191, 36, 0.18) !important;
 }
 
 html body.dark #settings .af-lang-current-pill,
-html body.dark .af-lang-current-pill,
 html body.dark-mode #settings .af-lang-current-pill,
-html body.dark-mode .af-lang-current-pill,
-html .dark-mode #settings .af-lang-current-pill,
-html .dark-mode .af-lang-current-pill,
-html [data-theme="dark"] #settings .af-lang-current-pill,
-html [data-theme="dark"] .af-lang-current-pill {
+html [data-theme="dark"] #settings .af-lang-current-pill {
   background: rgba(59, 130, 246, 0.18) !important;
   color: #bfdbfe !important;
   border-color: rgba(96, 165, 250, 0.26) !important;
 }
 
-/* Logout same card, only text/icon red */
-html body #settings .settings-logout-row,
-html body .settings-logout-row {
+/* Logout */
+html body #settings .settings-logout-row {
   color: #dc2626 !important;
 }
 
-html body #settings .settings-logout-row .settings-support-icon,
-html body .settings-logout-row .settings-support-icon {
+html body #settings .settings-logout-row .settings-row-icon {
   color: #dc2626 !important;
 }
 
 html body.dark #settings .settings-logout-row,
-html body.dark #settings .settings-logout-row .settings-support-icon,
-html body.dark .settings-logout-row,
-html body.dark .settings-logout-row .settings-support-icon,
+html body.dark #settings .settings-logout-row .settings-row-icon,
 html body.dark-mode #settings .settings-logout-row,
-html body.dark-mode #settings .settings-logout-row .settings-support-icon,
-html body.dark-mode .settings-logout-row,
-html body.dark-mode .settings-logout-row .settings-support-icon,
-html .dark-mode #settings .settings-logout-row,
-html .dark-mode #settings .settings-logout-row .settings-support-icon,
-html .dark-mode .settings-logout-row,
-html .dark-mode .settings-logout-row .settings-support-icon,
+html body.dark-mode #settings .settings-logout-row .settings-row-icon,
 html [data-theme="dark"] #settings .settings-logout-row,
-html [data-theme="dark"] #settings .settings-logout-row .settings-support-icon,
-html [data-theme="dark"] .settings-logout-row,
-html [data-theme="dark"] .settings-logout-row .settings-support-icon {
+html [data-theme="dark"] #settings .settings-logout-row .settings-row-icon {
   color: #fb7185 !important;
 }
 
-/* Remove duplicate wrapper visual issues */
-html body #settings .af-lang-shell,
-html body .af-lang-shell {
+/* =========================================================
+   SWITCH
+========================================================= */
+
+html body #settings .settings-switch {
+  position: relative !important;
+  width: 44px !important;
+  height: 28px !important;
+  min-width: 44px !important;
+  display: inline-flex !important;
+  cursor: pointer !important;
+}
+
+html body #settings .settings-switch input {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html body #settings .settings-slider {
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 999px !important;
+  background: #f3f4f6 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+
+html body #settings .settings-slider::before {
+  content: "" !important;
+  position: absolute !important;
+  width: 20px !important;
+  height: 20px !important;
+  left: 4px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  border-radius: 999px !important;
+  background: #050505 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  transition: transform 180ms ease, background 180ms ease !important;
+}
+
+html body #settings .settings-switch input:checked + .settings-slider {
+  background: #27272a !important;
+}
+
+html body #settings .settings-switch input:checked + .settings-slider::before {
+  transform: translate(16px, -50%) !important;
+  background: #ffffff !important;
+}
+
+/* =========================================================
+   APP VERSION
+========================================================= */
+
+html body #settings .settings-app-version-box {
   width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  display: block !important;
+  margin: 18px auto 0 !important;
+  padding: 0 16px !important;
   background: transparent !important;
   border: 0 !important;
   box-shadow: none !important;
+
+  color: var(--af-muted-light) !important;
+  text-align: center !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 3px !important;
+
   box-sizing: border-box !important;
 }
 
-html body #settings .af-lang-shell .af-lang-shell,
-html body .af-lang-shell .af-lang-shell {
-  margin: 0 !important;
-  padding: 0 !important;
+html body.dark #settings .settings-app-version-box,
+html body.dark-mode #settings .settings-app-version-box,
+html [data-theme="dark"] #settings .settings-app-version-box {
+  color: var(--af-muted-dark) !important;
 }
 
-/* Mobile tight */
+html body #settings .settings-app-version-box strong {
+  color: inherit !important;
+  font-size: 12.5px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+}
+
+html body #settings .settings-app-version-box span {
+  color: inherit !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.1 !important;
+}
+
+/* =========================================================
+   BOTTOM NAV
+========================================================= */
+
+html body {
+  padding-bottom: calc(var(--af-nav-height) + var(--af-nav-bottom) + 18px) !important;
+}
+
+html body.app-ready .bottom-nav,
+html body .bottom-nav {
+  position: fixed !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: var(--af-nav-bottom) !important;
+  top: auto !important;
+  z-index: 999999 !important;
+
+  width: auto !important;
+  max-width: var(--af-settings-width) !important;
+  height: var(--af-nav-height) !important;
+  min-height: var(--af-nav-height) !important;
+
+  margin: 0 auto !important;
+  padding: 7px !important;
+
+  border-radius: 24px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
+
+  backdrop-filter: blur(22px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(165%) !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  gap: 0 !important;
+
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+html body.dark .bottom-nav,
+html body.dark-mode .bottom-nav,
+html [data-theme="dark"] .bottom-nav {
+  background: rgba(10, 10, 12, 0.94) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+}
+
+html body .bottom-nav .nav-btn {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 8px 2px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  color: rgba(15, 23, 42, 0.66) !important;
+  font-family: inherit !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+
+  overflow: hidden !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+}
+
+html body.dark .bottom-nav .nav-btn,
+html body.dark-mode .bottom-nav .nav-btn,
+html [data-theme="dark"] .bottom-nav .nav-btn {
+  color: rgba(255, 255, 255, 0.64) !important;
+}
+
+html body .bottom-nav .nav-btn.active {
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(15, 23, 42, 0.96) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.045),
+    0 10px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+html body.dark .bottom-nav .nav-btn.active,
+html body.dark-mode .bottom-nav .nav-btn.active,
+html [data-theme="dark"] .bottom-nav .nav-btn.active {
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: rgba(255, 255, 255, 0.96) !important;
+}
+
+html body .bottom-nav .nav-btn b,
+html body .bottom-nav .nav-btn .nav-icon-wrap {
+  width: 23px !important;
+  height: 23px !important;
+  min-width: 23px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+
+  opacity: 0.84 !important;
+  filter: saturate(0.78) !important;
+}
+
+html body .bottom-nav .nav-btn span {
+  max-width: 100% !important;
+  color: inherit !important;
+  font: inherit !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 520px) {
+  :root {
+    --af-settings-x: 16px;
+  }
+
+  html body #settings .settings-page {
+    max-width: none !important;
+  }
+
+  html body.app-ready .bottom-nav,
+  html body .bottom-nav {
+    left: 8px !important;
+    right: 8px !important;
+    max-width: none !important;
+  }
+}
+
 @media (max-width: 380px) {
+  :root {
+    --af-settings-x: 12px;
+    --af-nav-height: 76px;
+  }
+
   html body #settings .settings-row,
   html body #settings .settings-row-btn,
   html body #settings .settings-row-static,
-  html body #settings .settings-support-row,
-  html body #settings .settings-logout-row,
   html body #settings .af-lang-trigger-row,
-  html body .settings-row,
-  html body .settings-row-btn,
-  html body .settings-row-static,
-  html body .settings-support-row,
-  html body .settings-logout-row,
-  html body .af-lang-trigger-row {
+  html body #settings .settings-logout-row {
     height: 54px !important;
     min-height: 54px !important;
     max-height: 54px !important;
@@ -23149,11 +22241,7 @@ html body .af-lang-shell .af-lang-shell {
   }
 
   html body #settings .settings-row-icon,
-  html body #settings .settings-support-icon,
-  html body #settings .af-lang-icon,
-  html body .settings-row-icon,
-  html body .settings-support-icon,
-  html body .af-lang-icon {
+  html body #settings .af-lang-icon {
     width: 36px !important;
     height: 36px !important;
     min-width: 36px !important;
@@ -23163,13 +22251,23 @@ html body .af-lang-shell .af-lang-shell {
   }
 
   html body #settings .settings-row-left > span:not(.settings-row-icon),
-  html body #settings .settings-support-left > span:not(.settings-support-icon),
-  html body #settings .af-lang-title,
-  html body .settings-row-left > span:not(.settings-row-icon),
-  html body .settings-support-left > span:not(.settings-support-icon),
-  html body .af-lang-title {
+  html body #settings .af-lang-title {
     font-size: 14px !important;
   }
+}
+
+/* =========================================================
+   HARD BOX SIZING
+========================================================= */
+
+html body #settings *,
+html body #settings *::before,
+html body #settings *::after,
+html body .bottom-nav,
+html body .bottom-nav *,
+html body .bottom-nav *::before,
+html body .bottom-nav *::after {
+  box-sizing: border-box !important;
 }
 </style>
 </head>
@@ -38990,7 +38088,90 @@ async function loadRequestStatusAf(forceRefresh) {
     }
   });
 })();
-        
+      
+/* =========================================================
+   AF SPLASH -> APP READY NAV CONTROL
+   Paste at END of JS.
+========================================================= */
+
+(function () {
+  "use strict";
+
+  function markAFAppReady() {
+    try {
+      document.body.classList.add("app-ready");
+    } catch (error) {
+      console.error("Failed to mark app ready:", error);
+    }
+  }
+
+  function isSplashVisible() {
+    const splashSelectors = [
+      "#splashScreen",
+      "#splash",
+      ".splash-screen",
+      ".splashScreen",
+      ".app-splash",
+      ".loading-screen"
+    ];
+
+    for (const selector of splashSelectors) {
+      const element = document.querySelector(selector);
+      if (!element) continue;
+
+      const style = window.getComputedStyle(element);
+      const hiddenByClass =
+        element.classList.contains("hidden") ||
+        element.classList.contains("hide") ||
+        element.classList.contains("d-none");
+
+      const hiddenByStyle =
+        style.display === "none" ||
+        style.visibility === "hidden" ||
+        Number(style.opacity) === 0;
+
+      if (!hiddenByClass && !hiddenByStyle) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function waitForSplashToEnd() {
+    if (!isSplashVisible()) {
+      markAFAppReady();
+      return;
+    }
+
+    const observer = new MutationObserver(function () {
+      if (!isSplashVisible()) {
+        observer.disconnect();
+        markAFAppReady();
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "style"]
+    });
+
+    window.setTimeout(function () {
+      if (!document.body.classList.contains("app-ready")) {
+        markAFAppReady();
+      }
+    }, 4500);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", waitForSplashToEnd, { once: true });
+  } else {
+    waitForSplashToEnd();
+  }
+})();
+  
 </script>
 </body>
 </html>
