@@ -20948,6 +20948,364 @@ body.dark-mode .request-note-af {
   }
 }
 
+    /* =========================================================
+   AF LANGUAGE CHANGE SYSTEM - CSS
+   Paste at the END of your CSS
+========================================================= */
+
+/* -----------------------------
+   1) Hide Google Translate UI
+----------------------------- */
+
+.af-google-translate-hidden {
+  position: fixed !important;
+  left: -99999px !important;
+  top: -99999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+body > .skiptranslate {
+  display: none !important;
+}
+
+html.translated-ltr body,
+html.translated-rtl body {
+  top: 0 !important;
+}
+
+/* -----------------------------
+   2) Settings Language Row
+----------------------------- */
+
+.af-language-row {
+  position: relative;
+}
+
+.af-language-current {
+  min-width: 72px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  white-space: nowrap;
+}
+
+body.dark .af-language-current,
+.dark-mode .af-language-current,
+[data-theme="dark"] .af-language-current {
+  background: rgba(96, 165, 250, 0.14);
+  color: #93c5fd;
+  border-color: rgba(147, 197, 253, 0.22);
+}
+
+/* -----------------------------
+   3) Popup Overlay
+----------------------------- */
+
+.af-language-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.54);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.af-language-overlay.active {
+  display: flex;
+  animation: afLangFadeIn 0.22s ease both;
+}
+
+/* -----------------------------
+   4) Popup Modal
+----------------------------- */
+
+.af-language-modal {
+  width: min(520px, 100%);
+  max-height: min(82vh, 720px);
+  overflow: auto;
+  border-radius: 28px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  box-shadow: 0 30px 90px rgba(15, 23, 42, 0.32);
+  transform-origin: bottom center;
+  animation: afLangSlideUp 0.28s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+body.dark .af-language-modal,
+.dark-mode .af-language-modal,
+[data-theme="dark"] .af-language-modal {
+  background:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.96));
+  border-color: rgba(51, 65, 85, 0.95);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.48);
+}
+
+/* -----------------------------
+   5) Popup Header
+----------------------------- */
+
+.af-language-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.af-language-head p {
+  margin: 0 0 4px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.af-language-head h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+}
+
+body.dark .af-language-head h3,
+.dark-mode .af-language-head h3,
+[data-theme="dark"] .af-language-head h3 {
+  color: #f8fafc;
+}
+
+.af-language-close {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+.af-language-close:hover {
+  transform: rotate(90deg) scale(1.04);
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+body.dark .af-language-close,
+.dark-mode .af-language-close,
+[data-theme="dark"] .af-language-close {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+/* -----------------------------
+   6) Language Grid
+----------------------------- */
+
+.af-language-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.af-language-option {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  grid-template-areas:
+    "icon title"
+    "icon sub";
+  align-items: center;
+  gap: 2px 10px;
+  min-height: 74px;
+  padding: 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  background: rgba(255, 255, 255, 0.82);
+  color: #0f172a;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.af-language-option span {
+  grid-area: icon;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: rgba(37, 99, 235, 0.1);
+  font-size: 20px;
+}
+
+.af-language-option strong {
+  grid-area: title;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.af-language-option small {
+  grid-area: sub;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.af-language-option:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.48);
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.14);
+}
+
+.af-language-option.active {
+  border-color: rgba(37, 99, 235, 0.75);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.1));
+  box-shadow: 0 18px 44px rgba(37, 99, 235, 0.18);
+}
+
+body.dark .af-language-option,
+.dark-mode .af-language-option,
+[data-theme="dark"] .af-language-option {
+  background: rgba(15, 23, 42, 0.84);
+  border-color: rgba(51, 65, 85, 0.95);
+  color: #f8fafc;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+}
+
+body.dark .af-language-option small,
+.dark-mode .af-language-option small,
+[data-theme="dark"] .af-language-option small {
+  color: #94a3b8;
+}
+
+body.dark .af-language-option span,
+.dark-mode .af-language-option span,
+[data-theme="dark"] .af-language-option span {
+  background: rgba(96, 165, 250, 0.14);
+}
+
+body.dark .af-language-option.active,
+.dark-mode .af-language-option.active,
+[data-theme="dark"] .af-language-option.active {
+  border-color: rgba(147, 197, 253, 0.7);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.22), rgba(14, 165, 233, 0.12));
+}
+
+/* -----------------------------
+   7) Popup Note
+----------------------------- */
+
+.af-language-note {
+  margin: 14px 2px 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+body.dark .af-language-note,
+.dark-mode .af-language-note,
+[data-theme="dark"] .af-language-note {
+  color: #94a3b8;
+}
+
+/* -----------------------------
+   8) Animations
+----------------------------- */
+
+@keyframes afLangFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes afLangSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* -----------------------------
+   9) Mobile Responsive
+----------------------------- */
+
+@media (max-width: 420px) {
+  .af-language-overlay {
+    padding: 10px;
+  }
+
+  .af-language-modal {
+    border-radius: 24px;
+    padding: 14px;
+  }
+
+  .af-language-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .af-language-head h3 {
+    font-size: 21px;
+  }
+
+  .af-language-current {
+    min-width: 64px;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+}
 </style>
 </head>
 
@@ -22456,7 +22814,21 @@ body.dark-mode .request-note-af {
         </div>
         <span class="settings-arrow" aria-hidden="true">›</span>
       </button>
+      
+<button
+  type="button"
+  class="settings-support-row af-language-row"
+  onclick="openAFLanguagePopup()"
+  aria-label="Change Language"
+>
+  <div class="settings-support-left">
+    <span class="settings-support-icon" aria-hidden="true">🌐</span>
+    <span>Language</span>
+  </div>
 
+  <span id="afSelectedLanguageLabel" class="af-language-current">English</span>
+</button>
+      
       <button
         type="button"
         class="settings-row settings-row-btn"
@@ -22518,6 +22890,159 @@ body.dark-mode .request-note-af {
   <span>Made with ❤️ in India</span>
 </div>
 </section>
+    
+<!-- ==============================
+    LANGUAGE AF 
+================================ -->
+
+    <div id="google_translate_element" class="af-google-translate-hidden"></div>
+
+<div
+  id="afLanguageOverlay"
+  class="af-language-overlay"
+  aria-hidden="true"
+  onclick="closeAFLanguagePopup()"
+>
+  <div
+    class="af-language-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="afLanguageTitle"
+    onclick="event.stopPropagation()"
+  >
+    <div class="af-language-head">
+      <div>
+        <p>AcademeForge</p>
+        <h3 id="afLanguageTitle">Choose Language</h3>
+      </div>
+
+      <button
+        type="button"
+        class="af-language-close"
+        onclick="closeAFLanguagePopup()"
+        aria-label="Close language popup"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="af-language-grid">
+      <button
+        type="button"
+        class="af-language-option active"
+        data-lang="en"
+        onclick="changeAFLanguage('en', 'English')"
+      >
+        <span>🇬🇧</span>
+        <strong>English</strong>
+        <small>Default</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="hi"
+        onclick="changeAFLanguage('hi', 'Hindi')"
+      >
+        <span>🇮🇳</span>
+        <strong>हिन्दी</strong>
+        <small>Hindi</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="bho"
+        onclick="changeAFLanguage('bho', 'Bhojpuri')"
+      >
+        <span>🇮🇳</span>
+        <strong>भोजपुरी</strong>
+        <small>Bhojpuri</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="bn"
+        onclick="changeAFLanguage('bn', 'Bengali')"
+      >
+        <span>🇮🇳</span>
+        <strong>বাংলা</strong>
+        <small>Bengali</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="mr"
+        onclick="changeAFLanguage('mr', 'Marathi')"
+      >
+        <span>🇮🇳</span>
+        <strong>मराठी</strong>
+        <small>Marathi</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="te"
+        onclick="changeAFLanguage('te', 'Telugu')"
+      >
+        <span>🇮🇳</span>
+        <strong>తెలుగు</strong>
+        <small>Telugu</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="ta"
+        onclick="changeAFLanguage('ta', 'Tamil')"
+      >
+        <span>🇮🇳</span>
+        <strong>தமிழ்</strong>
+        <small>Tamil</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="gu"
+        onclick="changeAFLanguage('gu', 'Gujarati')"
+      >
+        <span>🇮🇳</span>
+        <strong>ગુજરાતી</strong>
+        <small>Gujarati</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="ur"
+        onclick="changeAFLanguage('ur', 'Urdu')"
+      >
+        <span>🇮🇳</span>
+        <strong>اردو</strong>
+        <small>Urdu</small>
+      </button>
+
+      <button
+        type="button"
+        class="af-language-option"
+        data-lang="kn"
+        onclick="changeAFLanguage('kn', 'Kannada')"
+      >
+        <span>🇮🇳</span>
+        <strong>ಕನ್ನಡ</strong>
+        <small>Kannada</small>
+      </button>
+    </div>
+
+    <p class="af-language-note">
+      Translation is powered by Google Translate. Some words may vary slightly.
+    </p>
+  </div>
+</div>
 <!-- ==============================
      REQUEST STATUS PAGE - AF
 ================================ -->
@@ -35961,6 +36486,248 @@ async function loadRequestStatusAf(forceRefresh) {
     );
   }
 }
+<!-- =========================================================
+     AF LANGUAGE CHANGE SYSTEM - GOOGLE TRANSLATE
+     Paste this at the VERY END of your code, after your main app JS.
+     Requirement: Your HTML must already contain:
+     1) <div id="google_translate_element" class="af-google-translate-hidden"></div>
+     2) Language popup HTML with buttons calling changeAFLanguage(...)
+========================================================= -->
+
+
+/* =========================================================
+   1) GOOGLE TRANSLATE INITIALIZER
+========================================================= */
+
+function googleTranslateElementInit() {
+  try {
+    if (!window.google || !google.translate || !google.translate.TranslateElement) {
+      console.warn("Google Translate API is not ready.");
+      return;
+    }
+
+    new google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        includedLanguages: "en,hi,bho,bn,mr,te,ta,gu,ur,kn",
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      },
+      "google_translate_element"
+    );
+  } catch (error) {
+    console.error("Google Translate init failed:", error);
+  }
+}
+
+/* =========================================================
+   2) LANGUAGE POPUP + TRANSLATION CONTROLLER
+========================================================= */
+
+(function () {
+  "use strict";
+
+  const AF_LANG_STORAGE_KEY = "afSelectedGoogleLanguage";
+  const AF_LANG_LABEL_STORAGE_KEY = "afSelectedGoogleLanguageLabel";
+
+  const AF_LANGUAGE_LABELS = {
+    en: "English",
+    hi: "Hindi",
+    bho: "Bhojpuri",
+    bn: "Bengali",
+    mr: "Marathi",
+    te: "Telugu",
+    ta: "Tamil",
+    gu: "Gujarati",
+    ur: "Urdu",
+    kn: "Kannada"
+  };
+
+  let afLanguageRetryTimer = null;
+
+  function setCookie(name, value, days) {
+    const maxAge = days * 24 * 60 * 60;
+    const encodedName = encodeURIComponent(name);
+    const encodedValue = encodeURIComponent(value);
+
+    document.cookie = `${encodedName}=${encodedValue}; path=/; max-age=${maxAge}; SameSite=Lax`;
+
+    if (location.hostname && location.hostname.includes(".")) {
+      document.cookie = `${encodedName}=${encodedValue}; path=/; max-age=${maxAge}; domain=.${location.hostname}; SameSite=Lax`;
+    }
+  }
+
+  function deleteCookie(name) {
+    const encodedName = encodeURIComponent(name);
+
+    document.cookie = `${encodedName}=; path=/; max-age=0; SameSite=Lax`;
+
+    if (location.hostname && location.hostname.includes(".")) {
+      document.cookie = `${encodedName}=; path=/; max-age=0; domain=.${location.hostname}; SameSite=Lax`;
+    }
+  }
+
+  function updateLanguageUI(lang, label) {
+    const finalLang = AF_LANGUAGE_LABELS[lang] ? lang : "en";
+    const finalLabel = label || AF_LANGUAGE_LABELS[finalLang] || "English";
+
+    const labelNode = document.getElementById("afSelectedLanguageLabel");
+
+    if (labelNode) {
+      labelNode.textContent = finalLabel;
+    }
+
+    document.querySelectorAll(".af-language-option").forEach(function (button) {
+      button.classList.toggle("active", button.dataset.lang === finalLang);
+    });
+
+    const html = document.documentElement;
+
+    if (finalLang === "ur") {
+      html.setAttribute("dir", "rtl");
+      html.setAttribute("lang", "ur");
+    } else {
+      html.setAttribute("dir", "ltr");
+      html.setAttribute("lang", finalLang);
+    }
+  }
+
+  function getGoogleCombo() {
+    return document.querySelector(".goog-te-combo");
+  }
+
+  function triggerGoogleTranslate(lang, attempt) {
+    const safeAttempt = Number.isFinite(attempt) ? attempt : 0;
+    const combo = getGoogleCombo();
+
+    if (!combo) {
+      if (safeAttempt >= 40) {
+        console.warn("Google Translate dropdown not ready.");
+        return;
+      }
+
+      clearTimeout(afLanguageRetryTimer);
+
+      afLanguageRetryTimer = setTimeout(function () {
+        triggerGoogleTranslate(lang, safeAttempt + 1);
+      }, 250);
+
+      return;
+    }
+
+    combo.value = lang;
+    combo.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function resetGoogleTranslateToEnglish() {
+    deleteCookie("googtrans");
+    deleteCookie("googtransopt");
+
+    setCookie("googtrans", "/en/en", 1);
+
+    const combo = getGoogleCombo();
+
+    if (combo) {
+      combo.value = "";
+      combo.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    setTimeout(function () {
+      window.location.reload();
+    }, 150);
+  }
+
+  window.openAFLanguagePopup = function openAFLanguagePopup() {
+    const overlay = document.getElementById("afLanguageOverlay");
+
+    if (!overlay) return;
+
+    const savedLang = localStorage.getItem(AF_LANG_STORAGE_KEY) || "en";
+    const savedLabel = localStorage.getItem(AF_LANG_LABEL_STORAGE_KEY) || AF_LANGUAGE_LABELS[savedLang] || "English";
+
+    updateLanguageUI(savedLang, savedLabel);
+
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+
+    document.body.style.overflow = "hidden";
+  };
+
+  window.closeAFLanguagePopup = function closeAFLanguagePopup() {
+    const overlay = document.getElementById("afLanguageOverlay");
+
+    if (!overlay) return;
+
+    overlay.classList.remove("active");
+    overlay.setAttribute("aria-hidden", "true");
+
+    document.body.style.overflow = "";
+  };
+
+  window.changeAFLanguage = function changeAFLanguage(lang, label) {
+    if (!AF_LANGUAGE_LABELS[lang]) return;
+
+    const finalLabel = label || AF_LANGUAGE_LABELS[lang];
+
+    localStorage.setItem(AF_LANG_STORAGE_KEY, lang);
+    localStorage.setItem(AF_LANG_LABEL_STORAGE_KEY, finalLabel);
+
+    updateLanguageUI(lang, finalLabel);
+    window.closeAFLanguagePopup();
+
+    if (lang === "en") {
+      resetGoogleTranslateToEnglish();
+      return;
+    }
+
+    setCookie("googtrans", `/en/${lang}`, 365);
+    triggerGoogleTranslate(lang, 0);
+  };
+
+  window.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      window.closeAFLanguagePopup();
+    }
+  });
+
+  window.addEventListener("load", function () {
+    const savedLang = localStorage.getItem(AF_LANG_STORAGE_KEY) || "en";
+    const savedLabel = localStorage.getItem(AF_LANG_LABEL_STORAGE_KEY) || AF_LANGUAGE_LABELS[savedLang] || "English";
+
+    updateLanguageUI(savedLang, savedLabel);
+
+    if (savedLang !== "en") {
+      setCookie("googtrans", `/en/${savedLang}`, 365);
+
+      setTimeout(function () {
+        triggerGoogleTranslate(savedLang, 0);
+      }, 1200);
+    }
+  });
+})();
+
+/* =========================================================
+   3) GOOGLE TRANSLATE SCRIPT LOADER
+   This avoids manually adding another <script src="..."> outside.
+========================================================= */
+
+(function loadGoogleTranslateScriptAF() {
+  if (document.querySelector('script[data-af-google-translate="true"]')) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  script.async = true;
+  script.defer = true;
+  script.setAttribute("data-af-google-translate", "true");
+
+  script.onerror = function () {
+    console.error("Failed to load Google Translate script.");
+  };
+
+  document.body.appendChild(script);
+})();
 
 </script>
 </body>
