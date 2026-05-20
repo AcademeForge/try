@@ -21639,6 +21639,387 @@ body.dark .af-lang-current-pill,
     font-size: 10.5px;
   }
 }
+
+    /* =========================================================
+   MOBILE BOTTOM NAV - FORCE OVERRIDE VERSION
+   Paste at the VERY END of your CSS
+   Uses !important to override old conflicting nav CSS
+========================================================= */
+
+:root {
+  --af-nav-height: 82px !important;
+  --af-nav-radius: 26px !important;
+  --af-nav-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+  --af-nav-x: 10px !important;
+
+  --af-nav-bg-light: rgba(255, 255, 255, 0.94) !important;
+  --af-nav-border-light: rgba(15, 23, 42, 0.08) !important;
+  --af-nav-shadow-light: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
+
+  --af-nav-bg-dark: rgba(10, 10, 12, 0.94) !important;
+  --af-nav-border-dark: rgba(255, 255, 255, 0.10) !important;
+  --af-nav-shadow-dark: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+
+  --af-nav-item-light: rgba(255, 255, 255, 0.78) !important;
+  --af-nav-item-dark: rgba(255, 255, 255, 0.055) !important;
+
+  --af-nav-text-light: rgba(15, 23, 42, 0.66) !important;
+  --af-nav-text-light-active: rgba(15, 23, 42, 0.94) !important;
+
+  --af-nav-text-dark: rgba(255, 255, 255, 0.64) !important;
+  --af-nav-text-dark-active: rgba(255, 255, 255, 0.96) !important;
+}
+
+body {
+  padding-bottom: calc(var(--af-nav-height) + var(--af-nav-bottom) + 18px) !important;
+}
+
+/* -----------------------------
+   Main fixed nav shell
+----------------------------- */
+
+html body .bottom-nav.glass,
+html body .bottom-nav {
+  position: fixed !important;
+  left: var(--af-nav-x) !important;
+  right: var(--af-nav-x) !important;
+  bottom: var(--af-nav-bottom) !important;
+  top: auto !important;
+  z-index: 999999 !important;
+
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 520px !important;
+  height: var(--af-nav-height) !important;
+  min-height: var(--af-nav-height) !important;
+  max-height: var(--af-nav-height) !important;
+
+  margin: 0 auto !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  grid-auto-flow: column !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  justify-content: center !important;
+  gap: 0 !important;
+
+  padding: 8px !important;
+  border-radius: var(--af-nav-radius) !important;
+
+  background: var(--af-nav-bg-light) !important;
+  border: 1px solid var(--af-nav-border-light) !important;
+  box-shadow: var(--af-nav-shadow-light) !important;
+
+  backdrop-filter: blur(22px) saturate(165%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(165%) !important;
+
+  overflow: hidden !important;
+  transform: translateZ(0) !important;
+}
+
+/* -----------------------------
+   Buttons forced equal
+----------------------------- */
+
+html body .bottom-nav .nav-btn {
+  position: relative !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  flex: initial !important;
+  flex-basis: auto !important;
+  flex-grow: 0 !important;
+  flex-shrink: 1 !important;
+
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  place-items: center !important;
+  gap: 7px !important;
+
+  padding: 8px 4px !important;
+  margin: 0 !important;
+  border-radius: 20px !important;
+
+  color: var(--af-nav-text-light) !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+/* -----------------------------
+   Icons forced center
+----------------------------- */
+
+html body .bottom-nav .nav-btn b,
+html body .bottom-nav .nav-btn .nav-icon-wrap {
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  max-width: 24px !important;
+  min-height: 24px !important;
+  max-height: 24px !important;
+
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-items: center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  font-size: 15px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+
+  filter: saturate(0.78) !important;
+  opacity: 0.82 !important;
+
+  transform: translateZ(0) !important;
+
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease,
+    filter 180ms ease !important;
+}
+
+/* -----------------------------
+   Labels forced safe
+----------------------------- */
+
+html body .bottom-nav .nav-btn span {
+  display: block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: inherit !important;
+  font: inherit !important;
+  line-height: 1 !important;
+  text-align: center !important;
+
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Raw text node buttons still align because button is flex-column */
+html body .bottom-nav .nav-btn {
+  overflow: hidden !important;
+}
+
+/* -----------------------------
+   Active state
+----------------------------- */
+
+html body .bottom-nav .nav-btn.active {
+  background: var(--af-nav-item-light) !important;
+  color: var(--af-nav-text-light-active) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.045),
+    0 10px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+html body .bottom-nav .nav-btn.active b,
+html body .bottom-nav .nav-btn.active .nav-icon-wrap {
+  opacity: 1 !important;
+  filter: saturate(1) !important;
+  transform: translateY(-1px) scale(1.04) !important;
+}
+
+/* -----------------------------
+   Hover / active feedback
+----------------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+  html body .bottom-nav .nav-btn:hover {
+    background: rgba(15, 23, 42, 0.045) !important;
+    color: var(--af-nav-text-light-active) !important;
+  }
+
+  html body .bottom-nav .nav-btn:hover b,
+  html body .bottom-nav .nav-btn:hover .nav-icon-wrap {
+    opacity: 1 !important;
+    transform: translateY(-1px) !important;
+  }
+}
+
+html body .bottom-nav .nav-btn:active {
+  transform: scale(0.96) !important;
+}
+
+/* -----------------------------
+   Dark mode forced support
+----------------------------- */
+
+html body.dark .bottom-nav.glass,
+html body.dark .bottom-nav,
+html body.dark-mode .bottom-nav.glass,
+html body.dark-mode .bottom-nav,
+html .dark-mode .bottom-nav.glass,
+html .dark-mode .bottom-nav,
+html [data-theme="dark"] .bottom-nav.glass,
+html [data-theme="dark"] .bottom-nav {
+  background: var(--af-nav-bg-dark) !important;
+  border-color: var(--af-nav-border-dark) !important;
+  box-shadow: var(--af-nav-shadow-dark) !important;
+}
+
+html body.dark .bottom-nav .nav-btn,
+html body.dark-mode .bottom-nav .nav-btn,
+html .dark-mode .bottom-nav .nav-btn,
+html [data-theme="dark"] .bottom-nav .nav-btn {
+  color: var(--af-nav-text-dark) !important;
+}
+
+html body.dark .bottom-nav .nav-btn.active,
+html body.dark-mode .bottom-nav .nav-btn.active,
+html .dark-mode .bottom-nav .nav-btn.active,
+html [data-theme="dark"] .bottom-nav .nav-btn.active {
+  background: var(--af-nav-item-dark) !important;
+  color: var(--af-nav-text-dark-active) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.24) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html body.dark .bottom-nav .nav-btn:hover,
+  html body.dark-mode .bottom-nav .nav-btn:hover,
+  html .dark-mode .bottom-nav .nav-btn:hover,
+  html [data-theme="dark"] .bottom-nav .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.055) !important;
+    color: var(--af-nav-text-dark-active) !important;
+  }
+}
+
+/* -----------------------------
+   Mobile exact sizing
+----------------------------- */
+
+@media (max-width: 520px) {
+  :root {
+    --af-nav-height: 80px !important;
+    --af-nav-radius: 24px !important;
+    --af-nav-x: 8px !important;
+  }
+
+  html body .bottom-nav.glass,
+  html body .bottom-nav {
+    max-width: none !important;
+    padding: 7px !important;
+  }
+
+  html body .bottom-nav .nav-btn {
+    border-radius: 19px !important;
+    gap: 7px !important;
+    font-size: 10.5px !important;
+    font-weight: 750 !important;
+    padding: 8px 2px !important;
+  }
+
+  html body .bottom-nav .nav-btn b,
+  html body .bottom-nav .nav-btn .nav-icon-wrap {
+    width: 23px !important;
+    height: 23px !important;
+    min-width: 23px !important;
+    max-width: 23px !important;
+    min-height: 23px !important;
+    max-height: 23px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* -----------------------------
+   Very small phones
+----------------------------- */
+
+@media (max-width: 360px) {
+  :root {
+    --af-nav-height: 76px !important;
+    --af-nav-x: 6px !important;
+  }
+
+  html body .bottom-nav.glass,
+  html body .bottom-nav {
+    padding: 6px !important;
+    border-radius: 22px !important;
+  }
+
+  html body .bottom-nav .nav-btn {
+    border-radius: 17px !important;
+    gap: 6px !important;
+    font-size: 10px !important;
+    padding-inline: 1px !important;
+  }
+
+  html body .bottom-nav .nav-btn b,
+  html body .bottom-nav .nav-btn .nav-icon-wrap {
+    width: 21px !important;
+    height: 21px !important;
+    min-width: 21px !important;
+    max-width: 21px !important;
+    min-height: 21px !important;
+    max-height: 21px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* -----------------------------
+   Kill old pseudo effects if any
+----------------------------- */
+
+html body .bottom-nav::before,
+html body .bottom-nav::after,
+html body .bottom-nav .nav-btn::before,
+html body .bottom-nav .nav-btn::after {
+  pointer-events: none !important;
+}
+
+/* -----------------------------
+   Optional: hide accidental scrollbars/overflow inside nav
+----------------------------- */
+
+html body .bottom-nav *,
+html body .bottom-nav *::before,
+html body .bottom-nav *::after {
+  box-sizing: border-box !important;
+}
 </style>
 </head>
 
@@ -23583,30 +23964,31 @@ body.dark .af-lang-current-pill,
 
 <nav class="bottom-nav glass">
   <button class="nav-btn active" data-section="home" onclick="showSection('home')">
-    <b>🏠</b>
-    Home
+    <b>⌂</b>
+    <span>Home</span>
   </button>
 
   <button class="nav-btn" data-section="studentaf" onclick="showSection('studentaf')">
     <b>🎓</b>
-    Student
-  </button>
-  
-<button class="nav-btn" data-section="batchaf" type="button" onclick="showSection('batchaf')">
-  <b>📚</b>
-  Batches
-</button>
-  
-  <button class="nav-btn" data-section="community" onclick="showSection('community')">
-    <b>💬</b>
-    Community
+    <span>Student</span>
   </button>
 
-   <button class="nav-btn" data-section="settings" type="button" onclick="showSection('settings')">
-    <b class="nav-icon-wrap">⚙️</b>
+  <button class="nav-btn" data-section="batchaf" type="button" onclick="showSection('batchaf')">
+    <b>□</b>
+    <span>Batches</span>
+  </button>
+
+  <button class="nav-btn" data-section="community" onclick="showSection('community')">
+    <b>◇</b>
+    <span>Community</span>
+  </button>
+
+  <button class="nav-btn" data-section="settings" type="button" onclick="showSection('settings')">
+    <b class="nav-icon-wrap">⚙</b>
     <span>Settings</span>
   </button>
 </nav>
+
 
   </main>
 
