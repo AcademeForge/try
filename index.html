@@ -21571,533 +21571,63 @@ body.dark .af-lang-current-pill,
   --af-nav-height: 78px;
   --af-nav-bottom: max(10px, env(safe-area-inset-bottom));
 }
-
 /* =========================================================
-   SPLASH SCREEN NAV HIDE FIX
-   Add/remove .app-ready on body after splash ends.
+   ACADEMEFORGE BOTTOM NAV - FRESH FIXED CSS
+   Paste at END of CSS.
+   No JS dependency. Nav will NOT disappear.
 ========================================================= */
 
-body:not(.app-ready) .bottom-nav {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transform: translateY(24px) !important;
+:root {
+  --af-nav-width: 486px !important;
+  --af-nav-height: 78px !important;
+  --af-nav-x: 10px !important;
+  --af-nav-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+  --af-nav-radius: 24px !important;
+
+  --af-nav-bg-light: rgba(255, 255, 255, 0.96) !important;
+  --af-nav-border-light: rgba(15, 23, 42, 0.08) !important;
+  --af-nav-text-light: rgba(15, 23, 42, 0.62) !important;
+  --af-nav-text-light-active: rgba(15, 23, 42, 0.96) !important;
+  --af-nav-active-light: rgba(255, 255, 255, 0.92) !important;
+
+  --af-nav-bg-dark: rgba(10, 10, 12, 0.96) !important;
+  --af-nav-border-dark: rgba(255, 255, 255, 0.10) !important;
+  --af-nav-text-dark: rgba(255, 255, 255, 0.62) !important;
+  --af-nav-text-dark-active: rgba(255, 255, 255, 0.96) !important;
+  --af-nav-active-dark: rgba(255, 255, 255, 0.06) !important;
 }
-
-/* If your splash uses common classes, nav stays hidden */
-body:has(#splashScreen:not(.hidden)) .bottom-nav,
-body:has(.splash-screen:not(.hidden)) .bottom-nav,
-body:has(#splash:not(.hidden)) .bottom-nav {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  transform: translateY(24px) !important;
-}
-
-/* =========================================================
-   SETTINGS SECTION
-========================================================= */
-
-html body #settings.settings-section {
-  width: 100% !important;
-  min-height: 100dvh !important;
-  margin: 0 !important;
-  padding: 0 0 112px !important;
-  background: var(--af-page-bg-light) !important;
-  color: var(--af-text-light) !important;
-  overflow-x: hidden !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark #settings.settings-section,
-html body.dark-mode #settings.settings-section,
-html [data-theme="dark"] #settings.settings-section {
-  background: var(--af-page-bg-dark) !important;
-  color: var(--af-text-dark) !important;
-}
-
-html body #settings .settings-page {
-  width: 100% !important;
-  max-width: var(--af-settings-width) !important;
-  min-height: 100dvh !important;
-  margin: 0 auto !important;
-  padding: 18px var(--af-settings-x) 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* =========================================================
-   PROFILE CARD
-========================================================= */
-
-html body #settings .settings-profile-card {
-  width: 100% !important;
-  min-height: 82px !important;
-  margin: 0 0 10px !important;
-  padding: 16px 18px !important;
-  border-radius: 0 0 24px 24px !important;
-  border: 1px solid rgba(148, 163, 184, 0.22) !important;
-  background:
-    radial-gradient(circle at 8% 12%, rgba(134, 239, 172, 0.24), transparent 25%),
-    linear-gradient(135deg, #111c32 0%, #0f172a 100%) !important;
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.18) !important;
-  color: #ffffff !important;
-
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .settings-avatar {
-  width: 52px !important;
-  height: 52px !important;
-  min-width: 52px !important;
-  border-radius: 999px !important;
-  display: grid !important;
-  place-items: center !important;
-  background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%) !important;
-  color: #064e3b !important;
-  font-size: 24px !important;
-  line-height: 1 !important;
-  box-shadow: 0 12px 28px rgba(34, 197, 94, 0.28) !important;
-}
-
-html body #settings .settings-profile-info {
-  min-width: 0 !important;
-  flex: 1 1 auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 4px !important;
-}
-
-html body #settings #settingsStudentName {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: #ffffff !important;
-  font-size: clamp(21px, 5.2vw, 25px) !important;
-  font-weight: 950 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.045em !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body #settings .settings-profile-link {
-  width: fit-content !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  outline: 0 !important;
-  background: transparent !important;
-  color: rgba(226, 232, 240, 0.88) !important;
-  font-size: 14px !important;
-  font-weight: 850 !important;
-  line-height: 1.1 !important;
-  cursor: pointer !important;
-  box-shadow: none !important;
-}
-
-/* =========================================================
-   OFFICIAL WEBSITE CARD
-========================================================= */
-
-html body #settings .settings-beta-card {
-  width: 100% !important;
-  min-height: 50px !important;
-  margin: 0 0 14px !important;
-  padding: 0 16px !important;
-  border-radius: 14px !important;
-  border: 1px solid var(--af-border-light) !important;
-  background: var(--af-card-light) !important;
-  color: var(--af-text-light) !important;
-  text-decoration: none !important;
-  box-shadow: none !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark #settings .settings-beta-card,
-html body.dark-mode #settings .settings-beta-card,
-html [data-theme="dark"] #settings .settings-beta-card {
-  background: rgba(15, 23, 42, 0.72) !important;
-  color: #ffffff !important;
-  border-color: rgba(148, 163, 184, 0.28) !important;
-}
-
-html body #settings .settings-beta-card span:first-child {
-  min-width: 0 !important;
-  font-size: 15px !important;
-  font-weight: 950 !important;
-  line-height: 1.1 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-html body #settings .settings-arrow {
-  flex: 0 0 auto !important;
-  color: currentColor !important;
-  opacity: 0.82 !important;
-  font-size: 18px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-}
-
-/* =========================================================
-   SETTINGS LIST - NO DIVIDER, SAME ROWS
-========================================================= */
-
-html body #settings .settings-list {
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 14px !important;
-
-  overflow: visible !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .settings-row,
-html body #settings .settings-row-btn,
-html body #settings .settings-row-static,
-html body #settings .af-lang-trigger-row,
-html body #settings .settings-logout-row {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-
-  height: 56px !important;
-  min-height: 56px !important;
-  max-height: 56px !important;
-
-  margin: 0 !important;
-  padding: 0 14px !important;
-
-  border: 1px solid var(--af-border-light) !important;
-  border-radius: 14px !important;
-  background: var(--af-row-light) !important;
-  color: var(--af-text-light) !important;
-  box-shadow: none !important;
-
-  font-family: inherit !important;
-  text-align: left !important;
-  text-decoration: none !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-
-  overflow: hidden !important;
-  cursor: pointer !important;
-  box-sizing: border-box !important;
-  -webkit-tap-highlight-color: transparent !important;
-}
-
-html body.dark #settings .settings-row,
-html body.dark #settings .settings-row-btn,
-html body.dark #settings .settings-row-static,
-html body.dark #settings .af-lang-trigger-row,
-html body.dark #settings .settings-logout-row,
-html body.dark-mode #settings .settings-row,
-html body.dark-mode #settings .settings-row-btn,
-html body.dark-mode #settings .settings-row-static,
-html body.dark-mode #settings .af-lang-trigger-row,
-html body.dark-mode #settings .settings-logout-row,
-html [data-theme="dark"] #settings .settings-row,
-html [data-theme="dark"] #settings .settings-row-btn,
-html [data-theme="dark"] #settings .settings-row-static,
-html [data-theme="dark"] #settings .af-lang-trigger-row,
-html [data-theme="dark"] #settings .settings-logout-row {
-  background: var(--af-row-dark) !important;
-  color: var(--af-text-dark) !important;
-  border-color: var(--af-border-dark) !important;
-}
-
-/* Row left */
-html body #settings .settings-row-left,
-html body #settings .af-lang-left {
-  min-width: 0 !important;
-  flex: 1 1 auto !important;
-  height: 100% !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 12px !important;
-
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-/* Icons */
-html body #settings .settings-row-icon,
-html body #settings .af-lang-icon {
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px !important;
-  max-width: 38px !important;
-  min-height: 38px !important;
-  max-height: 38px !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  border-radius: 10px !important;
-  border: 1px solid var(--af-border-light) !important;
-  background: #fafafa !important;
-  color: #111827 !important;
-
-  display: grid !important;
-  place-items: center !important;
-
-  font-size: 15px !important;
-  font-weight: 750 !important;
-  line-height: 1 !important;
-  font-style: normal !important;
-
-  overflow: hidden !important;
-  box-sizing: border-box !important;
-}
-
-html body.dark #settings .settings-row-icon,
-html body.dark #settings .af-lang-icon,
-html body.dark-mode #settings .settings-row-icon,
-html body.dark-mode #settings .af-lang-icon,
-html [data-theme="dark"] #settings .settings-row-icon,
-html [data-theme="dark"] #settings .af-lang-icon {
-  background: #171717 !important;
-  border-color: var(--af-border-dark) !important;
-  color: #ffffff !important;
-}
-
-/* Row text */
-html body #settings .settings-row-left > span:not(.settings-row-icon),
-html body #settings .af-lang-title {
-  min-width: 0 !important;
-  max-width: 100% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  color: inherit !important;
-  font-size: 14.5px !important;
-  font-weight: 850 !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.012em !important;
-
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-/* Badges */
-html body #settings .settings-new-badge,
-html body #settings .af-lang-current-pill {
-  flex: 0 0 auto !important;
-
-  min-width: 48px !important;
-  max-width: 88px !important;
-  height: 28px !important;
-
-  margin: 0 !important;
-  padding: 0 10px !important;
-
-  border-radius: 9px !important;
-  border: 0 !important;
-  background: #fef3c7 !important;
-  color: #92400e !important;
-
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  box-sizing: border-box !important;
-}
-
-html body #settings .af-lang-current-pill {
-  background: rgba(37, 99, 235, 0.12) !important;
-  color: #2563eb !important;
-  border: 1px solid rgba(37, 99, 235, 0.18) !important;
-}
-
-html body.dark #settings .settings-new-badge,
-html body.dark-mode #settings .settings-new-badge,
-html [data-theme="dark"] #settings .settings-new-badge {
-  background: rgba(251, 191, 36, 0.14) !important;
-  color: #fde68a !important;
-}
-
-html body.dark #settings .af-lang-current-pill,
-html body.dark-mode #settings .af-lang-current-pill,
-html [data-theme="dark"] #settings .af-lang-current-pill {
-  background: rgba(59, 130, 246, 0.18) !important;
-  color: #bfdbfe !important;
-  border-color: rgba(96, 165, 250, 0.26) !important;
-}
-
-/* Logout */
-html body #settings .settings-logout-row {
-  color: #dc2626 !important;
-}
-
-html body #settings .settings-logout-row .settings-row-icon {
-  color: #dc2626 !important;
-}
-
-html body.dark #settings .settings-logout-row,
-html body.dark #settings .settings-logout-row .settings-row-icon,
-html body.dark-mode #settings .settings-logout-row,
-html body.dark-mode #settings .settings-logout-row .settings-row-icon,
-html [data-theme="dark"] #settings .settings-logout-row,
-html [data-theme="dark"] #settings .settings-logout-row .settings-row-icon {
-  color: #fb7185 !important;
-}
-
-/* =========================================================
-   SWITCH
-========================================================= */
-
-html body #settings .settings-switch {
-  position: relative !important;
-  width: 44px !important;
-  height: 28px !important;
-  min-width: 44px !important;
-  display: inline-flex !important;
-  cursor: pointer !important;
-}
-
-html body #settings .settings-switch input {
-  position: absolute !important;
-  opacity: 0 !important;
-  width: 0 !important;
-  height: 0 !important;
-}
-
-html body #settings .settings-slider {
-  position: absolute !important;
-  inset: 0 !important;
-  border-radius: 999px !important;
-  background: #f3f4f6 !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-}
-
-html body #settings .settings-slider::before {
-  content: "" !important;
-  position: absolute !important;
-  width: 20px !important;
-  height: 20px !important;
-  left: 4px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  border-radius: 999px !important;
-  background: #050505 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
-  transition: transform 180ms ease, background 180ms ease !important;
-}
-
-html body #settings .settings-switch input:checked + .settings-slider {
-  background: #27272a !important;
-}
-
-html body #settings .settings-switch input:checked + .settings-slider::before {
-  transform: translate(16px, -50%) !important;
-  background: #ffffff !important;
-}
-
-/* =========================================================
-   APP VERSION
-========================================================= */
-
-html body #settings .settings-app-version-box {
-  width: 100% !important;
-  margin: 18px auto 0 !important;
-  padding: 0 16px !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-
-  color: var(--af-muted-light) !important;
-  text-align: center !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 3px !important;
-
-  box-sizing: border-box !important;
-}
-
-html body.dark #settings .settings-app-version-box,
-html body.dark-mode #settings .settings-app-version-box,
-html [data-theme="dark"] #settings .settings-app-version-box {
-  color: var(--af-muted-dark) !important;
-}
-
-html body #settings .settings-app-version-box strong {
-  color: inherit !important;
-  font-size: 12.5px !important;
-  font-weight: 900 !important;
-  line-height: 1.1 !important;
-}
-
-html body #settings .settings-app-version-box span {
-  color: inherit !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 1.1 !important;
-}
-
-/* =========================================================
-   BOTTOM NAV
-========================================================= */
 
 html body {
   padding-bottom: calc(var(--af-nav-height) + var(--af-nav-bottom) + 18px) !important;
 }
 
-html body.app-ready .bottom-nav,
-html body .bottom-nav {
+/* =========================================================
+   NAV ALWAYS VISIBLE BY DEFAULT
+========================================================= */
+
+html body .bottom-nav,
+html body .bottom-nav.glass {
   position: fixed !important;
-  left: 10px !important;
-  right: 10px !important;
+  left: var(--af-nav-x) !important;
+  right: var(--af-nav-x) !important;
   bottom: var(--af-nav-bottom) !important;
   top: auto !important;
+
   z-index: 999999 !important;
 
   width: auto !important;
-  max-width: var(--af-settings-width) !important;
+  max-width: var(--af-nav-width) !important;
   height: var(--af-nav-height) !important;
   min-height: var(--af-nav-height) !important;
+  max-height: var(--af-nav-height) !important;
 
   margin: 0 auto !important;
   padding: 7px !important;
 
-  border-radius: 24px !important;
-  border: 1px solid rgba(15, 23, 42, 0.08) !important;
-  background: rgba(255, 255, 255, 0.94) !important;
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
+  border-radius: var(--af-nav-radius) !important;
+  border: 1px solid var(--af-nav-border-light) !important;
+  background: var(--af-nav-bg-light) !important;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12) !important;
 
   backdrop-filter: blur(22px) saturate(165%) !important;
   -webkit-backdrop-filter: blur(22px) saturate(165%) !important;
@@ -22105,39 +21635,62 @@ html body .bottom-nav {
   display: grid !important;
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
   align-items: center !important;
+  justify-items: stretch !important;
   gap: 0 !important;
+
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
 
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
 
+/* =========================================================
+   DARK MODE NAV
+========================================================= */
+
 html body.dark .bottom-nav,
+html body.dark .bottom-nav.glass,
 html body.dark-mode .bottom-nav,
-html [data-theme="dark"] .bottom-nav {
-  background: rgba(10, 10, 12, 0.94) !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
+html body.dark-mode .bottom-nav.glass,
+html .dark-mode .bottom-nav,
+html .dark-mode .bottom-nav.glass,
+html [data-theme="dark"] .bottom-nav,
+html [data-theme="dark"] .bottom-nav.glass {
+  border-color: var(--af-nav-border-dark) !important;
+  background: var(--af-nav-bg-dark) !important;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
 }
+
+/* =========================================================
+   NAV BUTTONS
+========================================================= */
 
 html body .bottom-nav .nav-btn {
   width: 100% !important;
   height: 100% !important;
   min-width: 0 !important;
+  max-width: none !important;
 
   margin: 0 !important;
   padding: 8px 2px !important;
+
   border: 0 !important;
   outline: 0 !important;
   border-radius: 18px !important;
   background: transparent !important;
   box-shadow: none !important;
 
-  color: rgba(15, 23, 42, 0.66) !important;
+  color: var(--af-nav-text-light) !important;
   font-family: inherit !important;
   font-size: 10.5px !important;
   font-weight: 800 !important;
   line-height: 1 !important;
   text-align: center !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
 
   display: flex !important;
   flex-direction: column !important;
@@ -22145,20 +21698,30 @@ html body .bottom-nav .nav-btn {
   justify-content: center !important;
   gap: 7px !important;
 
-  overflow: hidden !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+
   cursor: pointer !important;
+  overflow: hidden !important;
   box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
 }
 
 html body.dark .bottom-nav .nav-btn,
 html body.dark-mode .bottom-nav .nav-btn,
+html .dark-mode .bottom-nav .nav-btn,
 html [data-theme="dark"] .bottom-nav .nav-btn {
-  color: rgba(255, 255, 255, 0.64) !important;
+  color: var(--af-nav-text-dark) !important;
 }
 
+/* =========================================================
+   ACTIVE BUTTON
+========================================================= */
+
 html body .bottom-nav .nav-btn.active {
-  background: rgba(255, 255, 255, 0.78) !important;
-  color: rgba(15, 23, 42, 0.96) !important;
+  background: var(--af-nav-active-light) !important;
+  color: var(--af-nav-text-light-active) !important;
   box-shadow:
     inset 0 0 0 1px rgba(15, 23, 42, 0.045),
     0 10px 24px rgba(15, 23, 42, 0.06) !important;
@@ -22166,16 +21729,27 @@ html body .bottom-nav .nav-btn.active {
 
 html body.dark .bottom-nav .nav-btn.active,
 html body.dark-mode .bottom-nav .nav-btn.active,
+html .dark-mode .bottom-nav .nav-btn.active,
 html [data-theme="dark"] .bottom-nav .nav-btn.active {
-  background: rgba(255, 255, 255, 0.055) !important;
-  color: rgba(255, 255, 255, 0.96) !important;
+  background: var(--af-nav-active-dark) !important;
+  color: var(--af-nav-text-dark-active) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.24) !important;
 }
+
+/* =========================================================
+   ICONS + LABELS
+========================================================= */
 
 html body .bottom-nav .nav-btn b,
 html body .bottom-nav .nav-btn .nav-icon-wrap {
   width: 23px !important;
   height: 23px !important;
   min-width: 23px !important;
+  max-width: 23px !important;
+  min-height: 23px !important;
+  max-height: 23px !important;
 
   margin: 0 !important;
   padding: 0 !important;
@@ -22183,6 +21757,7 @@ html body .bottom-nav .nav-btn .nav-icon-wrap {
   display: grid !important;
   place-items: center !important;
 
+  color: inherit !important;
   font-size: 14px !important;
   line-height: 1 !important;
   font-weight: 900 !important;
@@ -22190,79 +21765,116 @@ html body .bottom-nav .nav-btn .nav-icon-wrap {
 
   opacity: 0.84 !important;
   filter: saturate(0.78) !important;
+
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+html body .bottom-nav .nav-btn.active b,
+html body .bottom-nav .nav-btn.active .nav-icon-wrap {
+  opacity: 1 !important;
+  filter: saturate(1) !important;
+  transform: translateY(-1px) scale(1.04) !important;
 }
 
 html body .bottom-nav .nav-btn span {
+  display: block !important;
   max-width: 100% !important;
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
   color: inherit !important;
   font: inherit !important;
   line-height: 1 !important;
+  text-align: center !important;
+
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 /* =========================================================
-   RESPONSIVE
+   HIDE NAV ONLY WHEN SPLASH IS EXPLICITLY ACTIVE
+   No app-ready dependency.
+========================================================= */
+
+html body.splash-active .bottom-nav,
+html body.loading-active .bottom-nav,
+html body.is-splashing .bottom-nav,
+html body[data-splash="true"] .bottom-nav {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(24px) !important;
+}
+
+/* =========================================================
+   MOBILE + LAPTOP SAME MOBILE APP WIDTH
 ========================================================= */
 
 @media (max-width: 520px) {
   :root {
-    --af-settings-x: 16px;
+    --af-nav-height: 78px !important;
+    --af-nav-x: 8px !important;
+    --af-nav-radius: 24px !important;
   }
 
-  html body #settings .settings-page {
+  html body .bottom-nav,
+  html body .bottom-nav.glass {
     max-width: none !important;
+    padding: 7px !important;
   }
 
-  html body.app-ready .bottom-nav,
-  html body .bottom-nav {
-    left: 8px !important;
-    right: 8px !important;
-    max-width: none !important;
+  html body .bottom-nav .nav-btn {
+    font-size: 10.5px !important;
+    gap: 7px !important;
+    border-radius: 18px !important;
   }
 }
 
 @media (max-width: 380px) {
   :root {
-    --af-settings-x: 12px;
-    --af-nav-height: 76px;
+    --af-nav-height: 74px !important;
+    --af-nav-x: 6px !important;
+    --af-nav-radius: 22px !important;
   }
 
-  html body #settings .settings-row,
-  html body #settings .settings-row-btn,
-  html body #settings .settings-row-static,
-  html body #settings .af-lang-trigger-row,
-  html body #settings .settings-logout-row {
-    height: 54px !important;
-    min-height: 54px !important;
-    max-height: 54px !important;
-    padding-inline: 12px !important;
+  html body .bottom-nav,
+  html body .bottom-nav.glass {
+    padding: 6px !important;
   }
 
-  html body #settings .settings-row-icon,
-  html body #settings .af-lang-icon {
-    width: 36px !important;
-    height: 36px !important;
-    min-width: 36px !important;
-    max-width: 36px !important;
-    min-height: 36px !important;
-    max-height: 36px !important;
+  html body .bottom-nav .nav-btn {
+    font-size: 10px !important;
+    gap: 6px !important;
+    border-radius: 16px !important;
   }
 
-  html body #settings .settings-row-left > span:not(.settings-row-icon),
-  html body #settings .af-lang-title {
-    font-size: 14px !important;
+  html body .bottom-nav .nav-btn b,
+  html body .bottom-nav .nav-btn .nav-icon-wrap {
+    width: 21px !important;
+    height: 21px !important;
+    min-width: 21px !important;
+    max-width: 21px !important;
+    min-height: 21px !important;
+    max-height: 21px !important;
+    font-size: 13px !important;
   }
 }
 
 /* =========================================================
-   HARD BOX SIZING
+   KILL OLD NAV PSEUDO / CONFLICTS
 ========================================================= */
 
-html body #settings *,
-html body #settings *::before,
-html body #settings *::after,
+html body .bottom-nav::before,
+html body .bottom-nav::after,
+html body .bottom-nav .nav-btn::before,
+html body .bottom-nav .nav-btn::after {
+  pointer-events: none !important;
+}
+
 html body .bottom-nav,
 html body .bottom-nav *,
 html body .bottom-nav *::before,
