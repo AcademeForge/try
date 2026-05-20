@@ -21640,43 +21640,855 @@ body.dark .af-lang-current-pill,
   }
 }
 
-    /* =========================================================
-   MOBILE BOTTOM NAV - FORCE OVERRIDE VERSION
-   Paste at the VERY END of your CSS
-   Uses !important to override old conflicting nav CSS
+   /* =========================================================
+   ACADEMEFORGE SETTINGS + BOTTOM NAV FORCE OVERRIDE
+   Paste this at the VERY END of your CSS.
+   Fully mobile-style layout on mobile + laptop.
+   Uses !important to beat old conflicting CSS.
+========================================================= */
+
+/* =========================================================
+   0) GLOBAL SETTINGS PAGE TOKENS
 ========================================================= */
 
 :root {
+  --af-settings-max-width: 486px !important;
+  --af-settings-page-x: 16px !important;
+  --af-settings-page-top: 18px !important;
+  --af-settings-page-bottom: 112px !important;
+
+  --af-bg-light: #f4f4f5 !important;
+  --af-card-light: #ffffff !important;
+  --af-card-soft-light: rgba(255, 255, 255, 0.92) !important;
+  --af-border-light: rgba(15, 23, 42, 0.08) !important;
+  --af-text-light: #050505 !important;
+  --af-muted-light: #6b7280 !important;
+  --af-icon-box-light: #fafafa !important;
+
+  --af-bg-dark: #050505 !important;
+  --af-card-dark: #101010 !important;
+  --af-card-soft-dark: rgba(16, 16, 16, 0.96) !important;
+  --af-border-dark: rgba(255, 255, 255, 0.09) !important;
+  --af-text-dark: #ffffff !important;
+  --af-muted-dark: #9ca3af !important;
+  --af-icon-box-dark: #171717 !important;
+
+  --af-row-height: 56px !important;
+  --af-row-radius: 14px !important;
+  --af-profile-radius: 0 0 26px 26px !important;
+
   --af-nav-height: 82px !important;
   --af-nav-radius: 26px !important;
   --af-nav-bottom: max(10px, env(safe-area-inset-bottom)) !important;
   --af-nav-x: 10px !important;
-
-  --af-nav-bg-light: rgba(255, 255, 255, 0.94) !important;
-  --af-nav-border-light: rgba(15, 23, 42, 0.08) !important;
-  --af-nav-shadow-light: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
-
-  --af-nav-bg-dark: rgba(10, 10, 12, 0.94) !important;
-  --af-nav-border-dark: rgba(255, 255, 255, 0.10) !important;
-  --af-nav-shadow-dark: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
-
-  --af-nav-item-light: rgba(255, 255, 255, 0.78) !important;
-  --af-nav-item-dark: rgba(255, 255, 255, 0.055) !important;
-
-  --af-nav-text-light: rgba(15, 23, 42, 0.66) !important;
-  --af-nav-text-light-active: rgba(15, 23, 42, 0.94) !important;
-
-  --af-nav-text-dark: rgba(255, 255, 255, 0.64) !important;
-  --af-nav-text-dark-active: rgba(255, 255, 255, 0.96) !important;
 }
 
-body {
+/* =========================================================
+   1) SETTINGS SECTION SHELL
+========================================================= */
+
+html body #settings.settings-section,
+html body .settings-section {
+  width: 100% !important;
+  min-height: 100dvh !important;
+  margin: 0 auto !important;
+  padding: 0 0 var(--af-settings-page-bottom) !important;
+  background: var(--af-bg-light) !important;
+  color: var(--af-text-light) !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+html body.dark #settings.settings-section,
+html body.dark .settings-section,
+html body.dark-mode #settings.settings-section,
+html body.dark-mode .settings-section,
+html .dark-mode #settings.settings-section,
+html .dark-mode .settings-section,
+html [data-theme="dark"] #settings.settings-section,
+html [data-theme="dark"] .settings-section {
+  background: var(--af-bg-dark) !important;
+  color: var(--af-text-dark) !important;
+}
+
+html body #settings .settings-page,
+html body .settings-page {
+  width: 100% !important;
+  max-width: var(--af-settings-max-width) !important;
+  margin: 0 auto !important;
+  padding: var(--af-settings-page-top) var(--af-settings-page-x) 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* =========================================================
+   2) TOP PROFILE CARD - MATCH REFERENCE
+========================================================= */
+
+html body #settings .settings-profile-card,
+html body .settings-profile-card {
+  width: 100% !important;
+  min-height: 78px !important;
+  margin: 0 0 10px !important;
+  padding: 16px 18px !important;
+  border-radius: 22px !important;
+  border: 1px solid rgba(148, 163, 184, 0.20) !important;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(134, 239, 172, 0.20), transparent 24%),
+    linear-gradient(135deg, #111c32 0%, #0f172a 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+}
+
+html body #settings .settings-avatar,
+html body .settings-avatar {
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  min-height: 52px !important;
+  border-radius: 999px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: linear-gradient(135deg, #bbf7d0 0%, #86efac 100%) !important;
+  color: #064e3b !important;
+  font-size: 24px !important;
+  line-height: 1 !important;
+  box-shadow: 0 12px 26px rgba(34, 197, 94, 0.28) !important;
+  overflow: hidden !important;
+}
+
+html body #settings .settings-profile-info,
+html body .settings-profile-info {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  gap: 4px !important;
+}
+
+html body #settings .settings-profile-info h2,
+html body .settings-profile-info h2,
+html body #settings #settingsStudentName {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(20px, 5.2vw, 24px) !important;
+  font-weight: 950 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.045em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #settings .settings-profile-link,
+html body .settings-profile-link {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  color: rgba(226, 232, 240, 0.88) !important;
+  font-size: 14px !important;
+  font-weight: 850 !important;
+  line-height: 1.15 !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  box-shadow: none !important;
+}
+
+/* =========================================================
+   3) OFFICIAL WEBSITE CARD
+========================================================= */
+
+html body #settings .settings-beta-card,
+html body .settings-beta-card {
+  width: 100% !important;
+  min-height: 50px !important;
+  margin: 0 0 18px !important;
+  padding: 0 16px !important;
+  border-radius: 13px !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+}
+
+html body #settings .settings-beta-card span:first-child,
+html body .settings-beta-card span:first-child {
+  min-width: 0 !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #settings .settings-beta-card .settings-arrow,
+html body .settings-beta-card .settings-arrow {
+  color: rgba(148, 163, 184, 0.72) !important;
+  font-size: 26px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+}
+
+html body:not(.dark):not(.dark-mode) #settings .settings-beta-card,
+html body:not(.dark):not(.dark-mode) .settings-beta-card {
+  background: #ffffff !important;
+  color: #111827 !important;
+  border-color: var(--af-border-light) !important;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.02) !important;
+}
+
+html body:not(.dark):not(.dark-mode) #settings .settings-beta-card span:first-child,
+html body:not(.dark):not(.dark-mode) .settings-beta-card span:first-child {
+  color: #111827 !important;
+}
+
+/* =========================================================
+   4) SETTINGS LISTS
+========================================================= */
+
+html body #settings .settings-list,
+html body #settings .settings-support-list,
+html body .settings-list,
+html body .settings-support-list {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
+}
+
+html body #settings .settings-support-list,
+html body .settings-support-list {
+  margin-top: 14px !important;
+}
+
+/* =========================================================
+   5) SETTINGS ROWS - ALL BUTTONS SAME STYLE
+========================================================= */
+
+html body #settings .settings-row,
+html body #settings .settings-support-row,
+html body #settings .af-lang-trigger-row,
+html body .settings-row,
+html body .settings-support-row,
+html body .af-lang-trigger-row {
+  width: 100% !important;
+  min-height: var(--af-row-height) !important;
+  height: var(--af-row-height) !important;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  border-radius: var(--af-row-radius) !important;
+  border: 1px solid var(--af-border-light) !important;
+  background: var(--af-card-light) !important;
+  color: var(--af-text-light) !important;
+  box-shadow: none !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+
+  font-family: inherit !important;
+  text-align: left !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+
+  transition:
+    transform 160ms ease,
+    background 160ms ease,
+    border-color 160ms ease !important;
+}
+
+html body.dark #settings .settings-row,
+html body.dark #settings .settings-support-row,
+html body.dark #settings .af-lang-trigger-row,
+html body.dark .settings-row,
+html body.dark .settings-support-row,
+html body.dark .af-lang-trigger-row,
+html body.dark-mode #settings .settings-row,
+html body.dark-mode #settings .settings-support-row,
+html body.dark-mode #settings .af-lang-trigger-row,
+html body.dark-mode .settings-row,
+html body.dark-mode .settings-support-row,
+html body.dark-mode .af-lang-trigger-row,
+html .dark-mode #settings .settings-row,
+html .dark-mode #settings .settings-support-row,
+html .dark-mode #settings .af-lang-trigger-row,
+html .dark-mode .settings-row,
+html .dark-mode .settings-support-row,
+html .dark-mode .af-lang-trigger-row,
+html [data-theme="dark"] #settings .settings-row,
+html [data-theme="dark"] #settings .settings-support-row,
+html [data-theme="dark"] #settings .af-lang-trigger-row,
+html [data-theme="dark"] .settings-row,
+html [data-theme="dark"] .settings-support-row,
+html [data-theme="dark"] .af-lang-trigger-row {
+  background: var(--af-card-dark) !important;
+  color: var(--af-text-dark) !important;
+  border-color: var(--af-border-dark) !important;
+}
+
+html body #settings .settings-row:active,
+html body #settings .settings-support-row:active,
+html body #settings .af-lang-trigger-row:active,
+html body .settings-row:active,
+html body .settings-support-row:active,
+html body .af-lang-trigger-row:active {
+  transform: scale(0.985) !important;
+}
+
+/* =========================================================
+   6) ROW LEFT + ICONS + TEXT
+========================================================= */
+
+html body #settings .settings-row-left,
+html body #settings .settings-support-left,
+html body #settings .af-lang-left,
+html body .settings-row-left,
+html body .settings-support-left,
+html body .af-lang-left {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  overflow: hidden !important;
+}
+
+html body #settings .settings-row-icon,
+html body #settings .settings-support-icon,
+html body #settings .af-lang-icon,
+html body .settings-row-icon,
+html body .settings-support-icon,
+html body .af-lang-icon {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  border-radius: 10px !important;
+  border: 1px solid var(--af-border-light) !important;
+  background: var(--af-icon-box-light) !important;
+  color: var(--af-text-light) !important;
+
+  font-size: 15px !important;
+  line-height: 1 !important;
+  font-style: normal !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+html body.dark #settings .settings-row-icon,
+html body.dark #settings .settings-support-icon,
+html body.dark #settings .af-lang-icon,
+html body.dark .settings-row-icon,
+html body.dark .settings-support-icon,
+html body.dark .af-lang-icon,
+html body.dark-mode #settings .settings-row-icon,
+html body.dark-mode #settings .settings-support-icon,
+html body.dark-mode #settings .af-lang-icon,
+html body.dark-mode .settings-row-icon,
+html body.dark-mode .settings-support-icon,
+html body.dark-mode .af-lang-icon,
+html .dark-mode #settings .settings-row-icon,
+html .dark-mode #settings .settings-support-icon,
+html .dark-mode #settings .af-lang-icon,
+html .dark-mode .settings-row-icon,
+html .dark-mode .settings-support-icon,
+html .dark-mode .af-lang-icon,
+html [data-theme="dark"] #settings .settings-row-icon,
+html [data-theme="dark"] #settings .settings-support-icon,
+html [data-theme="dark"] #settings .af-lang-icon,
+html [data-theme="dark"] .settings-row-icon,
+html [data-theme="dark"] .settings-support-icon,
+html [data-theme="dark"] .af-lang-icon {
+  background: var(--af-icon-box-dark) !important;
+  color: var(--af-text-dark) !important;
+  border-color: var(--af-border-dark) !important;
+}
+
+html body #settings .settings-row-left > span:not(.settings-row-icon),
+html body #settings .settings-support-left > span:not(.settings-support-icon),
+html body #settings .af-lang-title,
+html body .settings-row-left > span:not(.settings-row-icon),
+html body .settings-support-left > span:not(.settings-support-icon),
+html body .af-lang-title {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  color: inherit !important;
+  font-size: 14.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #settings .settings-arrow,
+html body .settings-arrow {
+  flex: 0 0 auto !important;
+  color: currentColor !important;
+  opacity: 0.72 !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  margin-left: 8px !important;
+}
+
+/* =========================================================
+   7) BADGES
+========================================================= */
+
+html body #settings .settings-new-badge,
+html body .settings-new-badge,
+html body #settings .af-lang-current-pill,
+html body .af-lang-current-pill {
+  flex: 0 0 auto !important;
+  max-width: 86px !important;
+  min-width: 50px !important;
+  height: 28px !important;
+  padding: 0 10px !important;
+  border-radius: 9px !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  border: 0 !important;
+
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body #settings .af-lang-current-pill,
+html body .af-lang-current-pill {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563eb !important;
+  border: 1px solid rgba(59, 130, 246, 0.18) !important;
+}
+
+html body.dark #settings .af-lang-current-pill,
+html body.dark .af-lang-current-pill,
+html body.dark-mode #settings .af-lang-current-pill,
+html body.dark-mode .af-lang-current-pill,
+html .dark-mode #settings .af-lang-current-pill,
+html .dark-mode .af-lang-current-pill,
+html [data-theme="dark"] #settings .af-lang-current-pill,
+html [data-theme="dark"] .af-lang-current-pill {
+  background: rgba(59, 130, 246, 0.18) !important;
+  color: #bfdbfe !important;
+  border-color: rgba(96, 165, 250, 0.26) !important;
+}
+
+/* =========================================================
+   8) DARK MODE SWITCH
+========================================================= */
+
+html body #settings .settings-switch,
+html body .settings-switch {
+  position: relative !important;
+  width: 44px !important;
+  height: 28px !important;
+  min-width: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  cursor: pointer !important;
+}
+
+html body #settings .settings-switch input,
+html body .settings-switch input {
+  position: absolute !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+html body #settings .settings-slider,
+html body .settings-slider {
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 999px !important;
+  background: #f3f4f6 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  transition: background 180ms ease, border-color 180ms ease !important;
+}
+
+html body #settings .settings-slider::before,
+html body .settings-slider::before {
+  content: "" !important;
+  position: absolute !important;
+  width: 20px !important;
+  height: 20px !important;
+  left: 4px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  border-radius: 999px !important;
+  background: #050505 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18) !important;
+  transition: transform 180ms ease, background 180ms ease !important;
+}
+
+html body #settings .settings-switch input:checked + .settings-slider,
+html body .settings-switch input:checked + .settings-slider {
+  background: #27272a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html body #settings .settings-switch input:checked + .settings-slider::before,
+html body .settings-switch input:checked + .settings-slider::before {
+  transform: translate(16px, -50%) !important;
+  background: #ffffff !important;
+}
+
+/* =========================================================
+   9) LANGUAGE ROW CLEANUP
+========================================================= */
+
+html body #settings .af-lang-shell,
+html body .af-lang-shell {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+}
+
+html body #settings .af-lang-shell .af-lang-shell,
+html body .af-lang-shell .af-lang-shell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+html body #settings .af-lang-trigger-row,
+html body .af-lang-trigger-row {
+  margin: 0 !important;
+}
+
+html body #settings .af-lang-copy,
+html body .af-lang-copy {
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+html body #settings .af-lang-subtitle,
+html body .af-lang-subtitle {
+  display: none !important;
+}
+
+/* =========================================================
+   10) SUPPORT DIVIDER + LOGOUT
+========================================================= */
+
+html body #settings .settings-support-divider,
+html body .settings-support-divider {
+  display: none !important;
+}
+
+html body #settings .settings-logout-row,
+html body .settings-logout-row {
+  color: #dc2626 !important;
+}
+
+html body.dark #settings .settings-logout-row,
+html body.dark .settings-logout-row,
+html body.dark-mode #settings .settings-logout-row,
+html body.dark-mode .settings-logout-row,
+html .dark-mode #settings .settings-logout-row,
+html .dark-mode .settings-logout-row,
+html [data-theme="dark"] #settings .settings-logout-row,
+html [data-theme="dark"] .settings-logout-row {
+  color: #fb7185 !important;
+}
+
+html body #settings .settings-logout-icon,
+html body .settings-logout-icon {
+  color: inherit !important;
+}
+
+/* =========================================================
+   11) APP VERSION
+========================================================= */
+
+html body #settings .settings-app-version-box,
+html body .settings-app-version-box {
+  width: 100% !important;
+  max-width: var(--af-settings-max-width) !important;
+  margin: 20px auto 0 !important;
+  padding: 0 16px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--af-muted-light) !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+html body #settings .settings-app-version-box strong,
+html body .settings-app-version-box strong {
+  color: inherit !important;
+  font-size: 12.5px !important;
+  font-weight: 850 !important;
+  line-height: 1.15 !important;
+}
+
+html body #settings .settings-app-version-box span,
+html body .settings-app-version-box span {
+  color: inherit !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.15 !important;
+}
+
+html body.dark #settings .settings-app-version-box,
+html body.dark .settings-app-version-box,
+html body.dark-mode #settings .settings-app-version-box,
+html body.dark-mode .settings-app-version-box,
+html .dark-mode #settings .settings-app-version-box,
+html .dark-mode .settings-app-version-box,
+html [data-theme="dark"] #settings .settings-app-version-box,
+html [data-theme="dark"] .settings-app-version-box {
+  color: #9ca3af !important;
+}
+
+/* =========================================================
+   12) LANGUAGE MODAL - MOBILE PREMIUM
+========================================================= */
+
+html body #afTranslationOverlay.af-lang-overlay,
+html body .af-lang-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999999 !important;
+  display: none !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 14px !important;
+  background: rgba(0, 0, 0, 0.58) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-sizing: border-box !important;
+}
+
+html body #afTranslationOverlay.af-lang-overlay.active,
+html body .af-lang-overlay.active {
+  display: flex !important;
+}
+
+html body .af-lang-modal {
+  width: 100% !important;
+  max-width: var(--af-settings-max-width) !important;
+  max-height: 82dvh !important;
+  overflow: auto !important;
+  padding: 16px !important;
+  border-radius: 24px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28) !important;
+  box-sizing: border-box !important;
+}
+
+html body.dark .af-lang-modal,
+html body.dark-mode .af-lang-modal,
+html .dark-mode .af-lang-modal,
+html [data-theme="dark"] .af-lang-modal {
+  background: #101010 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+html body .af-lang-modal-head {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin-bottom: 14px !important;
+}
+
+html body .af-lang-kicker {
+  margin: 0 0 4px !important;
+  color: #2563eb !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+html body .af-lang-heading {
+  margin: 0 !important;
+  color: inherit !important;
+  font-size: 22px !important;
+  font-weight: 950 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.04em !important;
+}
+
+html body .af-lang-close {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: rgba(148, 163, 184, 0.14) !important;
+  color: inherit !important;
+  font-size: 26px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+html body .af-lang-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+}
+
+html body .af-lang-option {
+  min-width: 0 !important;
+  min-height: 70px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px !important;
+  padding: 10px !important;
+  background: #ffffff !important;
+  color: #111827 !important;
+  cursor: pointer !important;
+
+  display: grid !important;
+  grid-template-columns: 38px 1fr !important;
+  grid-template-areas:
+    "icon name"
+    "icon meta" !important;
+  align-items: center !important;
+  gap: 2px 9px !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+}
+
+html body.dark .af-lang-option,
+html body.dark-mode .af-lang-option,
+html .dark-mode .af-lang-option,
+html [data-theme="dark"] .af-lang-option {
+  background: #171717 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+html body .af-lang-option.active {
+  border-color: rgba(37, 99, 235, 0.55) !important;
+  background: rgba(37, 99, 235, 0.10) !important;
+}
+
+html body .af-lang-option-icon {
+  grid-area: icon !important;
+  width: 38px !important;
+  height: 38px !important;
+  display: grid !important;
+  place-items: center !important;
+  border-radius: 13px !important;
+  background: rgba(59, 130, 246, 0.10) !important;
+  font-size: 18px !important;
+}
+
+html body .af-lang-option-name {
+  grid-area: name !important;
+  min-width: 0 !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  color: inherit !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body .af-lang-option-meta {
+  grid-area: meta !important;
+  min-width: 0 !important;
+  color: #6b7280 !important;
+  font-size: 11px !important;
+  font-weight: 750 !important;
+  line-height: 1.1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+html body.dark .af-lang-option-meta,
+html body.dark-mode .af-lang-option-meta,
+html .dark-mode .af-lang-option-meta,
+html [data-theme="dark"] .af-lang-option-meta {
+  color: #9ca3af !important;
+}
+
+html body .af-lang-status {
+  margin: 12px 2px 0 !important;
+  min-height: 18px !important;
+  color: #6b7280 !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.4 !important;
+}
+
+/* =========================================================
+   13) BOTTOM NAV FORCE OVERRIDE - SAME MOBILE STYLE ON LAPTOP
+========================================================= */
+
+html body {
   padding-bottom: calc(var(--af-nav-height) + var(--af-nav-bottom) + 18px) !important;
 }
-
-/* -----------------------------
-   Main fixed nav shell
------------------------------ */
 
 html body .bottom-nav.glass,
 html body .bottom-nav {
@@ -21689,203 +22501,31 @@ html body .bottom-nav {
 
   width: auto !important;
   min-width: 0 !important;
-  max-width: 520px !important;
+  max-width: var(--af-settings-max-width) !important;
   height: var(--af-nav-height) !important;
   min-height: var(--af-nav-height) !important;
   max-height: var(--af-nav-height) !important;
 
   margin: 0 auto !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  grid-auto-flow: column !important;
-  align-items: center !important;
-  justify-items: stretch !important;
-  justify-content: center !important;
-  gap: 0 !important;
-
   padding: 8px !important;
   border-radius: var(--af-nav-radius) !important;
 
-  background: var(--af-nav-bg-light) !important;
-  border: 1px solid var(--af-nav-border-light) !important;
-  box-shadow: var(--af-nav-shadow-light) !important;
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  align-items: center !important;
+  justify-items: stretch !important;
+  gap: 0 !important;
+
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.10) !important;
 
   backdrop-filter: blur(22px) saturate(165%) !important;
   -webkit-backdrop-filter: blur(22px) saturate(165%) !important;
 
   overflow: hidden !important;
-  transform: translateZ(0) !important;
+  box-sizing: border-box !important;
 }
-
-/* -----------------------------
-   Buttons forced equal
------------------------------ */
-
-html body .bottom-nav .nav-btn {
-  position: relative !important;
-
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-
-  height: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
-
-  flex: initial !important;
-  flex-basis: auto !important;
-  flex-grow: 0 !important;
-  flex-shrink: 1 !important;
-
-  border: 0 !important;
-  outline: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  place-items: center !important;
-  gap: 7px !important;
-
-  padding: 8px 4px !important;
-  margin: 0 !important;
-  border-radius: 20px !important;
-
-  color: var(--af-nav-text-light) !important;
-  font-family: inherit !important;
-  font-size: 11px !important;
-  font-weight: 750 !important;
-  line-height: 1 !important;
-  letter-spacing: 0 !important;
-  text-align: center !important;
-  text-decoration: none !important;
-  white-space: nowrap !important;
-
-  cursor: pointer !important;
-  -webkit-tap-highlight-color: transparent !important;
-  touch-action: manipulation !important;
-
-  opacity: 1 !important;
-  visibility: visible !important;
-
-  transition:
-    background 180ms ease,
-    color 180ms ease,
-    transform 180ms ease,
-    box-shadow 180ms ease !important;
-}
-
-/* -----------------------------
-   Icons forced center
------------------------------ */
-
-html body .bottom-nav .nav-btn b,
-html body .bottom-nav .nav-btn .nav-icon-wrap {
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  max-width: 24px !important;
-  min-height: 24px !important;
-  max-height: 24px !important;
-
-  display: grid !important;
-  place-items: center !important;
-  align-items: center !important;
-  justify-items: center !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  font-size: 15px !important;
-  line-height: 1 !important;
-  font-weight: 800 !important;
-  font-style: normal !important;
-
-  filter: saturate(0.78) !important;
-  opacity: 0.82 !important;
-
-  transform: translateZ(0) !important;
-
-  transition:
-    transform 180ms ease,
-    opacity 180ms ease,
-    filter 180ms ease !important;
-}
-
-/* -----------------------------
-   Labels forced safe
------------------------------ */
-
-html body .bottom-nav .nav-btn span {
-  display: block !important;
-  width: auto !important;
-  max-width: 100% !important;
-  min-width: 0 !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  color: inherit !important;
-  font: inherit !important;
-  line-height: 1 !important;
-  text-align: center !important;
-
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-/* Raw text node buttons still align because button is flex-column */
-html body .bottom-nav .nav-btn {
-  overflow: hidden !important;
-}
-
-/* -----------------------------
-   Active state
------------------------------ */
-
-html body .bottom-nav .nav-btn.active {
-  background: var(--af-nav-item-light) !important;
-  color: var(--af-nav-text-light-active) !important;
-  box-shadow:
-    inset 0 0 0 1px rgba(15, 23, 42, 0.045),
-    0 10px 24px rgba(15, 23, 42, 0.06) !important;
-}
-
-html body .bottom-nav .nav-btn.active b,
-html body .bottom-nav .nav-btn.active .nav-icon-wrap {
-  opacity: 1 !important;
-  filter: saturate(1) !important;
-  transform: translateY(-1px) scale(1.04) !important;
-}
-
-/* -----------------------------
-   Hover / active feedback
------------------------------ */
-
-@media (hover: hover) and (pointer: fine) {
-  html body .bottom-nav .nav-btn:hover {
-    background: rgba(15, 23, 42, 0.045) !important;
-    color: var(--af-nav-text-light-active) !important;
-  }
-
-  html body .bottom-nav .nav-btn:hover b,
-  html body .bottom-nav .nav-btn:hover .nav-icon-wrap {
-    opacity: 1 !important;
-    transform: translateY(-1px) !important;
-  }
-}
-
-html body .bottom-nav .nav-btn:active {
-  transform: scale(0.96) !important;
-}
-
-/* -----------------------------
-   Dark mode forced support
------------------------------ */
 
 html body.dark .bottom-nav.glass,
 html body.dark .bottom-nav,
@@ -21895,48 +22535,135 @@ html .dark-mode .bottom-nav.glass,
 html .dark-mode .bottom-nav,
 html [data-theme="dark"] .bottom-nav.glass,
 html [data-theme="dark"] .bottom-nav {
-  background: var(--af-nav-bg-dark) !important;
-  border-color: var(--af-nav-border-dark) !important;
-  box-shadow: var(--af-nav-shadow-dark) !important;
+  background: rgba(10, 10, 12, 0.94) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+}
+
+html body .bottom-nav .nav-btn {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+  padding: 8px 2px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 20px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+
+  color: rgba(15, 23, 42, 0.66) !important;
+  font-family: inherit !important;
+  font-size: 10.5px !important;
+  font-weight: 750 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+
+  cursor: pointer !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
 }
 
 html body.dark .bottom-nav .nav-btn,
 html body.dark-mode .bottom-nav .nav-btn,
 html .dark-mode .bottom-nav .nav-btn,
 html [data-theme="dark"] .bottom-nav .nav-btn {
-  color: var(--af-nav-text-dark) !important;
+  color: rgba(255, 255, 255, 0.64) !important;
+}
+
+html body .bottom-nav .nav-btn.active {
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: rgba(15, 23, 42, 0.94) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(15, 23, 42, 0.045),
+    0 10px 24px rgba(15, 23, 42, 0.06) !important;
 }
 
 html body.dark .bottom-nav .nav-btn.active,
 html body.dark-mode .bottom-nav .nav-btn.active,
 html .dark-mode .bottom-nav .nav-btn.active,
 html [data-theme="dark"] .bottom-nav .nav-btn.active {
-  background: var(--af-nav-item-dark) !important;
-  color: var(--af-nav-text-dark-active) !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: rgba(255, 255, 255, 0.96) !important;
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.06),
     0 12px 28px rgba(0, 0, 0, 0.24) !important;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  html body.dark .bottom-nav .nav-btn:hover,
-  html body.dark-mode .bottom-nav .nav-btn:hover,
-  html .dark-mode .bottom-nav .nav-btn:hover,
-  html [data-theme="dark"] .bottom-nav .nav-btn:hover {
-    background: rgba(255, 255, 255, 0.055) !important;
-    color: var(--af-nav-text-dark-active) !important;
-  }
+html body .bottom-nav .nav-btn b,
+html body .bottom-nav .nav-btn .nav-icon-wrap {
+  width: 23px !important;
+  height: 23px !important;
+  min-width: 23px !important;
+  max-width: 23px !important;
+  min-height: 23px !important;
+  max-height: 23px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  font-size: 14px !important;
+  line-height: 1 !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
+
+  opacity: 0.84 !important;
+  filter: saturate(0.78) !important;
 }
 
-/* -----------------------------
-   Mobile exact sizing
------------------------------ */
+html body .bottom-nav .nav-btn.active b,
+html body .bottom-nav .nav-btn.active .nav-icon-wrap {
+  opacity: 1 !important;
+  filter: saturate(1) !important;
+  transform: translateY(-1px) scale(1.04) !important;
+}
+
+html body .bottom-nav .nav-btn span {
+  display: block !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: inherit !important;
+  font: inherit !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* =========================================================
+   14) RESPONSIVE LOCKS
+========================================================= */
 
 @media (max-width: 520px) {
   :root {
+    --af-settings-page-x: 16px !important;
     --af-nav-height: 80px !important;
     --af-nav-radius: 24px !important;
     --af-nav-x: 8px !important;
+  }
+
+  html body #settings .settings-page,
+  html body .settings-page {
+    max-width: none !important;
   }
 
   html body .bottom-nav.glass,
@@ -21944,77 +22671,58 @@ html [data-theme="dark"] .bottom-nav .nav-btn.active {
     max-width: none !important;
     padding: 7px !important;
   }
-
-  html body .bottom-nav .nav-btn {
-    border-radius: 19px !important;
-    gap: 7px !important;
-    font-size: 10.5px !important;
-    font-weight: 750 !important;
-    padding: 8px 2px !important;
-  }
-
-  html body .bottom-nav .nav-btn b,
-  html body .bottom-nav .nav-btn .nav-icon-wrap {
-    width: 23px !important;
-    height: 23px !important;
-    min-width: 23px !important;
-    max-width: 23px !important;
-    min-height: 23px !important;
-    max-height: 23px !important;
-    font-size: 14px !important;
-  }
 }
 
-/* -----------------------------
-   Very small phones
------------------------------ */
-
-@media (max-width: 360px) {
+@media (max-width: 380px) {
   :root {
+    --af-settings-page-x: 12px !important;
+    --af-row-height: 54px !important;
     --af-nav-height: 76px !important;
     --af-nav-x: 6px !important;
   }
 
-  html body .bottom-nav.glass,
-  html body .bottom-nav {
-    padding: 6px !important;
-    border-radius: 22px !important;
+  html body #settings .settings-row,
+  html body #settings .settings-support-row,
+  html body #settings .af-lang-trigger-row,
+  html body .settings-row,
+  html body .settings-support-row,
+  html body .af-lang-trigger-row {
+    padding-inline: 12px !important;
   }
 
-  html body .bottom-nav .nav-btn {
-    border-radius: 17px !important;
-    gap: 6px !important;
-    font-size: 10px !important;
-    padding-inline: 1px !important;
+  html body #settings .settings-row-icon,
+  html body #settings .settings-support-icon,
+  html body #settings .af-lang-icon,
+  html body .settings-row-icon,
+  html body .settings-support-icon,
+  html body .af-lang-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
   }
 
-  html body .bottom-nav .nav-btn b,
-  html body .bottom-nav .nav-btn .nav-icon-wrap {
-    width: 21px !important;
-    height: 21px !important;
-    min-width: 21px !important;
-    max-width: 21px !important;
-    min-height: 21px !important;
-    max-height: 21px !important;
-    font-size: 13px !important;
+  html body #settings .settings-row-left > span:not(.settings-row-icon),
+  html body #settings .settings-support-left > span:not(.settings-support-icon),
+  html body #settings .af-lang-title,
+  html body .settings-row-left > span:not(.settings-row-icon),
+  html body .settings-support-left > span:not(.settings-support-icon),
+  html body .af-lang-title {
+    font-size: 14px !important;
+  }
+
+  html body .af-lang-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 
-/* -----------------------------
-   Kill old pseudo effects if any
------------------------------ */
+/* =========================================================
+   15) BOX-SIZING HARD LOCK
+========================================================= */
 
-html body .bottom-nav::before,
-html body .bottom-nav::after,
-html body .bottom-nav .nav-btn::before,
-html body .bottom-nav .nav-btn::after {
-  pointer-events: none !important;
-}
-
-/* -----------------------------
-   Optional: hide accidental scrollbars/overflow inside nav
------------------------------ */
-
+html body #settings *,
+html body #settings *::before,
+html body #settings *::after,
 html body .bottom-nav *,
 html body .bottom-nav *::before,
 html body .bottom-nav *::after {
@@ -23534,7 +24242,7 @@ html body .bottom-nav *::after {
      Paste after Contact Us button
 ========================================================= -->
 
-<div class="af-lang-shell">
+
   <div class="af-lang-shell">
   <button
     type="button"
@@ -23963,12 +24671,12 @@ html body .bottom-nav *::after {
 <!-----------------------  NAV BUTTONS --------------------------------------->
 
 <nav class="bottom-nav glass">
-  <button class="nav-btn active" data-section="home" onclick="showSection('home')">
+  <button class="nav-btn active" data-section="home" type="button" onclick="showSection('home')">
     <b>⌂</b>
     <span>Home</span>
   </button>
 
-  <button class="nav-btn" data-section="studentaf" onclick="showSection('studentaf')">
+  <button class="nav-btn" data-section="studentaf" type="button" onclick="showSection('studentaf')">
     <b>🎓</b>
     <span>Student</span>
   </button>
@@ -23978,7 +24686,7 @@ html body .bottom-nav *::after {
     <span>Batches</span>
   </button>
 
-  <button class="nav-btn" data-section="community" onclick="showSection('community')">
+  <button class="nav-btn" data-section="community" type="button" onclick="showSection('community')">
     <b>◇</b>
     <span>Community</span>
   </button>
@@ -23988,6 +24696,7 @@ html body .bottom-nav *::after {
     <span>Settings</span>
   </button>
 </nav>
+
 
 
   </main>
