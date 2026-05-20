@@ -22728,6 +22728,449 @@ html body .bottom-nav *::before,
 html body .bottom-nav *::after {
   box-sizing: border-box !important;
 }
+
+    /* =========================================================
+   SETTINGS ROW FINAL NORMALIZER
+   Fix: Language, Notifications, About Us, Contact Us, Logout
+   same style as other settings rows.
+   Paste at VERY END of CSS.
+========================================================= */
+
+/* Force both lists to behave identically */
+html body #settings .settings-list,
+html body #settings .settings-support-list,
+html body .settings-list,
+html body .settings-support-list {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* Support list should continue after settings list with same spacing */
+html body #settings .settings-support-list,
+html body .settings-support-list {
+  margin-top: 14px !important;
+}
+
+/* Kill divider because rows are separate cards now */
+html body #settings .settings-support-divider,
+html body .settings-support-divider {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Universal row/card design for EVERY settings item */
+html body #settings .settings-row,
+html body #settings .settings-row-btn,
+html body #settings .settings-row-static,
+html body #settings .settings-support-row,
+html body #settings .settings-logout-row,
+html body #settings .af-lang-trigger-row,
+html body .settings-row,
+html body .settings-row-btn,
+html body .settings-row-static,
+html body .settings-support-row,
+html body .settings-logout-row,
+html body .af-lang-trigger-row {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+
+  height: 56px !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+
+  margin: 0 !important;
+  padding: 0 14px !important;
+
+  border-radius: 14px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+
+  color: #050505 !important;
+  font-family: inherit !important;
+  text-decoration: none !important;
+  text-align: left !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+
+  cursor: pointer !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Dark mode universal row/card */
+html body.dark #settings .settings-row,
+html body.dark #settings .settings-row-btn,
+html body.dark #settings .settings-row-static,
+html body.dark #settings .settings-support-row,
+html body.dark #settings .settings-logout-row,
+html body.dark #settings .af-lang-trigger-row,
+html body.dark .settings-row,
+html body.dark .settings-row-btn,
+html body.dark .settings-row-static,
+html body.dark .settings-support-row,
+html body.dark .settings-logout-row,
+html body.dark .af-lang-trigger-row,
+html body.dark-mode #settings .settings-row,
+html body.dark-mode #settings .settings-row-btn,
+html body.dark-mode #settings .settings-row-static,
+html body.dark-mode #settings .settings-support-row,
+html body.dark-mode #settings .settings-logout-row,
+html body.dark-mode #settings .af-lang-trigger-row,
+html body.dark-mode .settings-row,
+html body.dark-mode .settings-row-btn,
+html body.dark-mode .settings-row-static,
+html body.dark-mode .settings-support-row,
+html body.dark-mode .settings-logout-row,
+html body.dark-mode .af-lang-trigger-row,
+html .dark-mode #settings .settings-row,
+html .dark-mode #settings .settings-row-btn,
+html .dark-mode #settings .settings-row-static,
+html .dark-mode #settings .settings-support-row,
+html .dark-mode #settings .settings-logout-row,
+html .dark-mode #settings .af-lang-trigger-row,
+html .dark-mode .settings-row,
+html .dark-mode .settings-row-btn,
+html .dark-mode .settings-row-static,
+html .dark-mode .settings-support-row,
+html .dark-mode .settings-logout-row,
+html .dark-mode .af-lang-trigger-row,
+html [data-theme="dark"] #settings .settings-row,
+html [data-theme="dark"] #settings .settings-row-btn,
+html [data-theme="dark"] #settings .settings-row-static,
+html [data-theme="dark"] #settings .settings-support-row,
+html [data-theme="dark"] #settings .settings-logout-row,
+html [data-theme="dark"] #settings .af-lang-trigger-row,
+html [data-theme="dark"] .settings-row,
+html [data-theme="dark"] .settings-row-btn,
+html [data-theme="dark"] .settings-row-static,
+html [data-theme="dark"] .settings-support-row,
+html [data-theme="dark"] .settings-logout-row,
+html [data-theme="dark"] .af-lang-trigger-row {
+  background: #101010 !important;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  color: #ffffff !important;
+}
+
+/* Universal left group */
+html body #settings .settings-row-left,
+html body #settings .settings-support-left,
+html body #settings .af-lang-left,
+html body .settings-row-left,
+html body .settings-support-left,
+html body .af-lang-left {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  height: 100% !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Universal icons */
+html body #settings .settings-row-icon,
+html body #settings .settings-support-icon,
+html body #settings .af-lang-icon,
+html body .settings-row-icon,
+html body .settings-support-icon,
+html body .af-lang-icon {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  max-width: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  border-radius: 10px !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  background: #fafafa !important;
+
+  color: #111827 !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  font-style: normal !important;
+
+  display: grid !important;
+  place-items: center !important;
+
+  box-shadow: none !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* Dark universal icons */
+html body.dark #settings .settings-row-icon,
+html body.dark #settings .settings-support-icon,
+html body.dark #settings .af-lang-icon,
+html body.dark .settings-row-icon,
+html body.dark .settings-support-icon,
+html body.dark .af-lang-icon,
+html body.dark-mode #settings .settings-row-icon,
+html body.dark-mode #settings .settings-support-icon,
+html body.dark-mode #settings .af-lang-icon,
+html body.dark-mode .settings-row-icon,
+html body.dark-mode .settings-support-icon,
+html body.dark-mode .af-lang-icon,
+html .dark-mode #settings .settings-row-icon,
+html .dark-mode #settings .settings-support-icon,
+html .dark-mode #settings .af-lang-icon,
+html .dark-mode .settings-row-icon,
+html .dark-mode .settings-support-icon,
+html .dark-mode .af-lang-icon,
+html [data-theme="dark"] #settings .settings-row-icon,
+html [data-theme="dark"] #settings .settings-support-icon,
+html [data-theme="dark"] #settings .af-lang-icon,
+html [data-theme="dark"] .settings-row-icon,
+html [data-theme="dark"] .settings-support-icon,
+html [data-theme="dark"] .af-lang-icon {
+  background: #171717 !important;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+  color: #ffffff !important;
+}
+
+/* Universal row text */
+html body #settings .settings-row-left > span:not(.settings-row-icon),
+html body #settings .settings-support-left > span:not(.settings-support-icon),
+html body #settings .af-lang-title,
+html body .settings-row-left > span:not(.settings-row-icon),
+html body .settings-support-left > span:not(.settings-support-icon),
+html body .af-lang-title {
+  min-width: 0 !important;
+  max-width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: inherit !important;
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Universal right arrow */
+html body #settings .settings-arrow,
+html body .settings-arrow {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 10px !important;
+
+  margin: 0 0 0 8px !important;
+  padding: 0 !important;
+
+  color: inherit !important;
+  opacity: 0.85 !important;
+  font-size: 18px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+/* Universal badges: Track / New / English */
+html body #settings .settings-new-badge,
+html body #settings .af-lang-current-pill,
+html body .settings-new-badge,
+html body .af-lang-current-pill {
+  flex: 0 0 auto !important;
+
+  width: auto !important;
+  min-width: 48px !important;
+  max-width: 86px !important;
+  height: 28px !important;
+
+  margin: 0 !important;
+  padding: 0 10px !important;
+
+  border-radius: 9px !important;
+  border: 0 !important;
+  background: #fef3c7 !important;
+  color: #92400e !important;
+  box-shadow: none !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
+}
+
+/* Language pill blue */
+html body #settings .af-lang-current-pill,
+html body .af-lang-current-pill {
+  background: rgba(37, 99, 235, 0.12) !important;
+  color: #2563eb !important;
+  border: 1px solid rgba(37, 99, 235, 0.18) !important;
+}
+
+/* Dark badges */
+html body.dark #settings .settings-new-badge,
+html body.dark #settings .af-lang-current-pill,
+html body.dark .settings-new-badge,
+html body.dark .af-lang-current-pill,
+html body.dark-mode #settings .settings-new-badge,
+html body.dark-mode #settings .af-lang-current-pill,
+html body.dark-mode .settings-new-badge,
+html body.dark-mode .af-lang-current-pill,
+html .dark-mode #settings .settings-new-badge,
+html .dark-mode #settings .af-lang-current-pill,
+html .dark-mode .settings-new-badge,
+html .dark-mode .af-lang-current-pill,
+html [data-theme="dark"] #settings .settings-new-badge,
+html [data-theme="dark"] #settings .af-lang-current-pill,
+html [data-theme="dark"] .settings-new-badge,
+html [data-theme="dark"] .af-lang-current-pill {
+  background: rgba(251, 191, 36, 0.14) !important;
+  color: #fde68a !important;
+  border-color: rgba(251, 191, 36, 0.18) !important;
+}
+
+html body.dark #settings .af-lang-current-pill,
+html body.dark .af-lang-current-pill,
+html body.dark-mode #settings .af-lang-current-pill,
+html body.dark-mode .af-lang-current-pill,
+html .dark-mode #settings .af-lang-current-pill,
+html .dark-mode .af-lang-current-pill,
+html [data-theme="dark"] #settings .af-lang-current-pill,
+html [data-theme="dark"] .af-lang-current-pill {
+  background: rgba(59, 130, 246, 0.18) !important;
+  color: #bfdbfe !important;
+  border-color: rgba(96, 165, 250, 0.26) !important;
+}
+
+/* Logout same card, only text/icon red */
+html body #settings .settings-logout-row,
+html body .settings-logout-row {
+  color: #dc2626 !important;
+}
+
+html body #settings .settings-logout-row .settings-support-icon,
+html body .settings-logout-row .settings-support-icon {
+  color: #dc2626 !important;
+}
+
+html body.dark #settings .settings-logout-row,
+html body.dark #settings .settings-logout-row .settings-support-icon,
+html body.dark .settings-logout-row,
+html body.dark .settings-logout-row .settings-support-icon,
+html body.dark-mode #settings .settings-logout-row,
+html body.dark-mode #settings .settings-logout-row .settings-support-icon,
+html body.dark-mode .settings-logout-row,
+html body.dark-mode .settings-logout-row .settings-support-icon,
+html .dark-mode #settings .settings-logout-row,
+html .dark-mode #settings .settings-logout-row .settings-support-icon,
+html .dark-mode .settings-logout-row,
+html .dark-mode .settings-logout-row .settings-support-icon,
+html [data-theme="dark"] #settings .settings-logout-row,
+html [data-theme="dark"] #settings .settings-logout-row .settings-support-icon,
+html [data-theme="dark"] .settings-logout-row,
+html [data-theme="dark"] .settings-logout-row .settings-support-icon {
+  color: #fb7185 !important;
+}
+
+/* Remove duplicate wrapper visual issues */
+html body #settings .af-lang-shell,
+html body .af-lang-shell {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+html body #settings .af-lang-shell .af-lang-shell,
+html body .af-lang-shell .af-lang-shell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Mobile tight */
+@media (max-width: 380px) {
+  html body #settings .settings-row,
+  html body #settings .settings-row-btn,
+  html body #settings .settings-row-static,
+  html body #settings .settings-support-row,
+  html body #settings .settings-logout-row,
+  html body #settings .af-lang-trigger-row,
+  html body .settings-row,
+  html body .settings-row-btn,
+  html body .settings-row-static,
+  html body .settings-support-row,
+  html body .settings-logout-row,
+  html body .af-lang-trigger-row {
+    height: 54px !important;
+    min-height: 54px !important;
+    max-height: 54px !important;
+    padding-inline: 12px !important;
+  }
+
+  html body #settings .settings-row-icon,
+  html body #settings .settings-support-icon,
+  html body #settings .af-lang-icon,
+  html body .settings-row-icon,
+  html body .settings-support-icon,
+  html body .af-lang-icon {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    max-width: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+  }
+
+  html body #settings .settings-row-left > span:not(.settings-row-icon),
+  html body #settings .settings-support-left > span:not(.settings-support-icon),
+  html body #settings .af-lang-title,
+  html body .settings-row-left > span:not(.settings-row-icon),
+  html body .settings-support-left > span:not(.settings-support-icon),
+  html body .af-lang-title {
+    font-size: 14px !important;
+  }
+}
 </style>
 </head>
 
