@@ -1292,7 +1292,7 @@ document.addEventListener('DOMContentLoaded', function () {
           completeProgressBar();
           handleBuildSuccess({
             success:     true,
-            downloadUrl: `/download/${projectId}.apk`,
+            downloadUrl: `${API_BASE}/download/${projectId}.apk`,
             buildTime:   status.completedAt - status.startedAt,
           });
 
@@ -1354,7 +1354,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Auto-trigger download after 1s
     console.log(`[success] Auto-downloading from: ${result.downloadUrl}`);
-    setTimeout(() => { window.location.href = result.downloadUrl; }, 1000);
+    setTimeout(() => {
+    const a = document.createElement('a');
+    a.href = result.downloadUrl;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}, 1000);
   }
 
   /* ─────────────────────────────────────────────
