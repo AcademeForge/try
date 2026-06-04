@@ -304,10 +304,11 @@
         /* Build Result */
         .build-result { text-align: center; padding: 40px; }
 
-        .result-success i {
+        .result-success i.check-icon {
             font-size: 4rem;
             color: #10b981;
             margin-bottom: 20px;
+            display: block;
         }
 
         .result-success h3 {
@@ -341,6 +342,21 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
         }
+
+        /* Download URL debug box */
+        .download-url-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #166534;
+            word-break: break-all;
+            text-align: left;
+        }
+
+        .download-url-box strong { display: block; margin-bottom: 4px; color: #14532d; }
 
         /* Build Instructions */
         .build-instructions {
@@ -641,13 +657,21 @@
 
                 <div id="buildResult" class="build-result hidden">
                     <div class="result-success">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle check-icon"></i>
                         <h3>APK Generated Successfully!</h3>
                         <p>Your APK has been built and is ready for download and installation.</p>
-                        <a href="#" id="downloadLink" class="download-button">
+
+                        <!-- Shows the exact URL the button will open — debug aid -->
+                        <div class="download-url-box" id="downloadUrlBox">
+                            <strong>Download URL:</strong>
+                            <span id="downloadUrlDisplay">—</span>
+                        </div>
+
+                        <a href="#" id="downloadLink" class="download-button" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-download"></i>
                             <span>Download APK</span>
                         </a>
+
                         <div class="build-instructions">
                             <h4>Installation Instructions:</h4>
                             <ol>
@@ -728,681 +752,718 @@
     </div>
 
     <script>
-/**
- * AcademeForge — WebView APK Builder
- * Frontend: https://academeforge.github.io
- * Backend:  https://webappcreator.amethystlab.org
- *
- * Production-ready client-side JavaScript.
- * All API calls are routed through apiFetch() for centralized
- * CORS-aware error handling, network failure detection, and
- * JSON parsing safeguards.
- */
+    /**
+     * AcademeForge — WebView APK Builder
+     * Frontend : https://academeforge.github.io  (static only — NO downloads)
+     * Backend  : https://webappcreator.amethystlab.org  (all API + APK downloads)
+     *
+     * CRITICAL RULE: ALL download URLs must be absolute, always pointing to API_BASE.
+     * Never use relative paths, window.location, or the GitHub Pages domain for downloads.
+     */
+    'use strict';
 
-'use strict';
+    /* ─────────────────────────────────────────────
+       CONFIGURATION — single source of truth
+       ───────────────────────────────────────────── */
+    const API_BASE = 'https://webappcreator.amethystlab.org';
 
-/* ─────────────────────────────────────────────
-   CONFIGURATION
-   ───────────────────────────────────────────── */
-const API_BASE = 'https://webappcreator.amethystlab.org';
+    /**
+     * buildDownloadUrl — constructs a guaranteed absolute APK download URL.
+     * ALWAYS uses API_BASE. NEVER uses relative paths or window.location.
+     *
+     * @param {string} projectId  - UUID returned by the build API
+     * @returns {string}          - e.g. https://webappcreator.amethystlab.org/download/abc123.apk
+     */
+    function buildDownloadUrl(projectId) {
+        const url = `${API_BASE}/download/${projectId}.apk`;
+        console.log(`[buildDownloadUrl] Absolute APK URL: ${url}`);
+        // Safety assertion — must start with API_BASE
+        if (!url.startsWith(API_BASE)) {
+            throw new Error(`[buildDownloadUrl] FATAL: URL does not start with API_BASE. Got: ${url}`);
+        }
+        return url;
+    }
 
-/* ─────────────────────────────────────────────
-   CENTRALIZED API HELPER
-   ───────────────────────────────────────────── */
+    /* ─────────────────────────────────────────────
+       CENTRALIZED API HELPER
+       ───────────────────────────────────────────── */
 
-/**
- * apiFetch — wrapper around fetch() with:
- *   • Absolute URL construction via API_BASE
- *   • CORS error detection
- *   • Network / offline detection
- *   • Safe JSON parsing with raw-text fallback
- *   • Detailed console logging
- *
- * @param {string} path        - API path (e.g. '/api/queue-status')
- * @param {RequestInit} [opts] - Standard fetch options
- * @returns {Promise<{ ok: boolean, status: number, data: any, rawText: string }>}
- */
-async function apiFetch(path, opts = {}) {
-  const url = `${API_BASE}${path}`;
-  const method = (opts.method || 'GET').toUpperCase();
+    /**
+     * apiFetch — wrapper around fetch() with:
+     *   • Absolute URL construction via API_BASE
+     *   • CORS error detection
+     *   • Network / offline detection
+     *   • Safe JSON parsing with raw-text fallback
+     *   • Detailed console logging
+     */
+    async function apiFetch(path, opts = {}) {
+        const url    = `${API_BASE}${path}`;
+        const method = (opts.method || 'GET').toUpperCase();
 
-  console.log(`[apiFetch] → ${method} ${url}`);
-  if (opts.body instanceof FormData) {
-    console.log('[apiFetch]   body: FormData (multipart)');
-  } else if (opts.body) {
-    console.log('[apiFetch]   body:', opts.body);
-  }
+        console.log(`[apiFetch] → ${method} ${url}`);
+        if (opts.body instanceof FormData) {
+            console.log('[apiFetch]   body: FormData (multipart)');
+        } else if (opts.body) {
+            console.log('[apiFetch]   body:', opts.body);
+        }
 
-  let response;
-  let rawText = '';
+        let response;
+        let rawText = '';
 
-  try {
-    response = await fetch(url, {
-      ...opts,
-      // Do NOT manually set Content-Type for FormData — browser sets it with boundary
-      headers: opts.body instanceof FormData ? (opts.headers || {}) : {
-        'Accept': 'application/json',
-        ...(opts.headers || {}),
-      },
+        try {
+            response = await fetch(url, {
+                ...opts,
+                // Do NOT manually set Content-Type for FormData — browser sets it with boundary
+                headers: opts.body instanceof FormData
+                    ? (opts.headers || {})
+                    : { 'Accept': 'application/json', ...(opts.headers || {}) },
+            });
+        } catch (networkError) {
+            const msg = networkError.message.toLowerCase();
+            const isCORS = networkError instanceof TypeError &&
+                (msg.includes('cors') || msg.includes('failed to fetch') || msg.includes('networkerror'));
+
+            if (!navigator.onLine) {
+                console.error('[apiFetch] ✗ Network offline:', networkError);
+                throw new Error('You appear to be offline. Please check your internet connection and try again.');
+            }
+            if (isCORS) {
+                console.error('[apiFetch] ✗ Possible CORS / network error:', networkError);
+                throw new Error(
+                    `Could not reach the build server (${API_BASE}). ` +
+                    `This may be a CORS or network configuration issue. ` +
+                    `Original error: ${networkError.message}`
+                );
+            }
+            console.error('[apiFetch] ✗ Fetch failed:', networkError);
+            throw new Error(`Network request failed: ${networkError.message}`);
+        }
+
+        console.log(`[apiFetch] ← HTTP ${response.status} ${response.statusText} (${url})`);
+
+        try {
+            rawText = await response.text();
+        } catch (readError) {
+            console.error('[apiFetch] ✗ Failed to read response body:', readError);
+            rawText = '';
+        }
+
+        console.log(`[apiFetch]   response body (first 300 chars): ${rawText.substring(0, 300)}${rawText.length > 300 ? '…' : ''}`);
+
+        let data = null;
+        try {
+            data = JSON.parse(rawText);
+            console.log('[apiFetch]   parsed JSON:', data);
+        } catch (jsonError) {
+            console.warn('[apiFetch]   response is not valid JSON — returning rawText');
+            data = null;
+        }
+
+        if (!response.ok) {
+            const errMsg =
+                (data && (data.error || data.message)) ||
+                (rawText && rawText.length < 300 ? rawText : null) ||
+                `HTTP ${response.status}: ${response.statusText}`;
+            console.error(`[apiFetch] ✗ Non-OK response (${response.status}):`, errMsg);
+            const err    = new Error(errMsg);
+            err.status   = response.status;
+            err.data     = data;
+            err.rawText  = rawText;
+            throw err;
+        }
+
+        return { ok: response.ok, status: response.status, data, rawText };
+    }
+
+    /* ─────────────────────────────────────────────
+       DOM READY INIT
+       ───────────────────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('[init] AcademeForge APK Builder initialised');
+        console.log(`[init] API_BASE = ${API_BASE}`);
+
+        /* ── Element References ── */
+        const form            = document.getElementById('apkForm');
+        const iconInput       = document.getElementById('icon');
+        const buildStatus     = document.getElementById('buildStatus');
+        const buildResult     = document.getElementById('buildResult');
+        const statusMessage   = document.getElementById('statusMessage');
+        const downloadLink    = document.getElementById('downloadLink');
+        const downloadUrlBox  = document.getElementById('downloadUrlDisplay');
+
+        /* ── Progress State ── */
+        let buildStartTime         = null;
+        let progressUpdateInterval = null;
+
+        /* ─────────────────────────────────────────────
+           PROGRESS BAR HELPERS
+           ───────────────────────────────────────────── */
+        function ensureProgressBarElements() {
+            return {
+                fill: document.getElementById('progressFill'),
+                text: document.getElementById('progressText'),
+                time: document.getElementById('estimatedTime'),
+            };
+        }
+
+        function initProgressBar() {
+            buildStartTime = Date.now();
+            console.log('[progress] Build started at', new Date(buildStartTime).toISOString());
+            const el = ensureProgressBarElements();
+            if (el.fill) el.fill.style.width = '0%';
+            if (el.text) el.text.textContent  = 'Preparing build...';
+            if (el.time) el.time.textContent  = 'Estimated time: 5 minutes';
+            updateProgressBar();
+            clearInterval(progressUpdateInterval);
+            progressUpdateInterval = setInterval(updateProgressBar, 3000);
+        }
+
+        function updateProgressBar() {
+            if (!buildStartTime) return;
+            const el            = ensureProgressBarElements();
+            const elapsed       = Date.now() - buildStartTime;
+            const currentStatus = (statusMessage ? statusMessage.textContent : '').toLowerCase();
+            let progressPercent, estimatedTimeText, progressTextStr;
+
+            if (currentStatus.includes('finalizing') || currentStatus.includes('approximately 3 minutes')) {
+                progressPercent   = 90;
+                estimatedTimeText = 'Finalizing APK: approximately 3 minutes remaining';
+                progressTextStr   = 'Finalizing APK...';
+            } else if (currentStatus.includes('building') || currentStatus.includes('compile')) {
+                progressPercent   = Math.min(40 + (elapsed / (4 * 60 * 1000)) * 50, 90);
+                const rem         = Math.max(2, Math.ceil((5 * 60 * 1000 - elapsed) / 60000));
+                estimatedTimeText = `Building APK: approximately ${rem} minutes remaining`;
+                progressTextStr   = 'Building APK...';
+            } else if (
+                currentStatus.includes('position') ||
+                currentStatus.includes('queue') ||
+                currentStatus.includes('waiting')
+            ) {
+                progressPercent   = Math.min((elapsed / (3 * 60 * 1000)) * 40, 40);
+                const rem         = Math.max(1, Math.ceil((3 * 60 * 1000 - elapsed) / 60000));
+                estimatedTimeText = `Waiting in queue: ${rem} minute${rem > 1 ? 's' : ''} remaining`;
+                progressTextStr   = 'Waiting in queue...';
+            } else {
+                progressPercent   = Math.min((elapsed / (5 * 60 * 1000)) * 80, 80);
+                estimatedTimeText = `Building in progress: ${Math.max(1, Math.ceil((5 * 60 * 1000 - elapsed) / 60000))} minutes remaining`;
+                progressTextStr   = 'Building...';
+            }
+
+            if (el.fill) el.fill.style.width = Math.min(progressPercent, 95) + '%';
+            if (el.time) el.time.textContent  = estimatedTimeText;
+            if (el.text) el.text.textContent  = progressTextStr;
+
+            console.log(`[progress] ${progressTextStr} — ${Math.round(Math.min(progressPercent, 95))}%`);
+        }
+
+        function completeProgressBar() {
+            clearInterval(progressUpdateInterval);
+            const el = ensureProgressBarElements();
+            if (el.fill) el.fill.style.width = '100%';
+            if (el.text) el.text.textContent  = 'Build completed!';
+            if (el.time) el.time.textContent  = 'APK ready for download';
+            console.log('[progress] Build completed — 100%');
+            setTimeout(() => {
+                if (el.fill) el.fill.style.width = '0%';
+                buildStartTime = null;
+            }, 2000);
+        }
+
+        /* ─────────────────────────────────────────────
+           ICON PREVIEW
+           ───────────────────────────────────────────── */
+        iconInput.addEventListener('change', function (e) {
+            const file        = e.target.files[0];
+            const placeholder = document.querySelector('.file-upload-placeholder');
+            const preview     = document.querySelector('.file-upload-preview');
+            const previewImg  = document.getElementById('iconPreview');
+            const fileNameEl  = document.getElementById('fileName');
+
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB');
+                    iconInput.value = '';
+                    return;
+                }
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select a valid image file');
+                    iconInput.value = '';
+                    return;
+                }
+                console.log(`[icon] Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB, ${file.type})`);
+                const reader   = new FileReader();
+                reader.onload  = function (ev) {
+                    previewImg.src         = ev.target.result;
+                    fileNameEl.textContent = file.name;
+                    placeholder.classList.add('hidden');
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                placeholder.classList.remove('hidden');
+                preview.classList.add('hidden');
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           AUTO-SUGGEST PACKAGE NAME
+           ───────────────────────────────────────────── */
+        document.getElementById('appName').addEventListener('input', function (e) {
+            const appName  = e.target.value.trim();
+            const pkgInput = document.getElementById('packageName');
+            if (appName && !pkgInput.value) {
+                const sanitized = appName.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '');
+                pkgInput.value  = `com.example.${sanitized}`;
+                console.log(`[packageName] Auto-suggested: com.example.${sanitized}`);
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           FORM VALIDATION
+           ───────────────────────────────────────────── */
+        function validateForm() {
+            const websiteUrl  = document.getElementById('websiteUrl').value;
+            const appName     = document.getElementById('appName').value;
+            const packageName = document.getElementById('packageName').value;
+            const versionName = document.getElementById('versionName').value;
+            const versionCode = document.getElementById('versionCode').value;
+            const icon        = iconInput.files[0];
+
+            try { new URL(websiteUrl); } catch {
+                alert('Please enter a valid website URL');
+                return false;
+            }
+            if (!/^[a-zA-Z][a-zA-Z0-9]*(\.[a-zA-Z][a-zA-Z0-9]*)+$/.test(packageName)) {
+                alert('Package name must be in format: com.example.app');
+                return false;
+            }
+            if (!/^\d+\.\d+\.\d+$/.test(versionName)) {
+                alert('Version name must be in format: 1.0.0');
+                return false;
+            }
+            if (!versionCode || parseInt(versionCode) < 1) {
+                alert('Version code must be a positive integer');
+                return false;
+            }
+            if (!icon) {
+                alert('Please select an app icon');
+                return false;
+            }
+            if (icon.size > 5 * 1024 * 1024) {
+                alert('Icon file size must be less than 5MB');
+                return false;
+            }
+            if (!icon.type.startsWith('image/')) {
+                alert('Please select a valid image file for the icon');
+                return false;
+            }
+            if (appName.length > 30) {
+                alert('App name must be 30 characters or less');
+                return false;
+            }
+            console.log('[validation] Form passed validation');
+            return true;
+        }
+
+        /* ─────────────────────────────────────────────
+           FORM SUBMISSION
+           ───────────────────────────────────────────── */
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!validateForm()) return;
+
+            console.log('[submit] Starting APK build submission');
+
+            form.classList.add('hidden');
+            buildResult.classList.add('hidden');
+            buildStatus.classList.remove('hidden');
+            initProgressBar();
+            statusMessage.textContent = 'Building your APK...';
+
+            try {
+                const formData = new FormData(form);
+
+                for (const [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        console.log(`[formData] ${key}: File(${value.name}, ${value.size} bytes, ${value.type})`);
+                    } else {
+                        console.log(`[formData] ${key}: ${value}`);
+                    }
+                }
+
+                const progressMessages = [
+                    'Initializing project structure...',
+                    'Generating Android manifest...',
+                    'Processing app icon...',
+                    'Creating WebView components...',
+                    'Building project files...',
+                    'Compiling Android code...',
+                    'Building APK...',
+                    'Finalizing APK...',
+                ];
+                let messageIndex = 0;
+                const progressInterval = setInterval(() => {
+                    if (messageIndex < progressMessages.length) {
+                        const msg             = progressMessages[messageIndex++];
+                        statusMessage.textContent = msg;
+                        console.log(`[build] Status message: ${msg}`);
+                    }
+                }, 2000);
+
+                let result;
+                try {
+                    const res = await apiFetch('/api/build-apk', { method: 'POST', body: formData });
+                    result    = res.data;
+                    if (!result) {
+                        throw new Error(`Server returned a non-JSON response: ${res.rawText.substring(0, 200)}`);
+                    }
+                } finally {
+                    clearInterval(progressInterval);
+                }
+
+                console.log('[submit] Build API response:', result);
+
+                if (result.queued) {
+                    const estimatedMinutes = Math.ceil(result.estimatedWaitTime / 60000);
+                    const buildTimeMinutes = Math.ceil(result.estimatedBuildTime / 60000);
+                    statusMessage.innerHTML = `
+                        <div style="text-align:center;">
+                            <div style="font-size:1.1em;margin-bottom:10px;">📋 Build queued — Position ${result.position} in queue</div>
+                            <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated total time: ${estimatedMinutes} minutes</div>
+                            <div style="font-size:0.8em;color:#888;margin-bottom:8px;">🔨 Build time: ${buildTimeMinutes} minutes (typically 3–6 minutes, up to 15 minutes on slower servers)</div>
+                            <div style="font-size:0.8em;color:#888;">${result.queueInfo.currentBuilds}/${result.queueInfo.maxConcurrent} builds running</div>
+                        </div>`;
+                    console.log(`[submit] Queued — position ${result.position}, projectId: ${result.projectId}`);
+                    pollBuildStatus(result.projectId);
+                    updateProgressBar();
+
+                } else if (result.success) {
+                    // Build completed immediately — construct absolute download URL
+                    const absoluteUrl = buildDownloadUrl(result.projectId || extractProjectIdFromUrl(result.downloadUrl));
+                    console.log('[submit] Immediate build success, absolute download URL:', absoluteUrl);
+                    completeProgressBar();
+                    handleBuildSuccess({ ...result, downloadUrl: absoluteUrl });
+
+                } else {
+                    throw new Error(result.error || 'Failed to build APK');
+                }
+
+            } catch (error) {
+                console.error('[submit] ✗ Build submission error:', error);
+                buildStatus.classList.add('hidden');
+                form.classList.remove('hidden');
+                alert(`Error: ${error.message}`);
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           DOWNLOAD & RESET
+           ───────────────────────────────────────────── */
+        downloadLink.addEventListener('click', function () {
+            // Verify the href is still pointing to the backend before navigating
+            const href = downloadLink.href;
+            console.log(`[download] Download link clicked. href = ${href}`);
+
+            if (!href.startsWith(API_BASE)) {
+                // Safety net: should never happen, but block and log if it does
+                console.error(`[download] BLOCKED — href does not start with API_BASE (${API_BASE}). href = ${href}`);
+                alert('Download URL error. Please try rebuilding your APK.');
+                return;
+            }
+
+            console.log('[download] APK download initiated from backend. Will reset form in 5s.');
+            setTimeout(() => {
+                buildResult.classList.add('hidden');
+                form.classList.remove('hidden');
+                form.reset();
+                document.querySelector('.file-upload-placeholder').classList.remove('hidden');
+                document.querySelector('.file-upload-preview').classList.add('hidden');
+                console.log('[download] Form reset');
+            }, 5000);
+        });
+
+        /* ─────────────────────────────────────────────
+           REAL-TIME VALIDATION COLOURS
+           ───────────────────────────────────────────── */
+        document.getElementById('packageName').addEventListener('input', function (e) {
+            e.target.style.borderColor = /^[a-zA-Z][a-zA-Z0-9]*(\.[a-zA-Z][a-zA-Z0-9]*)*$/.test(e.target.value)
+                ? '#e5e7eb' : '#ef4444';
+        });
+
+        document.getElementById('versionName').addEventListener('input', function (e) {
+            e.target.style.borderColor = /^\d+\.\d+\.\d+$/.test(e.target.value) ? '#e5e7eb' : '#ef4444';
+        });
+
+        document.getElementById('websiteUrl').addEventListener('input', function (e) {
+            if (!e.target.value) { e.target.style.borderColor = '#e5e7eb'; return; }
+            try { new URL(e.target.value); e.target.style.borderColor = '#e5e7eb'; }
+            catch { e.target.style.borderColor = '#ef4444'; }
+        });
+
+        /* ─────────────────────────────────────────────
+           AUTO VERSION CODE FROM VERSION NAME
+           ───────────────────────────────────────────── */
+        document.getElementById('versionName').addEventListener('change', function (e) {
+            const versionCodeInput = document.getElementById('versionCode');
+            if (versionCodeInput.value) return;
+            const parts = e.target.value.split('.');
+            if (parts.length === 3) {
+                const code = (parseInt(parts[0]) || 0) * 10000 +
+                             (parseInt(parts[1]) || 0) * 100  +
+                             (parseInt(parts[2]) || 0);
+                versionCodeInput.value = code;
+                console.log(`[versionCode] Auto-computed from ${e.target.value}: ${code}`);
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           DRAG AND DROP
+           ───────────────────────────────────────────── */
+        const fileUploadDisplay = document.querySelector('.file-upload-display');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev =>
+            fileUploadDisplay.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); })
+        );
+        ['dragenter', 'dragover'].forEach(ev =>
+            fileUploadDisplay.addEventListener(ev, () => {
+                fileUploadDisplay.style.borderColor     = '#3949ab';
+                fileUploadDisplay.style.backgroundColor = '#f3f4f6';
+            })
+        );
+        ['dragleave', 'drop'].forEach(ev =>
+            fileUploadDisplay.addEventListener(ev, () => {
+                fileUploadDisplay.style.borderColor     = '#d1d5db';
+                fileUploadDisplay.style.backgroundColor = '#f9fafb';
+            })
+        );
+        fileUploadDisplay.addEventListener('drop', function (e) {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                console.log(`[drag-drop] Dropped file: ${files[0].name}`);
+                iconInput.files = files;
+                iconInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           KEYBOARD SHORTCUT (Ctrl/Cmd + Enter)
+           ───────────────────────────────────────────── */
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (!buildStatus.classList.contains('hidden')) return;
+                e.preventDefault();
+                console.log('[keyboard] Ctrl/Cmd+Enter — triggering form submit');
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        /* ─────────────────────────────────────────────
+           BUILD STATUS POLLING
+           ───────────────────────────────────────────── */
+        function pollBuildStatus(projectId) {
+            console.log(`[poll] Starting status polling for projectId: ${projectId}`);
+            let pollCount = 0;
+
+            const pollInterval = setInterval(async () => {
+                pollCount++;
+                console.log(`[poll] Poll #${pollCount} for projectId: ${projectId}`);
+
+                try {
+                    const res    = await apiFetch(`/api/build-status/${projectId}`);
+                    const status = res.data;
+
+                    if (!status) {
+                        clearInterval(pollInterval);
+                        throw new Error(`Invalid status response (non-JSON): ${res.rawText}`);
+                    }
+
+                    console.log(`[poll] Status: ${status.status}`, status);
+
+                    if (status.status === 'queued') {
+                        const rem = Math.ceil(status.estimatedTimeRemaining / 60000);
+                        statusMessage.innerHTML = `
+                            <div style="text-align:center;">
+                                <div style="font-size:1.1em;margin-bottom:10px;">📋 Position ${status.position} in queue</div>
+                                <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated wait time: ${rem} minutes</div>
+                                <div style="font-size:0.8em;color:#888;margin-bottom:8px;">🔨 Build time: 3–6 minutes (typically 4.5 minutes, up to 15 minutes on slower servers)</div>
+                                <div style="font-size:0.8em;color:#888;">${status.queueInfo.currentBuilds}/${status.queueInfo.maxConcurrent} builds running</div>
+                            </div>`;
+                        updateProgressBar();
+
+                    } else if (status.status === 'building') {
+                        statusMessage.innerHTML = `
+                            <div style="text-align:center;">
+                                <div style="font-size:1.1em;margin-bottom:10px;">🔨 Building your APK...</div>
+                                <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated time remaining: 3–6 minutes</div>
+                                <div style="font-size:0.8em;color:#888;">Please wait while we compile your app...</div>
+                            </div>`;
+                        updateProgressBar();
+
+                    } else if (status.status === 'completed') {
+                        clearInterval(pollInterval);
+                        completeProgressBar();
+
+                        // ── CRITICAL: always build the absolute URL using projectId + API_BASE ──
+                        const absoluteDownloadUrl = buildDownloadUrl(projectId);
+                        console.log(`[poll] Build completed. Absolute download URL: ${absoluteDownloadUrl}`);
+
+                        handleBuildSuccess({
+                            success:     true,
+                            downloadUrl: absoluteDownloadUrl,
+                            buildTime:   status.completedAt - status.startedAt,
+                        });
+
+                    } else if (status.status === 'failed') {
+                        clearInterval(pollInterval);
+                        throw new Error(status.error || 'Build failed');
+                    }
+
+                } catch (error) {
+                    if (error.status !== undefined || pollCount >= 3) {
+                        clearInterval(pollInterval);
+                        clearInterval(progressUpdateInterval);
+                        console.error('[poll] ✗ Fatal polling error, stopping:', error);
+                        buildStatus.classList.add('hidden');
+                        form.classList.remove('hidden');
+                        alert(`Error: ${error.message}`);
+                    } else {
+                        console.warn(`[poll] Transient error on poll #${pollCount}, will retry:`, error.message);
+                    }
+                }
+            }, 2000);
+
+            // Hard timeout — 10 minutes
+            setTimeout(() => {
+                clearInterval(pollInterval);
+                console.warn('[poll] ✗ Polling timed out after 10 minutes');
+            }, 10 * 60 * 1000);
+        }
+
+        /* ─────────────────────────────────────────────
+           HANDLE SUCCESSFUL BUILD
+           ── This is the ONLY place downloadLink.href is set ──
+           ───────────────────────────────────────────── */
+        function handleBuildSuccess(result) {
+            console.log('[success] Handling build success:', result);
+
+            // ── FINAL ABSOLUTE URL GUARANTEE ──────────────────────────────────
+            // result.downloadUrl must already be absolute (set by buildDownloadUrl).
+            // We re-validate here as a hard safety net before touching the DOM.
+            let finalUrl = result.downloadUrl;
+
+            if (!finalUrl || !finalUrl.startsWith('https://')) {
+                // Attempt recovery if result contains a projectId
+                if (result.projectId) {
+                    finalUrl = buildDownloadUrl(result.projectId);
+                    console.warn(`[success] Recovered absolute URL from projectId: ${finalUrl}`);
+                } else {
+                    // Extract projectId from whatever URL was provided
+                    const extracted = extractProjectIdFromUrl(finalUrl);
+                    if (extracted) {
+                        finalUrl = buildDownloadUrl(extracted);
+                        console.warn(`[success] Recovered absolute URL from extracted projectId: ${finalUrl}`);
+                    }
+                }
+            }
+
+            // One last check — must start with API_BASE
+            if (!finalUrl.startsWith(API_BASE)) {
+                console.error(`[success] FATAL: finalUrl still does not start with API_BASE. Got: ${finalUrl}`);
+                alert('There was a problem generating the download URL. Please rebuild.');
+                buildStatus.classList.add('hidden');
+                form.classList.remove('hidden');
+                return;
+            }
+
+            console.log(`[success] ✓ Verified absolute download URL: ${finalUrl}`);
+
+            // ── SET DOM ────────────────────────────────────────────────────────
+            buildStatus.classList.add('hidden');
+            buildResult.classList.remove('hidden');
+
+            // Set the download button — absolute URL only, no relative paths
+            downloadLink.href = finalUrl;
+            // target="_blank" opens in new tab; browser will serve APK from backend
+            downloadLink.setAttribute('target', '_blank');
+            downloadLink.setAttribute('rel', 'noopener noreferrer');
+            // Remove any 'download' attribute — let the server set Content-Disposition
+            downloadLink.removeAttribute('download');
+
+            // Show the URL visibly so users/devs can verify it
+            if (downloadUrlBox) {
+                downloadUrlBox.textContent = finalUrl;
+            }
+
+            document.querySelector('.result-success h3').textContent = 'APK Generated Successfully!';
+            document.querySelector('.result-success p').textContent  =
+                'Your APK has been built and is ready for download and installation.';
+
+            const btnSpan = downloadLink.querySelector('span');
+            if (btnSpan) btnSpan.textContent = 'Download APK';
+
+            if (result.buildTime) {
+                const seconds  = Math.round(result.buildTime / 1000);
+                const existing = document.querySelector('.result-success .build-time-info');
+                if (!existing) {
+                    const info        = document.createElement('div');
+                    info.className    = 'build-time-info';
+                    info.style.cssText = 'font-size:0.9em;color:#666;margin-top:10px;';
+                    info.textContent  = `Build completed in ${seconds} seconds`;
+                    document.querySelector('.result-success p').after(info);
+                }
+                console.log(`[success] Build time: ${seconds}s`);
+            }
+        }
+
+        /* ─────────────────────────────────────────────
+           UTILITY: extract projectId from any URL shape
+           ───────────────────────────────────────────── */
+        function extractProjectIdFromUrl(url) {
+            if (!url) return null;
+            // Matches UUID or any non-slash string before .apk
+            const match = String(url).match(/\/download\/([^/]+)\.apk/);
+            return match ? match[1] : null;
+        }
+
+        /* ─────────────────────────────────────────────
+           QUEUE STATUS (sidebar)
+           ───────────────────────────────────────────── */
+        async function updateQueueStatus() {
+            console.log('[queue] Fetching queue status');
+            try {
+                const res       = await apiFetch('/api/queue-status');
+                const queueInfo = res.data;
+                if (!queueInfo) throw new Error('Non-JSON queue status response');
+
+                console.log('[queue] Queue info:', queueInfo);
+
+                const el = document.getElementById('queueStatus');
+                if (el) {
+                    el.innerHTML = `
+                        <div class="queue-item"><i class="fas fa-cogs"></i><span>Active builds: ${queueInfo.currentBuilds}/${queueInfo.maxConcurrent}</span></div>
+                        <div class="queue-item"><i class="fas fa-clock"></i><span>Queued builds: ${queueInfo.queueLength}</span></div>
+                        <div class="queue-item"><i class="fas fa-chart-line"></i><span>Total requests: ${queueInfo.totalActiveRequests}</span></div>`;
+                }
+            } catch (error) {
+                console.warn('[queue] Failed to load queue status:', error.message);
+                const el = document.getElementById('queueStatus');
+                if (el) {
+                    el.innerHTML = `<div class="queue-item"><i class="fas fa-exclamation-triangle"></i><span>Unable to load queue status</span></div>`;
+                }
+            }
+        }
+
+        updateQueueStatus();
+        setInterval(updateQueueStatus, 10000);
+
+        /* ─────────────────────────────────────────────
+           DEFAULT FIELD VALUES
+           ───────────────────────────────────────────── */
+        document.getElementById('versionName').value = '1.0.0';
+        document.getElementById('versionCode').value = '1';
+
+        console.log('[init] Setup complete — ready for user input');
     });
-  } catch (networkError) {
-    // Covers: offline, DNS failure, CORS preflight hard-block, SSL errors
-    const isCORS =
-      networkError instanceof TypeError &&
-      (networkError.message.toLowerCase().includes('cors') ||
-        networkError.message.toLowerCase().includes('failed to fetch') ||
-        networkError.message.toLowerCase().includes('networkerror'));
-
-    if (!navigator.onLine) {
-      console.error('[apiFetch] ✗ Network offline:', networkError);
-      throw new Error('You appear to be offline. Please check your internet connection and try again.');
-    }
-
-    if (isCORS) {
-      console.error('[apiFetch] ✗ Possible CORS / network error:', networkError);
-      throw new Error(
-        `Could not reach the build server (${API_BASE}). ` +
-        `This may be a CORS or network configuration issue. ` +
-        `Original error: ${networkError.message}`
-      );
-    }
-
-    console.error('[apiFetch] ✗ Fetch failed:', networkError);
-    throw new Error(`Network request failed: ${networkError.message}`);
-  }
-
-  console.log(`[apiFetch] ← HTTP ${response.status} ${response.statusText} (${url})`);
-
-  // Read body as text first — safe for both JSON and HTML error pages
-  try {
-    rawText = await response.text();
-  } catch (readError) {
-    console.error('[apiFetch] ✗ Failed to read response body:', readError);
-    rawText = '';
-  }
-
-  console.log(
-    `[apiFetch]   response body (first 300 chars): ${rawText.substring(0, 300)}${rawText.length > 300 ? '…' : ''}`
-  );
-
-  // Attempt JSON parse
-  let data = null;
-  try {
-    data = JSON.parse(rawText);
-    console.log('[apiFetch]   parsed JSON:', data);
-  } catch (jsonError) {
-    console.warn('[apiFetch]   response is not valid JSON — returning rawText');
-    data = null;
-  }
-
-  // Surface CORS-style HTTP errors (e.g. 0, or 4xx/5xx with non-JSON body)
-  if (!response.ok) {
-    const errMsg =
-      (data && (data.error || data.message)) ||
-      (rawText && rawText.length < 300 ? rawText : null) ||
-      `HTTP ${response.status}: ${response.statusText}`;
-
-    console.error(`[apiFetch] ✗ Non-OK response (${response.status}):`, errMsg);
-    // Return structured result so caller can inspect; also throw so try/catch callers get the error
-    const err = new Error(errMsg);
-    err.status = response.status;
-    err.data = data;
-    err.rawText = rawText;
-    throw err;
-  }
-
-  return { ok: response.ok, status: response.status, data, rawText };
-}
-
-/* ─────────────────────────────────────────────
-   DOM READY INIT
-   ───────────────────────────────────────────── */
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('[init] AcademeForge APK Builder initialised');
-  console.log(`[init] API_BASE = ${API_BASE}`);
-
-  /* ── Element References ── */
-  const form         = document.getElementById('apkForm');
-  const iconInput    = document.getElementById('icon');
-  const buildStatus  = document.getElementById('buildStatus');
-  const buildResult  = document.getElementById('buildResult');
-  const statusMessage = document.getElementById('statusMessage');
-  const downloadLink = document.getElementById('downloadLink');
-
-  /* ── Progress State ── */
-  let buildStartTime = null;
-  let progressUpdateInterval = null;
-
-  /* ─────────────────────────────────────────────
-     PROGRESS BAR HELPERS
-     ───────────────────────────────────────────── */
-  function ensureProgressBarElements() {
-    return {
-      fill: document.getElementById('progressFill'),
-      text: document.getElementById('progressText'),
-      time: document.getElementById('estimatedTime'),
-    };
-  }
-
-  function initProgressBar() {
-    buildStartTime = Date.now();
-    console.log('[progress] Build started at', new Date(buildStartTime).toISOString());
-    const el = ensureProgressBarElements();
-    if (el.fill) el.fill.style.width = '0%';
-    if (el.text) el.text.textContent = 'Preparing build...';
-    if (el.time) el.time.textContent = 'Estimated time: 5 minutes';
-    updateProgressBar();
-    clearInterval(progressUpdateInterval);
-    progressUpdateInterval = setInterval(updateProgressBar, 3000);
-  }
-
-  function updateProgressBar() {
-    if (!buildStartTime) return;
-    const el = ensureProgressBarElements();
-    const elapsed = Date.now() - buildStartTime;
-    const currentStatus = (statusMessage ? statusMessage.textContent : '').toLowerCase();
-    let progressPercent, estimatedTimeText, progressTextStr;
-
-    if (currentStatus.includes('finalizing') || currentStatus.includes('approximately 3 minutes')) {
-      progressPercent    = 90;
-      estimatedTimeText  = 'Finalizing APK: approximately 3 minutes remaining';
-      progressTextStr    = 'Finalizing APK...';
-    } else if (currentStatus.includes('building') || currentStatus.includes('compile')) {
-      progressPercent   = Math.min(40 + (elapsed / (4 * 60 * 1000)) * 50, 90);
-      const rem         = Math.max(2, Math.ceil((5 * 60 * 1000 - elapsed) / 60000));
-      estimatedTimeText = `Building APK: approximately ${rem} minutes remaining`;
-      progressTextStr   = 'Building APK...';
-    } else if (
-      currentStatus.includes('position') ||
-      currentStatus.includes('queue') ||
-      currentStatus.includes('waiting')
-    ) {
-      progressPercent   = Math.min((elapsed / (3 * 60 * 1000)) * 40, 40);
-      const rem         = Math.max(1, Math.ceil((3 * 60 * 1000 - elapsed) / 60000));
-      estimatedTimeText = `Waiting in queue: ${rem} minute${rem > 1 ? 's' : ''} remaining`;
-      progressTextStr   = 'Waiting in queue...';
-    } else {
-      progressPercent   = Math.min((elapsed / (5 * 60 * 1000)) * 80, 80);
-      estimatedTimeText = `Building in progress: ${Math.max(1, Math.ceil((5 * 60 * 1000 - elapsed) / 60000))} minutes remaining`;
-      progressTextStr   = 'Building...';
-    }
-
-    if (el.fill) el.fill.style.width = Math.min(progressPercent, 95) + '%';
-    if (el.time) el.time.textContent  = estimatedTimeText;
-    if (el.text) el.text.textContent  = progressTextStr;
-
-    console.log(`[progress] ${progressTextStr} — ${Math.round(Math.min(progressPercent, 95))}%`);
-  }
-
-  function completeProgressBar() {
-    clearInterval(progressUpdateInterval);
-    const el = ensureProgressBarElements();
-    if (el.fill) el.fill.style.width = '100%';
-    if (el.text) el.text.textContent  = 'Build completed!';
-    if (el.time) el.time.textContent  = 'APK ready for download';
-    console.log('[progress] Build completed — 100%');
-    setTimeout(() => {
-      if (el.fill) el.fill.style.width = '0%';
-      buildStartTime = null;
-    }, 2000);
-  }
-
-  /* ─────────────────────────────────────────────
-     ICON PREVIEW
-     ───────────────────────────────────────────── */
-  iconInput.addEventListener('change', function (e) {
-    const file        = e.target.files[0];
-    const placeholder = document.querySelector('.file-upload-placeholder');
-    const preview     = document.querySelector('.file-upload-preview');
-    const previewImg  = document.getElementById('iconPreview');
-    const fileNameEl  = document.getElementById('fileName');
-
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        alert('File size must be less than 5MB');
-        iconInput.value = '';
-        return;
-      }
-      if (!file.type.startsWith('image/')) {
-        alert('Please select a valid image file');
-        iconInput.value = '';
-        return;
-      }
-      console.log(`[icon] Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB, ${file.type})`);
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        previewImg.src     = e.target.result;
-        fileNameEl.textContent = file.name;
-        placeholder.classList.add('hidden');
-        preview.classList.remove('hidden');
-      };
-      reader.readAsDataURL(file);
-    } else {
-      placeholder.classList.remove('hidden');
-      preview.classList.add('hidden');
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     AUTO-SUGGEST PACKAGE NAME
-     ───────────────────────────────────────────── */
-  document.getElementById('appName').addEventListener('input', function (e) {
-    const appName  = e.target.value.trim();
-    const pkgInput = document.getElementById('packageName');
-    if (appName && !pkgInput.value) {
-      const sanitized = appName
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, '')
-        .replace(/\s+/g, '');
-      pkgInput.value = `com.example.${sanitized}`;
-      console.log(`[packageName] Auto-suggested: com.example.${sanitized}`);
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     FORM VALIDATION
-     ───────────────────────────────────────────── */
-  function validateForm() {
-    const websiteUrl  = document.getElementById('websiteUrl').value;
-    const appName     = document.getElementById('appName').value;
-    const packageName = document.getElementById('packageName').value;
-    const versionName = document.getElementById('versionName').value;
-    const versionCode = document.getElementById('versionCode').value;
-    const icon        = iconInput.files[0];
-
-    try {
-      new URL(websiteUrl);
-    } catch {
-      alert('Please enter a valid website URL');
-      return false;
-    }
-
-    if (!/^[a-zA-Z][a-zA-Z0-9]*(\.[a-zA-Z][a-zA-Z0-9]*)+$/.test(packageName)) {
-      alert('Package name must be in format: com.example.app');
-      return false;
-    }
-
-    if (!/^\d+\.\d+\.\d+$/.test(versionName)) {
-      alert('Version name must be in format: 1.0.0');
-      return false;
-    }
-
-    if (!versionCode || parseInt(versionCode) < 1) {
-      alert('Version code must be a positive integer');
-      return false;
-    }
-
-    if (!icon) {
-      alert('Please select an app icon');
-      return false;
-    }
-
-    if (icon.size > 5 * 1024 * 1024) {
-      alert('Icon file size must be less than 5MB');
-      return false;
-    }
-
-    if (!icon.type.startsWith('image/')) {
-      alert('Please select a valid image file for the icon');
-      return false;
-    }
-
-    if (appName.length > 30) {
-      alert('App name must be 30 characters or less');
-      return false;
-    }
-
-    console.log('[validation] Form passed validation');
-    return true;
-  }
-
-  /* ─────────────────────────────────────────────
-     FORM SUBMISSION
-     ───────────────────────────────────────────── */
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    console.log('[submit] Starting APK build submission');
-
-    form.classList.add('hidden');
-    buildResult.classList.add('hidden');
-    buildStatus.classList.remove('hidden');
-    initProgressBar();
-    statusMessage.textContent = 'Building your APK...';
-
-    try {
-      const formData = new FormData(form);
-
-      // Log FormData fields (not the file binary)
-      for (const [key, value] of formData.entries()) {
-        if (value instanceof File) {
-          console.log(`[formData] ${key}: File(${value.name}, ${value.size} bytes, ${value.type})`);
-        } else {
-          console.log(`[formData] ${key}: ${value}`);
-        }
-      }
-
-      // Animate status messages while waiting
-      const progressMessages = [
-        'Initializing project structure...',
-        'Generating Android manifest...',
-        'Processing app icon...',
-        'Creating WebView components...',
-        'Building project files...',
-        'Compiling Android code...',
-        'Building APK...',
-        'Finalizing APK...',
-      ];
-      let messageIndex = 0;
-      const progressInterval = setInterval(() => {
-        if (messageIndex < progressMessages.length) {
-          const msg = progressMessages[messageIndex++];
-          statusMessage.textContent = msg;
-          console.log(`[build] Status message: ${msg}`);
-        }
-      }, 2000);
-
-      let result;
-      try {
-        const res = await apiFetch('/api/build-apk', { method: 'POST', body: formData });
-        result = res.data;
-        if (!result) {
-          throw new Error(`Server returned a non-JSON response: ${res.rawText.substring(0, 200)}`);
-        }
-      } finally {
-        clearInterval(progressInterval);
-      }
-
-      console.log('[submit] Build API response:', result);
-
-      if (result.queued) {
-        const estimatedMinutes = Math.ceil(result.estimatedWaitTime / 60000);
-        const buildTimeMinutes = Math.ceil(result.estimatedBuildTime / 60000);
-        statusMessage.innerHTML = `
-          <div style="text-align:center;">
-            <div style="font-size:1.1em;margin-bottom:10px;">📋 Build queued — Position ${result.position} in queue</div>
-            <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated total time: ${estimatedMinutes} minutes</div>
-            <div style="font-size:0.8em;color:#888;margin-bottom:8px;">🔨 Build time: ${buildTimeMinutes} minutes (typically 3–6 minutes, up to 15 minutes on slower servers)</div>
-            <div style="font-size:0.8em;color:#888;">${result.queueInfo.currentBuilds}/${result.queueInfo.maxConcurrent} builds running</div>
-          </div>`;
-        console.log(`[submit] Queued — position ${result.position}, projectId: ${result.projectId}`);
-        pollBuildStatus(result.projectId);
-        updateProgressBar();
-      } else if (result.success) {
-        console.log('[submit] Immediate build success, downloadUrl:', result.downloadUrl);
-        completeProgressBar();
-        handleBuildSuccess(result);
-      } else {
-        throw new Error(result.error || 'Failed to build APK');
-      }
-
-    } catch (error) {
-      console.error('[submit] ✗ Build submission error:', error);
-      buildStatus.classList.add('hidden');
-      form.classList.remove('hidden');
-      alert(`Error: ${error.message}`);
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     DOWNLOAD & RESET
-     ───────────────────────────────────────────── */
-  downloadLink.addEventListener('click', function () {
-    console.log('[download] APK download initiated, will reset form in 5s');
-    setTimeout(() => {
-      buildResult.classList.add('hidden');
-      form.classList.remove('hidden');
-      form.reset();
-      document.querySelector('.file-upload-placeholder').classList.remove('hidden');
-      document.querySelector('.file-upload-preview').classList.add('hidden');
-      console.log('[download] Form reset');
-    }, 5000);
-  });
-
-  /* ─────────────────────────────────────────────
-     REAL-TIME VALIDATION COLOURS
-     ───────────────────────────────────────────── */
-  document.getElementById('packageName').addEventListener('input', function (e) {
-    e.target.style.borderColor = /^[a-zA-Z][a-zA-Z0-9]*(\.[a-zA-Z][a-zA-Z0-9]*)*$/.test(e.target.value)
-      ? '#e5e7eb'
-      : '#ef4444';
-  });
-
-  document.getElementById('versionName').addEventListener('input', function (e) {
-    e.target.style.borderColor = /^\d+\.\d+\.\d+$/.test(e.target.value) ? '#e5e7eb' : '#ef4444';
-  });
-
-  document.getElementById('websiteUrl').addEventListener('input', function (e) {
-    if (!e.target.value) { e.target.style.borderColor = '#e5e7eb'; return; }
-    try {
-      new URL(e.target.value);
-      e.target.style.borderColor = '#e5e7eb';
-    } catch {
-      e.target.style.borderColor = '#ef4444';
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     AUTO VERSION CODE FROM VERSION NAME
-     ───────────────────────────────────────────── */
-  document.getElementById('versionName').addEventListener('change', function (e) {
-    const versionCodeInput = document.getElementById('versionCode');
-    if (versionCodeInput.value) return;
-    const parts = e.target.value.split('.');
-    if (parts.length === 3) {
-      const code = (parseInt(parts[0]) || 0) * 10000 +
-                   (parseInt(parts[1]) || 0) * 100 +
-                   (parseInt(parts[2]) || 0);
-      versionCodeInput.value = code;
-      console.log(`[versionCode] Auto-computed from ${e.target.value}: ${code}`);
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     DRAG AND DROP
-     ───────────────────────────────────────────── */
-  const fileUploadDisplay = document.querySelector('.file-upload-display');
-
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(ev =>
-    fileUploadDisplay.addEventListener(ev, e => { e.preventDefault(); e.stopPropagation(); })
-  );
-
-  ['dragenter', 'dragover'].forEach(ev =>
-    fileUploadDisplay.addEventListener(ev, () => {
-      fileUploadDisplay.style.borderColor     = '#3949ab';
-      fileUploadDisplay.style.backgroundColor = '#f3f4f6';
-    })
-  );
-
-  ['dragleave', 'drop'].forEach(ev =>
-    fileUploadDisplay.addEventListener(ev, () => {
-      fileUploadDisplay.style.borderColor     = '#d1d5db';
-      fileUploadDisplay.style.backgroundColor = '#f9fafb';
-    })
-  );
-
-  fileUploadDisplay.addEventListener('drop', function (e) {
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      console.log(`[drag-drop] Dropped file: ${files[0].name}`);
-      iconInput.files = files;
-      iconInput.dispatchEvent(new Event('change'));
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     KEYBOARD SHORTCUT (Ctrl/Cmd + Enter)
-     ───────────────────────────────────────────── */
-  document.addEventListener('keydown', function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      if (!buildStatus.classList.contains('hidden')) return;
-      e.preventDefault();
-      console.log('[keyboard] Ctrl/Cmd+Enter — triggering form submit');
-      form.dispatchEvent(new Event('submit'));
-    }
-  });
-
-  /* ─────────────────────────────────────────────
-     BUILD STATUS POLLING
-     ───────────────────────────────────────────── */
-  function pollBuildStatus(projectId) {
-    console.log(`[poll] Starting status polling for projectId: ${projectId}`);
-    let pollCount = 0;
-
-    const pollInterval = setInterval(async () => {
-      pollCount++;
-      console.log(`[poll] Poll #${pollCount} for projectId: ${projectId}`);
-
-      try {
-        const res    = await apiFetch(`/api/build-status/${projectId}`);
-        const status = res.data;
-
-        if (!status) {
-          clearInterval(pollInterval);
-          throw new Error(`Invalid status response (non-JSON): ${res.rawText}`);
-        }
-
-        console.log(`[poll] Status: ${status.status}`, status);
-
-        if (status.status === 'queued') {
-          const rem = Math.ceil(status.estimatedTimeRemaining / 60000);
-          statusMessage.innerHTML = `
-            <div style="text-align:center;">
-              <div style="font-size:1.1em;margin-bottom:10px;">📋 Position ${status.position} in queue</div>
-              <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated wait time: ${rem} minutes</div>
-              <div style="font-size:0.8em;color:#888;margin-bottom:8px;">🔨 Build time: 3–6 minutes (typically 4.5 minutes, up to 15 minutes on slower servers)</div>
-              <div style="font-size:0.8em;color:#888;">${status.queueInfo.currentBuilds}/${status.queueInfo.maxConcurrent} builds running</div>
-            </div>`;
-          updateProgressBar();
-
-        } else if (status.status === 'building') {
-          statusMessage.innerHTML = `
-            <div style="text-align:center;">
-              <div style="font-size:1.1em;margin-bottom:10px;">🔨 Building your APK...</div>
-              <div style="font-size:0.9em;color:#666;margin-bottom:8px;">⏱️ Estimated time remaining: 3–6 minutes</div>
-              <div style="font-size:0.8em;color:#888;">Please wait while we compile your app...</div>
-            </div>`;
-          updateProgressBar();
-
-        } else if (status.status === 'completed') {
-          console.log(`[poll] Build completed. projectId: ${projectId}`);
-          clearInterval(pollInterval);
-          completeProgressBar();
-         handleBuildSuccess({
-    success: true,
-    downloadUrl: `https://webappcreator.amethystlab.org/download/${projectId}.apk`,
-    buildTime: status.completedAt - status.startedAt,
-});
-
-        } else if (status.status === 'failed') {
-          clearInterval(pollInterval);
-          throw new Error(status.error || 'Build failed');
-        }
-
-      } catch (error) {
-        // Only stop polling on non-network errors (network glitches are transient)
-        if (error.status !== undefined || pollCount >= 3) {
-          clearInterval(pollInterval);
-          clearInterval(progressUpdateInterval);
-          console.error('[poll] ✗ Fatal polling error, stopping:', error);
-          buildStatus.classList.add('hidden');
-          form.classList.remove('hidden');
-          alert(`Error: ${error.message}`);
-        } else {
-          console.warn(`[poll] Transient error on poll #${pollCount}, will retry:`, error.message);
-        }
-      }
-    }, 2000);
-
-    // Hard timeout — 10 minutes
-    setTimeout(() => {
-      clearInterval(pollInterval);
-      console.warn('[poll] ✗ Polling timed out after 10 minutes');
-    }, 10 * 60 * 1000);
-  }
-
-  /* ─────────────────────────────────────────────
-     HANDLE SUCCESSFUL BUILD
-     ───────────────────────────────────────────── */
-  function handleBuildSuccess(result) {
-    console.log('[success] Handling build success:', result);
-    buildStatus.classList.add('hidden');
-    buildResult.classList.remove('hidden');
-    downloadLink.href = result.downloadUrl;
-
-    document.querySelector('.result-success h3').textContent = 'APK Generated Successfully!';
-    document.querySelector('.result-success p').textContent =
-      'Your APK has been built and is ready for download and installation.';
-
-    const btnSpan = downloadLink.querySelector('span');
-    if (btnSpan) btnSpan.textContent = 'Download APK';
-
-    if (result.buildTime) {
-      const seconds  = Math.round(result.buildTime / 1000);
-      const existing = document.querySelector('.result-success .build-time-info');
-      if (!existing) {
-        const info = document.createElement('div');
-        info.className  = 'build-time-info';
-        info.style.cssText = 'font-size:0.9em;color:#666;margin-top:10px;';
-        info.textContent = `Build completed in ${seconds} seconds`;
-        document.querySelector('.result-success p').after(info);
-      }
-      console.log(`[success] Build time: ${seconds}s`);
-    }
-
-    // Auto-trigger download after 1s
-console.log(`[success] Download ready: ${result.downloadUrl}`);
-
-downloadLink.href = result.downloadUrl;
-downloadLink.setAttribute('download', '');
-downloadLink.setAttribute('target', '_blank');
-  }
-
-  /* ─────────────────────────────────────────────
-     QUEUE STATUS (sidebar)
-     ───────────────────────────────────────────── */
-  async function updateQueueStatus() {
-    console.log('[queue] Fetching queue status');
-    try {
-      const res       = await apiFetch('/api/queue-status');
-      const queueInfo = res.data;
-
-      if (!queueInfo) {
-        throw new Error('Non-JSON queue status response');
-      }
-
-      console.log('[queue] Queue info:', queueInfo);
-
-      const el = document.getElementById('queueStatus');
-      if (el) {
-        el.innerHTML = `
-          <div class="queue-item"><i class="fas fa-cogs"></i><span>Active builds: ${queueInfo.currentBuilds}/${queueInfo.maxConcurrent}</span></div>
-          <div class="queue-item"><i class="fas fa-clock"></i><span>Queued builds: ${queueInfo.queueLength}</span></div>
-          <div class="queue-item"><i class="fas fa-chart-line"></i><span>Total requests: ${queueInfo.totalActiveRequests}</span></div>`;
-      }
-    } catch (error) {
-      console.warn('[queue] Failed to load queue status:', error.message);
-      const el = document.getElementById('queueStatus');
-      if (el) {
-        el.innerHTML = `<div class="queue-item"><i class="fas fa-exclamation-triangle"></i><span>Unable to load queue status</span></div>`;
-      }
-    }
-  }
-
-  // Initial load + refresh every 10s
-  updateQueueStatus();
-  setInterval(updateQueueStatus, 10000);
-
-  /* ─────────────────────────────────────────────
-     DEFAULT FIELD VALUES
-     ───────────────────────────────────────────── */
-  document.getElementById('versionName').value = '1.0.0';
-  document.getElementById('versionCode').value = '1';
-
-  console.log('[init] Setup complete — ready for user input');
-});
     </script>
 </body>
 </html>
