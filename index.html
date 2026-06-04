@@ -1353,15 +1353,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Auto-trigger download after 1s
-    console.log(`[success] Auto-downloading from: ${result.downloadUrl}`);
-    setTimeout(() => {
-    const a = document.createElement('a');
-    a.href = result.downloadUrl;
-    a.download = '';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-}, 1000);
+console.log(`[success] Download ready: ${result.downloadUrl}`);
+
+downloadLink.href = result.downloadUrl;
+downloadLink.setAttribute('download', '');
+downloadLink.setAttribute('target', '_blank');
   }
 
   /* ─────────────────────────────────────────────
