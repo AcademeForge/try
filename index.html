@@ -1290,11 +1290,11 @@ document.addEventListener('DOMContentLoaded', function () {
           console.log(`[poll] Build completed. projectId: ${projectId}`);
           clearInterval(pollInterval);
           completeProgressBar();
-          handleBuildSuccess({
-            success:     true,
-            downloadUrl: `${API_BASE}/download/${projectId}.apk`,
-            buildTime:   status.completedAt - status.startedAt,
-          });
+         handleBuildSuccess({
+    success: true,
+    downloadUrl: `https://webappcreator.amethystlab.org/download/${projectId}.apk`,
+    buildTime: status.completedAt - status.startedAt,
+});
 
         } else if (status.status === 'failed') {
           clearInterval(pollInterval);
