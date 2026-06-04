@@ -1352,7 +1352,10 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log(`[success] Build time: ${seconds}s`);
     }
 
-    
+    // Auto-trigger download after 1s
+    console.log(`[success] Auto-downloading from: ${result.downloadUrl}`);
+    setTimeout(() => { window.location.href = result.downloadUrl; }, 1000);
+  }
 
   /* ─────────────────────────────────────────────
      QUEUE STATUS (sidebar)
@@ -1396,7 +1399,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('versionCode').value = '1';
 
   console.log('[init] Setup complete — ready for user input');
-};
+});
     </script>
 </body>
 </html>
